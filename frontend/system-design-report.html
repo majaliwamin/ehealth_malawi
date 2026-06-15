@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eHealth Malawi — System Design Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --primary: #2563eb;
+    --primary-light: #3b82f6;
+    --accent: #06b6d4;
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-hover: #263348;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --border: #334155;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --orange: #f97316;
+    --purple: #a855f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* --- Cover --- */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(37,99,235,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(6,182,212,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .cover-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border-radius: 999px;
+    background: rgba(37,99,235,0.15);
+    border: 1px solid rgba(37,99,235,0.3);
+    color: var(--primary-light);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .cover h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e2e8f0, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+    line-height: 1.15;
+  }
+  .cover .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  .cover-meta span { display: flex; align-items: center; gap: 0.4rem; }
+  .cover-meta .label { color: var(--text-muted); font-weight: 500; }
+  .cover-date {
+    margin-top: 3rem;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  /* --- Content --- */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  section { margin-bottom: 3rem; }
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--primary-light);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 1rem 0 0.5rem;
+  }
+
+  p { margin-bottom: 0.75rem; color: var(--text-muted); }
+
+  ul, ol { margin: 0.5rem 0 1rem 1.5rem; color: var(--text-muted); }
+  li { margin-bottom: 0.3rem; }
+
+  strong { color: var(--text); font-weight: 600; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    background: rgba(37,99,235,0.1);
+    border: 1px solid rgba(37,99,235,0.2);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    color: var(--primary-light);
+  }
+
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: #0c1322;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin: 0.75rem 0 1.25rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* --- Cards --- */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tag-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .tag-blue { background: rgba(37,99,235,0.15); color: var(--primary-light); }
+  .tag-yellow { background: rgba(234,179,8,0.15); color: var(--yellow); }
+  .tag-red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .tag-purple { background: rgba(168,85,247,0.15); color: var(--purple); }
+  .tag-orange { background: rgba(249,115,22,0.15); color: var(--orange); }
+
+  /* --- Tables --- */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  th {
+    background: rgba(37,99,235,0.1);
+    color: var(--primary-light);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.7rem 1rem;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(37,99,235,0.03); }
+
+  /* --- Arch Diagram --- */
+  .arch-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+  .arch-layer {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    min-width: 160px;
+  }
+  .arch-layer .layer-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+  }
+  .arch-layer .layer-value {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .arch-arrow {
+    color: var(--text-dim);
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+
+  /* --- Grid --- */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* --- Footer --- */
+  .footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  /* --- Print Button --- */
+  .print-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+    transition: all 0.2s;
+  }
+  .print-btn:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(37,99,235,0.4);
+  }
+  .print-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+  /* --- Print --- */
+  @media print {
+    body { background: #fff; color: #1e293b; }
+    .cover { min-height: 100vh; background: linear-gradient(135deg, #f8fafc, #e2e8f0); }
+    .cover h1 { -webkit-text-fill-color: #1e293b; color: #1e293b; background: none; }
+    .cover-badge { background: rgba(37,99,235,0.1); color: #2563eb; }
+    .cover .subtitle { color: #475569; }
+    .cover-meta { color: #64748b; }
+    .cover-meta .label { color: #475569; }
+    .cover-date { color: #64748b; }
+    .container { max-width: 100%; }
+    .card { background: #f8fafc; border-color: #cbd5e1; }
+    h2 { color: #2563eb; border-bottom-color: #cbd5e1; }
+    h2 .num { background: #2563eb; color: #fff; }
+    h3 { color: #0891b2; }
+    code { background: rgba(37,99,235,0.05); color: #2563eb; }
+    pre { background: #f1f5f9; border-color: #cbd5e1; color: #1e293b; }
+    th { background: rgba(37,99,235,0.05); color: #2563eb; }
+    td, th { border-color: #cbd5e1; }
+    .arch-layer { background: #f8fafc; border-color: #cbd5e1; }
+    .print-btn { display: none; }
+    section { page-break-inside: avoid; }
+    .cover { page-break-after: always; }
+    .table-wrap { page-break-inside: avoid; }
+  }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .cover h1 { font-size: 2.2rem; }
+    .arch-box { flex-direction: column; }
+    .arch-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER ==================== -->
+<div class="cover">
+  <div class="cover-badge">System Design Document</div>
+  <h1>eHealth Malawi</h1>
+  <p class="subtitle">National Digital Health Command Center &amp; Hospital Management System</p>
+  <div class="cover-meta">
+    <span><span class="label">Version</span> 1.0</span>
+    <span><span class="label">Status</span> Production</span>
+    <span><span class="label">Architecture</span> Three-Tier</span>
+    <span><span class="label">Database</span> SQLite</span>
+  </div>
+  <div class="cover-date">June 2026</div>
+</div>
+
+<!-- ==================== TOC ==================== -->
+<div class="container">
+
+<h2><span class="num">i</span> Table of Contents</h2>
+<ol style="columns: 2; column-gap: 2rem;">
+  <li>Executive Summary</li>
+  <li>System Architecture</li>
+  <li>Technology Stack</li>
+  <li>Directory Structure</li>
+  <li>Database Schema</li>
+  <li>API Design</li>
+  <li>Authentication &amp; Security</li>
+  <li>Frontend Architecture</li>
+  <li>Real-Time Dashboard</li>
+  <li>Deployment</li>
+  <li>Data Flow</li>
+  <li>Modules &amp; Features</li>
+</ol>
+
+<!-- ==================== 1 ==================== -->
+<section>
+<h2><span class="num">1</span> Executive Summary</h2>
+<p>
+  <strong>eHealth Malawi</strong> is a modular, AI-ready digital health platform designed for the Malawi Ministry of Health. It serves as both a <strong>National Digital Health Command Center</strong> and a comprehensive <strong>Hospital Management Information System (HMIS)</strong>. The platform integrates patient management, clinical workflows, pharmacy, laboratory, billing, inventory, governance, critical care, dialysis, and a real-time national surveillance dashboard with an interactive district-level map of Malawi.
+</p>
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">Design</span></div>
+    Three-tier architecture (Frontend → API → Database) with offline-first configuration
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-green">Modules</span></div>
+    30+ database tables, 35+ REST endpoints, 1 WebSocket, 18 user roles
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-purple">Deployment</span></div>
+    Dockerized FastAPI backend with SQLite; designed for district-level deployment
+  </div>
+</div>
+</section>
+
+<!-- ==================== 2 ==================== -->
+<section>
+<h2><span class="num">2</span> System Architecture</h2>
+<p>The system follows a classic three-tier architecture with clear separation of concerns:</p>
+
+<div class="arch-box">
+  <div class="arch-layer">
+    <div class="layer-label">Presentation</div>
+    <div class="layer-value">Vanilla HTML/CSS/JS</div>
+    <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.3rem;">Single-Page Application</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-layer">
+    <div class="layer-label">Application</div>
+    <div class="layer-value">FastAPI (Python)</div>
+    <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.3rem;">REST + WebSocket</div>
+  </div>
+  <div class="arch-arrow">→</div>
+  <div class="arch-layer">
+    <div class="layer-label">Data</div>
+    <div class="layer-value">SQLite / PostgreSQL</div>
+    <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.3rem;">SQLAlchemy ORM</div>
+  </div>
+</div>
+
+<h3>Key Architectural Decisions</h3>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">1. Offline-First Design</div>
+    <p style="font-size:0.9rem;">Configured with <code>OFFLINE_MODE=True</code> by default, the system operates reliably in areas with intermittent connectivity. SQLite allows zero-configuration local deployment.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">2. Modular Plugin Architecture</div>
+    <p style="font-size:0.9rem;">Each domain (clinical, pharmacy, lab, etc.) has isolated model, schema, and endpoint files. New modules can be added without touching existing code.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">3. Database-Agnostic ORM</div>
+    <p style="font-size:0.9rem;">SQLAlchemy async ORM supports SQLite (default) and PostgreSQL. Configuration via a single <code>DATABASE_URL</code> environment variable.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">4. AI-Ready Infrastructure</div>
+    <p style="font-size:0.9rem;">OpenAI SDK included in dependencies. Provider abstraction layer allows plugging in any AI service for clinical decision support and predictive analytics.</p>
+  </div>
+</div>
+</section>
+
+<!-- ==================== 3 ==================== -->
+<section>
+<h2><span class="num">3</span> Technology Stack</h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Layer</th><th>Technology</th><th>Version</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Backend Framework</td><td>FastAPI</td><td>0.115.0</td><td>Async Python web framework with auto-generated OpenAPI docs</td></tr>
+    <tr><td>ASGI Server</td><td>uvicorn</td><td>0.30.0</td><td>High-performance ASGI server for Python</td></tr>
+    <tr><td>ORM</td><td>SQLAlchemy (async)</td><td>2.0.35</td><td>Async database ORM with session management</td></tr>
+    <tr><td>Database</td><td>SQLite (aiosqlite)</td><td>0.20.0</td><td>Lightweight, embedded database for offline-first deployment</td></tr>
+    <tr><td>Auth Tokens</td><td>python-jose (JWT)</td><td>3.3.0</td><td>HS256 JWT generation and validation</td></tr>
+    <tr><td>Password Hashing</td><td>passlib (bcrypt)</td><td>1.7.4</td><td>Secure password storage</td></tr>
+    <tr><td>Validation</td><td>Pydantic</td><td>2.9.0</td><td>Request/response schema validation</td></tr>
+    <tr><td>Migrations</td><td>Alembic</td><td>1.13.0</td><td>Database migration management</td></tr>
+    <tr><td>Caching</td><td>aiocache</td><td>0.12.3</td><td>In-memory caching for dashboard data</td></tr>
+    <tr><td>AI Integration</td><td>OpenAI SDK</td><td>1.51.0</td><td>AI-powered clinical insights (disabled by default)</td></tr>
+    <tr><td>Frontend</td><td>Vanilla HTML/CSS/JS</td><td>—</td><td>Single-page application, no framework dependencies</td></tr>
+    <tr><td>Maps</td><td>Inline SVG</td><td>—</td><td>Interactive district-level map of Malawi (29 districts)</td></tr>
+    <tr><td>Containerization</td><td>Docker / Docker Compose</td><td>—</td><td>Containerized deployment</td></tr>
+    <tr><td>Testing</td><td>pytest / pytest-asyncio</td><td>8.3.0</td><td>Unit and integration testing</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ==================== 4 ==================== -->
+<section>
+<h2><span class="num">4</span> Directory Structure</h2>
+<pre>
+ehealth_malawi/
+├── Dockerfile                          # Container build
+├── docker-compose.yml                  # Multi-service orchestration
+├── frontend/
+│   └── index.html                      # SPA (HTML/CSS/JS, ~4000+ lines)
+├── backend/
+│   ├── .env                            # Environment configuration
+│   ├── requirements.txt                # Python dependencies
+│   ├── run.py                          # Entry point
+│   ├── ehealth_malawi.db               # SQLite database (seeded)
+│   └── app/
+│       ├── main.py                     # FastAPI app factory
+│       ├── core/
+│       │   ├── config.py               # Pydantic settings
+│       │   ├── database.py             # Async engine + session
+│       │   └── security.py             # JWT + bcrypt
+│       ├── models/                     # SQLAlchemy ORM models
+│       │   ├── patient.py              # Patient, Allergy, Diagnosis
+│       │   ├── admin.py                # User, Facility, Department
+│       │   ├── clinical.py             # Visit, VitalSign, Notes
+│       │   ├── appointment.py          # Appointment, Queue
+│       │   ├── laboratory.py           # LabOrder, LabTest
+│       │   ├── pharmacy.py             # Prescription, DrugStock
+│       │   ├── dialysis.py             # DialysisSession, CKD
+│       │   ├── critical_care.py        # ICU, Scores, FluidBalance
+│       │   ├── inventory.py            # Inventory, StockMovement
+│       │   ├── governance.py           # Incidents, Audit, Quality
+│       │   ├── billing.py              # Bill
+│       │   └── announcement.py         # Announcement
+│       ├── schemas/                    # Pydantic schemas
+│       ├── api/v1/
+│       │   ├── router.py               # Route aggregator
+│       │   └── endpoints/
+│       │       ├── auth.py             # /auth/*
+│       │       ├── patients.py         # /patients/*
+│       │       ├── clinical.py         # /clinical/*
+│       │       ├── appointments.py     # /appointments/*
+│       │       ├── laboratory.py       # /labs/*
+│       │       ├── pharmacy.py         # /pharmacy/*
+│       │       ├── billing.py          # /billing/*
+│       │       ├── dashboard.py        # /dashboard/*
+│       │       └── info_center.py      # /info/*
+│       ├── middleware/
+│       │   └── auth.py                 # JWT Bearer dependency
+│       └── ws/
+│           ├── manager.py              # WebSocket connection manager
+│           └── dashboard_ws.py         # Real-time broadcast loop
+└── scripts/
+    ├── setup.ps1                       # Windows dependency install
+    └── seed_data.py                    # Database seeder
+</pre>
+</section>
+
+<!-- ==================== 5 ==================== -->
+<section>
+<h2><span class="num">5</span> Database Schema</h2>
+<p>The system comprises <strong>30+ tables</strong> organized into functional domains. All tables use <strong>UUID primary keys</strong> and <strong>UTC timestamps</strong> for created_at/updated_at.</p>
+
+<h3>Core Entities</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Domain</th><th>Tables</th><th>Key Fields</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Patient Management</strong></td><td><code>patients</code>, <code>allergies</code>, <code>diagnoses</code></td><td>passport_id (EMW-XXXXXXX), national_id, demographics, blood_group, next_of_kin</td></tr>
+    <tr><td><strong>Administration</strong></td><td><code>users</code>, <code>departments</code>, <code>facilities</code>, <code>audit_trails</code></td><td>18 roles, bcrypt passwords, JWT tokens, facility hierarchy</td></tr>
+    <tr><td><strong>Clinical</strong></td><td><code>visits</code>, <code>vital_signs</code>, <code>clinical_notes</code>, <code>nursing_notes</code></td><td>Visit types (OPD/IPD/ER), triage categories, SOAP notes, GCS scores</td></tr>
+    <tr><td><strong>Appointments</strong></td><td><code>appointments</code>, <code>queue</code></td><td>Priority levels, teleconsult flag, queue position tracking</td></tr>
+    <tr><td><strong>Laboratory</strong></td><td><code>lab_orders</code>, <code>lab_tests</code>, <code>radiology_orders</code></td><td>Specimen types, reference ranges, abnormal flags</td></tr>
+    <tr><td><strong>Pharmacy</strong></td><td><code>prescriptions</code>, <code>prescription_items</code>, <code>medication_administrations</code>, <code>drug_stock</code></td><td>Controlled substances, dosage tracking, stock alerts</td></tr>
+    <tr><td><strong>Dialysis &amp; CKD</strong></td><td><code>dialysis_sessions</code>, <code>ckd_records</code></td><td>Hemodialysis/peritoneal, AV fistula, CKD staging (1–ESRD)</td></tr>
+    <tr><td><strong>Critical Care</strong></td><td><code>icu_admissions</code>, <code>icu_scores</code>, <code>fluid_balance</code></td><td>Ventilation modes, SOFA/APACHE scores, vasopressors</td></tr>
+    <tr><td><strong>Inventory</strong></td><td><code>inventory_items</code>, <code>stock_movements</code>, <code>equipment_maintenance</code></td><td>Categories, reorder levels, lot tracking</td></tr>
+    <tr><td><strong>Governance</strong></td><td><code>incident_reports</code>, <code>audit_logs</code>, <code>quality_indicators</code>, <code>mortality_reviews</code></td><td>Incident categories, severity levels, root cause analysis</td></tr>
+    <tr><td><strong>Billing</strong></td><td><code>bills</code></td><td>MPamba/Airtel Money/Bank payments, receipt generation</td></tr>
+    <tr><td><strong>Announcements</strong></td><td><code>announcements</code></td><td>Categories (CRITICAL/PUBLIC_HEALTH/SERVICE/ADMIN), targeting</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Entity-Relationship Highlights</h3>
+<ul>
+  <li><strong>Patient → Visit → Clinical Notes</strong>: One patient has many visits; each visit has one or more clinical/nursing notes and vital sign records.</li>
+  <li><strong>Patient → Lab Orders → Lab Tests</strong>: One lab order contains multiple tests; results can be quantitative or qualitative with reference ranges.</li>
+  <li><strong>Patient → Prescriptions → Prescription Items</strong>: Each prescription has multiple line items; administration records track actual dosage given.</li>
+  <li><strong>Patient → Bills</strong>: Billing is patient-centric with support for partial payments and receipt references.</li>
+  <li><strong>Visit → Queue</strong>: Queue tracks triage, consultation, pharmacy, lab, and procedure stages with position management.</li>
+  <li><strong>User → Audit Trail</strong>: All data modifications are logged with user, action, resource, IP address, and timestamp.</li>
+</ul>
+</section>
+
+<!-- ==================== 6 ==================== -->
+<section>
+<h2><span class="num">6</span> API Design</h2>
+<p>All endpoints are prefixed with <code>/api/v1</code>. Authentication is via HTTP Bearer JWT token (8-hour expiry). The API auto-generates OpenAPI documentation at <code>/docs</code> and <code>/redoc</code>.</p>
+
+<h3>Endpoint Summary</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Group</th><th>Method</th><th>Path</th><th>Auth</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Auth</strong></td><td>POST</td><td><code>/auth/login</code></td><td>No</td><td>Login (username/email/phone + password) → JWT</td></tr>
+    <tr><td></td><td>POST</td><td><code>/auth/register</code></td><td>No</td><td>Register new user</td></tr>
+    <tr><td><strong>Patients</strong></td><td>GET</td><td><code>/patients/search?q=</code></td><td>Yes</td><td>Universal patient search</td></tr>
+    <tr><td></td><td>GET</td><td><code>/patients/{id}</code></td><td>Yes</td><td>Get patient by ID</td></tr>
+    <tr><td></td><td>POST</td><td><code>/patients/</code></td><td>Yes</td><td>Create patient (auto-generates passport)</td></tr>
+    <tr><td></td><td>PUT</td><td><code>/patients/{id}</code></td><td>Yes</td><td>Update patient</td></tr>
+    <tr><td><strong>Clinical</strong></td><td>POST</td><td><code>/clinical/visits</code></td><td>Yes</td><td>Create visit</td></tr>
+    <tr><td></td><td>GET</td><td><code>/clinical/visits/{id}</code></td><td>Yes</td><td>Get visit by ID</td></tr>
+    <tr><td></td><td>GET</td><td><code>/clinical/visits/active</code></td><td>Yes</td><td>List active visits (waiting/in-progress/admitted)</td></tr>
+    <tr><td></td><td>POST</td><td><code>/clinical/vitals</code></td><td>Yes</td><td>Record vital signs (auto-calculates BMI)</td></tr>
+    <tr><td></td><td>POST</td><td><code>/clinical/notes</code></td><td>Yes</td><td>Create SOAP clinical note</td></tr>
+    <tr><td><strong>Appointments</strong></td><td>POST</td><td><code>/appointments/</code></td><td>Yes</td><td>Schedule appointment</td></tr>
+    <tr><td></td><td>GET</td><td><code>/appointments/today/upcoming</code></td><td>Yes</td><td>Today's upcoming appointments</td></tr>
+    <tr><td></td><td>GET</td><td><code>/appointments/queue/</code></td><td>Yes</td><td>Queue list (filtered by department)</td></tr>
+    <tr><td><strong>Laboratory</strong></td><td>POST</td><td><code>/labs/orders</code></td><td>Yes</td><td>Create lab order</td></tr>
+    <tr><td></td><td>GET</td><td><code>/labs/pending</code></td><td>Yes</td><td>Pending lab orders</td></tr>
+    <tr><td></td><td>PUT</td><td><code>/labs/orders/{id}/results</code></td><td>Yes</td><td>Update lab results</td></tr>
+    <tr><td><strong>Pharmacy</strong></td><td>POST</td><td><code>/pharmacy/prescriptions</code></td><td>Yes</td><td>Create prescription (with items)</td></tr>
+    <tr><td></td><td>PUT</td><td><code>/pharmacy/prescriptions/{id}/dispense</code></td><td>Yes</td><td>Dispense prescription</td></tr>
+    <tr><td><strong>Billing</strong></td><td>GET</td><td><code>/billing/bills</code></td><td>Yes</td><td>List all bills</td></tr>
+    <tr><td></td><td>POST</td><td><code>/billing/bills</code></td><td>Yes</td><td>Create bill</td></tr>
+    <tr><td></td><td>POST</td><td><code>/billing/bills/{id}/pay</code></td><td>Yes</td><td>Pay bill → receipt</td></tr>
+    <tr><td><strong>Dashboard</strong></td><td>GET</td><td><code>/dashboard/summary</code></td><td>Yes</td><td>KPI summary (patients, visits, labs, bills)</td></tr>
+    <tr><td></td><td>GET</td><td><code>/dashboard/ops-center</code></td><td>Yes</td><td>Operations: ICU, ambulances, blood, alerts</td></tr>
+    <tr><td></td><td>GET</td><td><code>/dashboard/disease-surveillance</code></td><td>Yes</td><td>Disease tracking (malaria, HIV, TB, cholera, etc.)</td></tr>
+    <tr><td></td><td>GET</td><td><code>/dashboard/analytics</code></td><td>Yes</td><td>Visit trends, mortality, lab turnaround, vaccination</td></tr>
+    <tr><td></td><td>GET</td><td><code>/dashboard/map-data</code></td><td>Yes</td><td>District-level health indicators for SVG map</td></tr>
+    <tr><td></td><td>GET</td><td><code>/dashboard/ai-insights</code></td><td>Yes</td><td>AI-powered predictive alerts</td></tr>
+    <tr><td></td><td>GET</td><td><code>/dashboard/full</code></td><td>Yes</td><td>Aggregated dashboard (all above)</td></tr>
+    <tr><td><strong>Info Center</strong></td><td>GET</td><td><code>/info/announcements</code></td><td>Yes</td><td>Announcements (filterable)</td></tr>
+    <tr><td></td><td>GET</td><td><code>/info/intelligence</code></td><td>Yes</td><td>Health intelligence summary</td></tr>
+    <tr><td></td><td>GET</td><td><code>/info/search?q=</code></td><td>Yes</td><td>Universal search (patients + announcements)</td></tr>
+    <tr><td><strong>WebSocket</strong></td><td>WS</td><td><code>/ws/dashboard?token=</code></td><td>JWT</td><td>Real-time dashboard push every 10s</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ==================== 7 ==================== -->
+<section>
+<h2><span class="num">7</span> Authentication &amp; Security</h2>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">JWT Bearer</span></div>
+    <p style="font-size:0.9rem;">All authenticated endpoints require <code>Authorization: Bearer &lt;token&gt;</code>. Tokens are HS256-signed with an 8-hour expiry. The <code>get_current_user</code> dependency decodes the token and loads the user from the database.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-green">bcrypt Hashing</span></div>
+    <p style="font-size:0.9rem;">Passwords are hashed using bcrypt via the passlib library. The <code>pwd_context</code> utility provides <code>hash()</code> and <code>verify()</code> methods.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-yellow">18 User Roles</span></div>
+    <p style="font-size:0.9rem;">Granular role-based access control: <code>super_admin</code>, <code>hospital_admin</code>, <code>dho</code>, <code>doctor</code>, <code>nurse</code>, <code>clinical_officer</code>, <code>pharmacist</code>, <code>lab_technician</code>, <code>hsa</code>, <code>data_entry</code>, etc.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-red">Audit Trail</span></div>
+    <p style="font-size:0.9rem;">All data modifications are logged to the <code>audit_trails</code> and <code>audit_logs</code> tables with user ID, action, resource, IP address, and timestamp.</p>
+  </div>
+</div>
+
+<h3>Login Flow</h3>
+<pre>
+Client                          Server
+  │                               │
+  ├─ POST /auth/login ──────────► │
+  │   { username, password }      │
+  │                               ├─ Verify credentials (bcrypt)
+  │                               ├─ Check account active/locked
+  │                               ├─ Generate JWT (HS256, 8h)
+  │◄─────────── { token, user } ──┤
+  │                               │
+  ├─ GET /patients/search ──────► │
+  │   Authorization: Bearer ...   │
+  │                               ├─ get_current_user (decode JWT)
+  │                               ├─ Execute query
+  │◄─────────── { results } ──────┤
+</pre>
+</section>
+
+<!-- ==================== 8 ==================== -->
+<section>
+<h2><span class="num">8</span> Frontend Architecture</h2>
+<p>
+  The frontend is a <strong>single-page application (SPA)</strong> served entirely from one HTML file (<code>frontend/index.html</code>) with no framework dependencies — pure vanilla JavaScript, CSS, and HTML. It communicates with the backend exclusively through REST API calls (<code>fetch()</code>) and a WebSocket connection for real-time updates.
+</p>
+
+<h3>UI Architecture</h3>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title"><span class="tag tag-purple">Pages &amp; Views</span></div>
+    <p style="font-size:0.9rem;">17 navigable views: MUST Clinic, Command Center, Patient Registry, Appointments, Queue, Triage, Clinical Notes, Vital Signs, Inpatient Ward, ICU, Dialysis, Lab, Pharmacy, Inventory, Billing, Governance, Admin.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-green">NHISC Header</span></div>
+    <p style="font-size:0.9rem;">National Health Information &amp; Search Center — fixed header with scrolling announcement banner, universal search, and user profile menu.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">Interactive SVG Map</span></div>
+    <p style="font-size:0.9rem;">29 district paths of Malawi with choropleth coloring by indicator (births, outbreaks, facility status, referrals, stock-outs). Hover shows district name and value.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-yellow">WebSocket Live Updates</span></div>
+    <p style="font-size:0.9rem;">Dashboard receives real-time pushes every 10 seconds for ops center cards, disease surveillance data, and AI-powered alerts.</p>
+  </div>
+</div>
+
+<h3>Key Frontend Functions</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Function</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>showPage(page)</code></td><td>SPA router — shows/hides page sections</td></tr>
+    <tr><td><code>login() / logout()</code></td><td>Authentication: JWT storage in localStorage, auto-redirect</td></tr>
+    <tr><td><code>authFetch(url, opts)</code></td><td>Wrapper around fetch() that injects <code>Authorization</code> header</td></tr>
+    <tr><td><code>fetchDashboard()</code></td><td>Loads all dashboard KPIs, ops center, surveillance data</td></tr>
+    <tr><td><code>colorMap(indicator)</code></td><td>Colors SVG districts by selected indicator value</td></tr>
+    <tr><td><code>highlightDistrict(name)</code></td><td>Highlights a district on hover with tooltip</td></tr>
+    <tr><td><code>handleSearch()</code></td><td>Universal search with live dropdown results</td></tr>
+    <tr><td><code>showNotification()</code></td><td>Toast notification system</td></tr>
+    <tr><td><code>updateLegend(ind)</code></td><td>Updates map legend based on selected indicator</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- ==================== 9 ==================== -->
+<section>
+<h2><span class="num">9</span> Real-Time Dashboard</h2>
+<p>
+  The Command Center dashboard combines REST-polled data with WebSocket-pushed real-time updates for a live operational picture.
+</p>
+
+<h3>Dashboard Components</h3>
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">KPI Bar</span></div>
+    <p style="font-size:0.85rem;">Total patients, active visits, waiting patients, pending labs, unpaid bills, facility status</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-red">Ops Center</span></div>
+    <p style="font-size:0.85rem;">ICU capacity, ambulance status, blood stock, facility alerts, emergency count, lab workload, stock-out notifications</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-yellow">Disease Surveillance</span></div>
+    <p style="font-size:0.85rem;">Malaria, HIV, TB, cholera, measles, cancer — case counts and trends by district</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-purple">Interactive Map</span></div>
+    <p style="font-size:0.85rem;">29-district SVG of Malawi with 5 indicator layers (births, outbreaks, facility status, referrals, stock-outs)</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-green">AI Insights</span></div>
+    <p style="font-size:0.85rem;">Predictive alerts: malaria surge detection, ICU capacity warnings, cholera risk, blood stock depletion</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-orange">Analytics</span></div>
+    <p style="font-size:0.85rem;">Monthly visit trends, mortality rates, lab turnaround time, vaccination coverage</p>
+  </div>
+</div>
+
+<h3>WebSocket Data Flow</h3>
+<pre>
+  Client                         Server
+    │                               │
+    ├─ WS /ws/dashboard?token= ──► │
+    │                               ├─ Verify JWT from query param
+    │                               ├─ Register connection
+    │◄──────── { connected } ──────┤
+    │                               │
+    │        [every 10 seconds]     │
+    │                               ├─ Query ops_center data
+    │                               ├─ Query disease_surveillance
+    │                               ├─ Query ai_insights
+    │◄─── { ops_center, disease,   ─┤
+    │       ai_insights }            │
+    │                               │
+    │   [Client updates DOM]        │
+</pre>
+</section>
+
+<!-- ==================== 10 ==================== -->
+<section>
+<h2><span class="num">10</span> Deployment</h2>
+
+<h3>Docker Configuration</h3>
+<pre>
+# Dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY backend/requirements.txt .
+RUN pip install -r requirements.txt
+COPY backend/ .
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+</pre>
+
+<pre>
+# docker-compose.yml
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ehealth_data:/app
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./ehealth_malawi.db
+      - OFFLINE_MODE=True
+      - DEBUG=False
+    restart: unless-stopped
+</pre>
+
+<h3>Environment Configuration</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>DATABASE_URL</code></td><td><code>sqlite+aiosqlite:///./ehealth_malawi.db</code></td><td>Async database connection string</td></tr>
+    <tr><td><code>SYNC_DATABASE_URL</code></td><td><code>sqlite:///./ehealth_malawi.db</code></td><td>Sync database (for Alembic)</td></tr>
+    <tr><td><code>SECRET_KEY</code></td><td><code>emw-secret-key-...</code></td><td>JWT signing key</td></tr>
+    <tr><td><code>CORS_ORIGINS</code></td><td><code>http://localhost:8000,...</code></td><td>Allowed CORS origins</td></tr>
+    <tr><td><code>OFFLINE_MODE</code></td><td><code>True</code></td><td>Offline-first mode</td></tr>
+    <tr><td><code>ENABLE_AI_FEATURES</code></td><td><code>False</code></td><td>Toggle OpenAI integration</td></tr>
+    <tr><td><code>ACCESS_TOKEN_EXPIRE_MINUTES</code></td><td><code>480</code></td><td>JWT token lifetime</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Startup Sequence</h3>
+<ol>
+  <li><strong>run.py</strong> calls <code>create_app()</code> from <code>app.main</code></li>
+  <li>App factory initializes CORS middleware, static mounts, lifespan handler</li>
+  <li>Lifespan handler calls <code>init_db()</code> → <code>Base.metadata.create_all()</code> (auto-creates all tables)</li>
+  <li>API routers are registered under <code>/api/v1</code></li>
+  <li>Static files (frontend, audio, uploads) are mounted</li>
+  <li>Root route <code>GET /</code> serves <code>index.html</code></li>
+  <li>Server starts on <code>0.0.0.0:8000</code></li>
+  <li>WebSocket endpoint is available for dashboard connections</li>
+</ol>
+</section>
+
+<!-- ==================== 11 ==================== -->
+<section>
+<h2><span class="num">11</span> Data Flow</h2>
+
+<h3>Request Lifecycle</h3>
+<pre>
+  Browser                          FastAPI                        SQLite
+    │                                │                              │
+    ├─ GET /patients/search ──────►  │                              │
+    │   Authorization: Bearer ...    │                              │
+    │                                ├─ CORS middleware             │
+    │                                ├─ get_current_user            │
+    │                                │   └─ decode JWT              │
+    │                                │   └─ query users table       │
+    │                                ├─ validate query params       │
+    │                                ├─ execute SELECT query ─────► │
+    │                                │◄────── results ──────────────┤
+    │                                ├─ serialize to JSON           │
+    │◄───────── { results } ────────┤                              │
+    │                                │                              │
+  [SPA renders results]             │                              │
+</pre>
+
+<h3>Dashboard Data Flow</h3>
+<pre>
+  Initial Load                           Periodic Updates
+  ─────────────                           ────────────────
+  fetchDashboard()                       WebSocket connect
+    ├─ GET /dashboard/summary              ├─ Push every 10s
+    ├─ GET /dashboard/ops-center           ├─ ops_center data
+    ├─ GET /disease-surveillance           ├─ disease data
+    ├─ GET /dashboard/map-data             └─ ai_insights
+    ├─ GET /dashboard/ai-insights
+    └─ GET /dashboard/analytics
+         │
+         └─ DOM updates (cards, map, tables)
+</pre>
+</section>
+
+<!-- ==================== 12 ==================== -->
+<section>
+<h2><span class="num">12</span> Modules &amp; Features</h2>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">Patient Registry</span></div>
+    <p style="font-size:0.85rem;">Create, search, edit patients. Auto-generates EMW-XXXXXXX passport IDs. Stores demographics, allergies, diagnoses, emergency contacts.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-green">Clinical Workflow</span></div>
+    <p style="font-size:0.85rem;">Visit management (OPD/IPD/ER/triage), SOAP clinical notes, nursing notes, vital signs with auto-BMI calculation, GCS scoring.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-yellow">Appointments &amp; Queue</span></div>
+    <p style="font-size:0.85rem;">Schedule, confirm, complete appointments. Real-time queue with position tracking, call buttons, department filtering, teleconsult flag.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-red">Laboratory</span></div>
+    <p style="font-size:0.85rem;">Order lab tests, track specimen collection, record results with reference ranges and abnormal flags. Radiology order support with findings/reports.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-purple">Pharmacy</span></div>
+    <p style="font-size:0.85rem;">Prescription management with dosage tracking, controlled substance handling, dispensing workflow, drug stock alerts.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-orange">Dialysis &amp; CKD</span></div>
+    <p style="font-size:0.85rem;">Hemodialysis/peritoneal session tracking, CKD staging (1–ESRD), eGFR monitoring, AV fistula management.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-red">Critical Care (ICU)</span></div>
+    <p style="font-size:0.85rem;">ICU/HDU/NICU/PICU admissions, ventilation modes, SOFA/APACHE scoring, vasopressor tracking, fluid balance.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-blue">Inventory &amp; Equipment</span></div>
+    <p style="font-size:0.85rem;">Stock management with reorder levels, lot tracking, expiry management, equipment maintenance scheduling.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-yellow">Governance &amp; Quality</span></div>
+    <p style="font-size:0.85rem;">Incident reporting (medication errors, falls, HAI, surgical), mortality reviews, quality indicators, full audit logging.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-green">Billing &amp; Payments</span></div>
+    <p style="font-size:0.85rem;">Bill creation, MPamba/Airtel Money/Bank payment processing, receipt generation, payment history.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-purple">National Dashboard</span></div>
+    <p style="font-size:0.85rem;">Real-time KPIs, ops center, disease surveillance, interactive district map (29 districts, 5 indicators), AI predictive insights, trend analytics.</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="tag tag-orange">Info Center</span></div>
+    <p style="font-size:0.85rem;">Announcements (critical/public health/service/admin), health intelligence summaries, universal search across patients and announcements.</p>
+  </div>
+</div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  eHealth Malawi — System Design Report v1.0<br>
+  Generated June 2026
+</div>
+
+</div>
+
+<!-- ==================== PRINT BTN ==================== -->
+<button class="print-btn" onclick="window.print()">
+  <svg viewBox="0 0 24 24"><path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 14H8v-4h8v4zm2-4v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/></svg>
+  Save as PDF
+</button>
+
+</body>
+</html>

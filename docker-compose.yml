@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ehealth_data:/app
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./ehealth_malawi.db
+      - OFFLINE_MODE=True
+      - DEBUG=False
+    restart: unless-stopped
+
+volumes:
+  ehealth_data:

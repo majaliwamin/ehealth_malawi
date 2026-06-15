@@ -1,0 +1,46 @@
+from pydantic_settings import BaseSettings
+from typing import Optional
+
+
+class Settings(BaseSettings):
+    APP_NAME: str = "eHealth Malawi"
+    API_V1_PREFIX: str = "/api/v1"
+    DEBUG: bool = True
+
+    SECRET_KEY: str = "change-this-in-production-malawi-health"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 480
+
+    DATABASE_URL: str = "sqlite+aiosqlite:///./ehealth_malawi.db"
+    SYNC_DATABASE_URL: str = "sqlite:///./ehealth_malawi.db"
+
+    POSTGRES_URL: Optional[str] = None
+
+    REDIS_URL: Optional[str] = None
+
+    OPENAI_API_KEY: Optional[str] = None
+    ENABLE_AI_FEATURES: bool = False
+
+    CORS_ORIGINS: str = "*"
+
+    SYNC_SERVER_URL: Optional[str] = None
+    OFFLINE_MODE: bool = True
+
+    # Notification channels
+    AT_API_KEY: str = ""
+    AT_USERNAME: str = "sandbox"
+    WHATSAPP_TOKEN: str = ""
+    WHATSAPP_PHONE_ID: str = ""
+
+    # Email backup (used by deploy.ps1)
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASS: str = ""
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
+
+
+settings = Settings()
