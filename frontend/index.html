@@ -621,7 +621,7 @@ textarea{resize:vertical;min-height:80px}
       <div class="search-dropdown" id="searchDropdown"></div>
     </div>
     <div style="display:flex;align-items:center;gap:12px;justify-content:flex-end;flex:1">
-      <span style="font-size:11px;color:#64748b"><span class="status-dot" style="background:#34d399;width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:3px"></span>Online</span>
+      <span id="connectionBadge" style="font-size:11px;color:#64748b"><span class="status-dot" style="background:#34d399;width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:3px"></span><span id="connectionStatus">Online</span></span>
       <span id="navUserName" style="font-size:12px;color:#94a3b8">User</span>
       <a onclick="logout()" style="font-size:11px;color:#f87171;cursor:pointer">Logout</a>
     </div>
@@ -635,8 +635,7 @@ textarea{resize:vertical;min-height:80px}
 <div class="layout">
   <!-- sidebar -->
   <div class="sidebar" id="sidebar">
-    <!-- MUST Teaching Hospital is now the default dashboard content (no separate sidebar entry) -->
-    <!-- National Digital Health Command Center removed â€” merged into MUST Teaching Hospital above -->
+    <div class="sidebar-item" data-page="dashboard" onclick="showPage('dashboard',this)" style="border-left-color:#38bdf8;margin-bottom:4px"><span class="icon">&#8962;</span> Home</div>
     <div class="sidebar-group">Clinical Services</div>
     <div class="sidebar-item" data-page="patients" onclick="showPage('patients',this)"><span class="icon">&#9787;</span> Patient Registry</div>
     <div class="sidebar-item" data-page="appointments" onclick="showPage('appointments',this)"><span class="icon">&#128197;</span> Appointments</div>
@@ -1195,7 +1194,7 @@ textarea{resize:vertical;min-height:80px}
       <p style="font-size:13px;color:#94a3b8;margin-bottom:16px">User management, access control, and system configuration</p>
       <div class="card">
         <div class="card-title">&#9881; System Configuration</div>
-        <div class="alert alert-info">EMR @MUST v1.0.0 | Database: SQLite/PostgreSQL | Offline mode: Enabled</div>
+        <div class="alert alert-info" id="sysInfoAlert">EMR @MUST v1.0.0 | Loading system status...</div>
         <div class="form-row">
           <div class="form-group"><label>Facility Name</label><input type="text" value="Kamuzu Central Hospital" id="adminFacility"></div>
           <div class="form-group"><label>District</label><input type="text" value="Lilongwe" id="adminDistrict"></div>
@@ -1412,6 +1411,7 @@ async function login() {
     loadLabOrders();
     loadPrescriptions();
     loadBills();
+    loadAnnouncements();
   } catch (e) {
     document.getElementById('loginError').textContent = e.message;
     document.getElementById('loginError').style.display = 'block';
@@ -1609,6 +1609,7 @@ function showPage(pageId, sidebarItem) {
   }
 
     if (pageId === 'dashboard') { loadDashboard(); switchView('clinic'); }
+    if (pageId === 'admin') { loadSystemStatus(); }
 }
 
 // ===== NOTIFICATIONS =====
@@ -2907,6 +2908,28 @@ function deleteAnnouncement(id) {
 
 
 
+// ===== SYSTEM STATUS =====
+async function loadSystemStatus() {
+  const el = document.getElementById('sysInfoAlert');
+  if (!el) return;
+  try {
+    const r = await authFetch(API_BASE + '/sync/status');
+    if (!r.ok) throw new Error('Failed');
+    const s = await r.json();
+    el.textContent = `EMR @MUST v1.0.0 | Mode: ${s.mode} | DB: ${s.database}` +
+      (s.sync_server_url !== '(not configured)' ? ` | Sync: ${s.site_id}` : ' | No sync server');
+  } catch (e) {
+    try {
+      const r = await fetch('/');
+      const d = await r.json();
+      el.textContent = `EMR @MUST v1.0.0 | Mode: ${d.mode || 'offline'} | DB: ${d.database || 'sqlite'}` +
+        (d.sync_configured ? ' | Sync configured' : ' | No sync server');
+    } catch (_) {
+      el.textContent = `EMR @MUST v1.0.0 | Offline — cached data only`;
+    }
+  }
+}
+
 // ===== CUSTOM MODAL =====
 function showCustomModal(title, bodyHtml) {
   const existing = document.getElementById('customModalOverlay');
@@ -2967,6 +2990,237 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.content').style.paddingBottom = mq ? '60px' : '24px';
   });
 })();
+
+// ===== OFFLINE / ONLINE DETECTION =====
+function updateConnectionStatus() {
+  const badge = document.getElementById('connectionBadge');
+  const status = document.getElementById('connectionStatus');
+  if (!badge) return;
+  const online = navigator.onLine;
+  badge.style.color = online ? '#34d399' : '#ef4444';
+  badge.querySelector('.status-dot').style.background = online ? '#34d399' : '#ef4444';
+  status.textContent = online ? 'Online' : 'Offline';
+}
+window.addEventListener('online', updateConnectionStatus);
+window.addEventListener('offline', updateConnectionStatus);
+updateConnectionStatus();
+
+// ===== INDEXED DB — LOCAL CACHE =====
+const DB_NAME = 'ehealth_mw_cache';
+const DB_VERSION = 2;
+let _db = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (_db) return resolve(_db);
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains('patients')) {
+        const s = db.createObjectStore('patients', { keyPath: 'id' });
+        s.createIndex('surname', 'surname', { unique: false });
+        s.createIndex('passport', 'passport_id', { unique: false });
+      }
+      if (!db.objectStoreNames.contains('appointments')) {
+        db.createObjectStore('appointments', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('lab_orders')) {
+        db.createObjectStore('lab_orders', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('prescriptions')) {
+        db.createObjectStore('prescriptions', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('bills')) {
+        db.createObjectStore('bills', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('sync_queue')) {
+        db.createObjectStore('sync_queue', { keyPath: 'id', autoIncrement: true });
+      }
+      if (!db.objectStoreNames.contains('meta')) {
+        db.createObjectStore('meta', { keyPath: 'key' });
+      }
+    };
+    req.onsuccess = e => { _db = e.target.result; resolve(_db); };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+async function dbPut(store, data) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const t = db.transaction(store, 'readwrite');
+    t.objectStore(store).put(data);
+    t.oncomplete = () => resolve();
+    t.onerror = e => reject(e.target.error);
+  });
+}
+
+async function dbGetAll(store) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const t = db.transaction(store, 'readonly');
+    const r = t.objectStore(store).getAll();
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = e => reject(e.target.error);
+  });
+}
+
+async function dbDelete(store, id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const t = db.transaction(store, 'readwrite');
+    t.objectStore(store).delete(id);
+    t.oncomplete = () => resolve();
+    t.onerror = e => reject(e.target.error);
+  });
+}
+
+// ===== BACKGROUND SYNC QUEUE =====
+async function enqueueSync(operation, endpoint, body) {
+  try {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+      const t = db.transaction('sync_queue', 'readwrite');
+      t.objectStore('sync_queue').add({ operation, endpoint, body, created: Date.now(), retries: 0 });
+      t.oncomplete = () => { processSyncQueue(); resolve(); };
+      t.onerror = e => reject(e.target.error);
+    });
+  } catch (e) {}
+}
+
+async function processSyncQueue() {
+  if (!navigator.onLine) return;
+  try {
+    const db = await openDB();
+    const items = await new Promise((resolve, reject) => {
+      const t = db.transaction('sync_queue', 'readonly');
+      const r = t.objectStore('sync_queue').getAll();
+      r.onsuccess = () => resolve(r.result);
+      r.onerror = e => reject(e.target.error);
+    });
+    for (const item of items) {
+      try {
+        const resp = await authFetch(API_BASE + item.endpoint, {
+          method: item.operation,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(item.body),
+        });
+        if (resp.ok || resp.status === 404) {
+          await new Promise((resolve, reject) => {
+            const t = db.transaction('sync_queue', 'readwrite');
+            t.objectStore('sync_queue').delete(item.id);
+            t.oncomplete = resolve;
+            t.onerror = e => reject(e.target.error);
+          });
+        } else if (item.retries < 5) {
+          item.retries++;
+          await new Promise((resolve, reject) => {
+            const t = db.transaction('sync_queue', 'readwrite');
+            t.objectStore('sync_queue').put(item);
+            t.oncomplete = resolve;
+            t.onerror = e => reject(e.target.error);
+          });
+        }
+      } catch (e) {
+        break;
+      }
+    }
+  } catch (e) {}
+}
+
+window.addEventListener('online', processSyncQueue);
+
+// ===== INTERCEPT FETCH TO CACHE DATA LOCALLY =====
+const _origFetch = window.fetch;
+window.fetch = function() {
+  const args = arguments;
+  return _origFetch.apply(this, args).then(async resp => {
+    if (!resp.ok) return resp;
+    const url = typeof args[0] === 'string' ? args[0] : args[0]?.url || '';
+    if (typeof url !== 'string') return resp;
+    const clone = resp.clone();
+    if (url.includes('/api/v1/patients') && !url.includes('/search')) {
+      try {
+        const data = await clone.json();
+        if (Array.isArray(data)) data.forEach(p => dbPut('patients', p));
+        else if (data.id) dbPut('patients', data);
+      } catch (e) {}
+    }
+    if (url.includes('/api/v1/appointments')) {
+      try {
+        const data = await clone.json();
+        if (Array.isArray(data)) data.forEach(a => dbPut('appointments', a));
+        else if (data.id) dbPut('appointments', data);
+      } catch (e) {}
+    }
+    if (url.includes('/api/v1/lab/orders') && !url.includes('/pending')) {
+      try {
+        const data = await clone.json();
+        if (Array.isArray(data)) data.forEach(o => dbPut('lab_orders', o));
+        else if (data.id) dbPut('lab_orders', data);
+      } catch (e) {}
+    }
+    if (url.includes('/api/v1/pharmacy/prescriptions')) {
+      try {
+        const data = await clone.json();
+        if (Array.isArray(data)) data.forEach(p => dbPut('prescriptions', p));
+        else if (data.id) dbPut('prescriptions', data);
+      } catch (e) {}
+    }
+    if (url.includes('/api/v1/billing/bills')) {
+      try {
+        const data = await clone.json();
+        if (Array.isArray(data)) data.forEach(b => dbPut('bills', b));
+        else if (data.id) dbPut('bills', data);
+      } catch (e) {}
+    }
+    return resp;
+  }).catch(err => {
+    console.warn('Fetch failed (offline):', err.message);
+    throw err;
+  });
+};
+
+// ===== AUTH FETCH WITH OFFLINE FALLBACK =====
+const _origAuthFetch = window.authFetch;
+if (_origAuthFetch) {
+  window.authFetch = async function() {
+    try {
+      return await _origAuthFetch.apply(this, arguments);
+    } catch (e) {
+      const url = typeof arguments[0] === 'string' ? arguments[0] : '';
+      if (!url) throw e;
+      if (url.includes('/api/v1/patients')) {
+        const all = await dbGetAll('patients');
+        return { ok: true, json: async () => all, status: 200 };
+      }
+      if (url.includes('/api/v1/appointments')) {
+        const all = await dbGetAll('appointments');
+        return { ok: true, json: async () => all, status: 200 };
+      }
+      if (url.includes('/api/v1/lab/orders')) {
+        const all = await dbGetAll('lab_orders');
+        return { ok: true, json: async () => all, status: 200 };
+      }
+      if (url.includes('/api/v1/pharmacy/prescriptions')) {
+        const all = await dbGetAll('prescriptions');
+        return { ok: true, json: async () => all, status: 200 };
+      }
+      if (url.includes('/api/v1/billing/bills')) {
+        const all = await dbGetAll('bills');
+        return { ok: true, json: async () => all, status: 200 };
+      }
+      throw e;
+    }
+  };
+}
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').catch(function(err) {
+    console.warn('SW registration failed:', err);
+  });
+}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

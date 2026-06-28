@@ -18,13 +18,20 @@ class Settings(BaseSettings):
 
     REDIS_URL: Optional[str] = None
 
+    # When OFFLINE_MODE=True, use SQLite.
+    # When False and POSTGRES_URL is set, use PostgreSQL.
+    OFFLINE_MODE: bool = True
+    POSTGRES_URL: Optional[str] = None
+
     OPENAI_API_KEY: Optional[str] = None
     ENABLE_AI_FEATURES: bool = False
 
     CORS_ORIGINS: str = "*"
 
+    # Central server for multi-site data sync (pull/push)
     SYNC_SERVER_URL: Optional[str] = None
-    OFFLINE_MODE: bool = True
+    SYNC_SITE_ID: str = "default-site"
+    SYNC_API_KEY: str = ""
 
     # Notification channels
     AT_API_KEY: str = ""

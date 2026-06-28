@@ -8,6 +8,7 @@ from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 from .core.config import settings
 from .core.database import init_db, close_db
+from .core.redis_service import get_redis, close_redis
 from .api.v1.router import router as api_router
 from .ws.dashboard_ws import router as ws_router, broadcast_dashboard_updates
 
@@ -15,6 +16,7 @@ from .ws.dashboard_ws import router as ws_router, broadcast_dashboard_updates
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
+    await get_redis()
     broadcast_task = asyncio.create_task(broadcast_dashboard_updates())
     yield
     broadcast_task.cancel()
@@ -22,6 +24,7 @@ async def lifespan(app: FastAPI):
         await broadcast_task
     except asyncio.CancelledError:
         pass
+    await close_redis()
     await close_db()
 
 
@@ -56,6 +59,10 @@ async def root():
         "name": settings.APP_NAME,
         "version": "1.0.0",
         "status": "operational",
+        "mode": "offline" if settings.OFFLINE_MODE else "online",
+        "database": "sqlite" if "sqlite" in settings.DATABASE_URL else "postgresql",
+        "redis_configured": bool(settings.REDIS_URL),
+        "sync_configured": bool(settings.SYNC_SERVER_URL),
         "modules": [
             "patient_registration",
             "appointment_queue",

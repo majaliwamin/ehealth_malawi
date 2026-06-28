@@ -1,28 +1,48 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import create_engine, event
-from sqlalchemy.pool import StaticPool
+from sqlalchemy.pool import StaticPool, NullPool
 from .config import settings
 
 
+def _is_sqlite(url: str) -> bool:
+    return "sqlite" in url
+
+
+def _get_async_url() -> str:
+    if not settings.OFFLINE_MODE and settings.POSTGRES_URL:
+        return settings.POSTGRES_URL
+    return settings.DATABASE_URL
+
+
+def _get_sync_url() -> str:
+    if not settings.OFFLINE_MODE and settings.POSTGRES_URL:
+        pg = settings.POSTGRES_URL
+        return pg.replace("+asyncpg", "").replace("+aiosqlite", "")
+    return settings.SYNC_DATABASE_URL
+
+
+_async_url = _get_async_url()
+_sync_url = _get_sync_url()
+
 async_engine = create_async_engine(
-    settings.DATABASE_URL,
+    _async_url,
     echo=settings.DEBUG,
-    connect_args={"check_same_thread": False} if "sqlite" in settings.DATABASE_URL else {},
-    poolclass=StaticPool if "sqlite" in settings.DATABASE_URL else None,
+    connect_args={"check_same_thread": False} if _is_sqlite(_async_url) else {},
+    poolclass=StaticPool if _is_sqlite(_async_url) else NullPool,
 )
 
 sync_engine = create_engine(
-    settings.SYNC_DATABASE_URL,
+    _sync_url,
     echo=settings.DEBUG,
-    connect_args={"check_same_thread": False} if "sqlite" in settings.SYNC_DATABASE_URL else {},
-    poolclass=StaticPool if "sqlite" in settings.SYNC_DATABASE_URL else None,
+    connect_args={"check_same_thread": False} if _is_sqlite(_sync_url) else {},
+    poolclass=StaticPool if _is_sqlite(_sync_url) else None,
 )
 
 
 @event.listens_for(sync_engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
-    if "sqlite" in settings.SYNC_DATABASE_URL:
+    if _is_sqlite(_sync_url):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA journal_mode=WAL")
         cursor.execute("PRAGMA foreign_keys=ON")
