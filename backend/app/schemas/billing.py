@@ -23,7 +23,7 @@ class BillUpdate(BaseModel):
 class PaymentRequest(BaseModel):
     payment_method: PaymentMethod
     account_number: str
-    pin: str
+    pin_hash: str = ""
 
 
 class BillResponse(BaseModel):

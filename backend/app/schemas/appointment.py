@@ -12,7 +12,9 @@ class AppointmentCreate(BaseModel):
     clinician_id: Optional[int] = None
     clinician_name: Optional[str] = None
     location: Optional[str] = None
+    end_time: Optional[str] = None
     reason: Optional[str] = None
+    notes: Optional[str] = None
     priority: AppointmentPriority = AppointmentPriority.ROUTINE
     is_teleconsult: bool = False
 
@@ -33,7 +35,9 @@ class AppointmentResponse(BaseModel):
     department: Optional[str] = None
     clinician_name: Optional[str] = None
     location: Optional[str] = None
+    end_time: Optional[datetime] = None
     reason: Optional[str] = None
+    notes: Optional[str] = None
     status: AppointmentStatus
     priority: AppointmentPriority
     is_teleconsult: bool

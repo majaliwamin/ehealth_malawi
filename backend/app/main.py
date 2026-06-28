@@ -37,8 +37,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=[settings.CORS_ORIGINS] if settings.CORS_ORIGINS != "*" else ["*"],
+    allow_credentials=settings.CORS_ORIGINS != "*",
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -85,3 +85,21 @@ async def root():
             "administration_audit",
         ],
     }
+
+
+@app.get("/service-worker.js")
+async def sw():
+    f = os.path.join(FRONTEND_DIR, "service-worker.js")
+    return FileResponse(f) if os.path.exists(f) else {"error": "not found"}
+
+@app.get("/manifest.json")
+async def manifest():
+    f = os.path.join(FRONTEND_DIR, "manifest.json")
+    return FileResponse(f) if os.path.exists(f) else {"error": "not found"}
+
+@app.get("/icons/{filename}")
+async def icon(filename: str):
+    f = os.path.join(FRONTEND_DIR, "icons", filename)
+    if os.path.isfile(f):
+        return FileResponse(f)
+    return {"error": "not found"}

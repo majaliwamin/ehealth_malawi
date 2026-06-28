@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MUST Health Tech — System Design Document</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.7; padding: 40px 20px; }
+  .page { max-width: 210mm; margin: 0 auto; background: #fff; padding: 60px 50px; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 24px; border-radius: 4px; page-break-after: always; position: relative; }
+  @media print { body { padding: 0; background: #fff; } .page { box-shadow: none; margin: 0; border-radius: 0; padding: 60px 50px; page-break-after: always; } }
+  h1 { font-size: 28px; font-weight: 700; color: #0f172a; letter-spacing: -.5px; margin-bottom: 4px; }
+  h2 { font-size: 20px; font-weight: 600; color: #1e293b; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; }
+  h3 { font-size: 16px; font-weight: 600; color: #334155; margin: 20px 0 8px; }
+  h4 { font-size: 14px; font-weight: 600; color: #475569; margin: 14px 0 6px; }
+  p { margin-bottom: 10px; font-size: 13px; color: #334155; }
+  ul, ol { margin: 6px 0 10px 22px; font-size: 13px; color: #334155; }
+  li { margin-bottom: 3px; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
+  th, td { border: 1px solid #e2e8f0; padding: 6px 10px; text-align: left; }
+  th { background: #f1f5f9; font-weight: 600; color: #1e293b; }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #0f172a; }
+  pre { background: #0f172a; color: #e2e8f0; padding: 14px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 10px 0; }
+  .subtitle { font-size: 14px; color: #64748b; margin-bottom: 24px; }
+  .meta { display: flex; gap: 30px; margin: 20px 0 30px; font-size: 12px; color: #64748b; }
+  .meta span { display: flex; flex-direction: column; }
+  .meta strong { color: #1e293b; font-size: 13px; }
+  .cover { text-align: center; padding-top: 120px; }
+  .cover h1 { font-size: 36px; margin-bottom: 8px; }
+  .cover .subtitle { font-size: 18px; margin-bottom: 40px; }
+  .cover .divider { width: 80px; height: 3px; background: #6366f1; margin: 20px auto; border-radius: 2px; }
+  .toc-item { display: flex; padding: 8px 0; border-bottom: 1px dotted #e2e8f0; font-size: 13px; }
+  .toc-num { width: 40px; font-weight: 600; color: #6366f1; }
+  .toc-title { flex: 1; color: #1e293b; }
+  .fig { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 14px 0; text-align: center; font-size: 13px; color: #64748b; }
+  .fig strong { color: #1e293b; }
+  .page-number { position: absolute; bottom: 20px; right: 50px; font-size: 11px; color: #94a3b8; }
+  @page { size: A4; margin: 0; }
+  .req { display: inline-block; background: #eef2ff; color: #6366f1; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 500; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ===== COVER PAGE ===== -->
+<div class="page cover">
+  <h1>MUST Health Tech (MHT)</h1>
+  <div class="subtitle">Electronic Health Record &amp; Hospital Management System</div>
+  <div class="divider"></div>
+  <p style="font-size:15px;color:#475569;max-width:500px;margin:0 auto 40px">
+    System Design Specification — Prototype Proposal for<br>
+    <strong>Malawi University of Science and Technology (MUST)</strong><br>
+    Teaching Hospital Digital Transformation Initiative
+  </p>
+  <div class="meta" style="justify-content:center">
+    <span><strong>Document Type</strong>Systems Design Specification</span>
+    <span><strong>Version</strong>1.0 — Draft</span>
+    <span><strong>Date</strong>June 2026</span>
+  </div>
+  <p style="margin-top:60px;font-size:12px;color:#94a3b8">Confidential — Internal Review</p>
+  <div class="page-number">i</div>
+</div>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<div class="page">
+  <h2 style="border:none;margin-top:0">Table of Contents</h2>
+  <div style="margin-top:16px">
+    <div class="toc-item"><span class="toc-num">1</span><span class="toc-title">Introduction</span></div>
+    <div class="toc-item"><span class="toc-num">2</span><span class="toc-title">System Overview</span></div>
+    <div class="toc-item"><span class="toc-num">3</span><span class="toc-title">System Architecture</span></div>
+    <div class="toc-item"><span class="toc-num">4</span><span class="toc-title">Technology Stack</span></div>
+    <div class="toc-item"><span class="toc-num">5</span><span class="toc-title">Database Design</span></div>
+    <div class="toc-item"><span class="toc-num">6</span><span class="toc-title">API Design</span></div>
+    <div class="toc-item"><span class="toc-num">7</span><span class="toc-title">Frontend Design</span></div>
+    <div class="toc-item"><span class="toc-num">8</span><span class="toc-title">Authentication &amp; Security</span></div>
+    <div class="toc-item"><span class="toc-num">9</span><span class="toc-title">Offline &amp; PWA Support</span></div>
+    <div class="toc-item"><span class="toc-num">10</span><span class="toc-title">User Interface Design</span></div>
+    <div class="toc-item"><span class="toc-num">11</span><span class="toc-title">Deployment &amp; DevOps</span></div>
+    <div class="toc-item"><span class="toc-num">12</span><span class="toc-title">Conclusion &amp; Future Work</span></div>
+  </div>
+  <div class="page-number">ii</div>
+</div>
+
+<!-- ===== 1. INTRODUCTION ===== -->
+<div class="page">
+  <h2>1. Introduction</h2>
+
+  <h3>1.1 Background</h3>
+  <p>
+    Malawi's healthcare system operates under significant resource constraints, with paper-based 
+    record keeping remaining the norm in many facilities. The Malawi University of Science and 
+    Technology (MUST) Teaching Hospital, as a newly established tertiary healthcare institution, 
+    has identified the need for a modern electronic health record (EHR) and hospital management 
+    system to support its clinical, administrative, and operational workflows. Existing health 
+    information systems in Malawi are often fragmented, licensed at prohibitive cost, or designed 
+    without consideration for local infrastructure challenges such as intermittent power supply 
+    and unreliable internet connectivity.
+  </p>
+
+  <h3>1.2 Purpose</h3>
+  <p>
+    This document presents the <strong>system design specification</strong> for <strong>MUST 
+    Health Tech (MHT)</strong>, a proposed web-based EHR and hospital management platform. 
+    The purpose of this document is to define the architecture, functional components, 
+    technology choices, and implementation plan for a prototype system that will demonstrate 
+    the feasibility of an integrated, offline-capable health information system tailored to 
+    the Malawian teaching hospital context. The prototype is to be developed as a proof-of-concept 
+    for academic evaluation and stakeholder review.
+  </p>
+
+  <h3>1.3 Scope</h3>
+  <p>The proposed prototype shall address the following functional areas:</p>
+  <ul>
+    <li><strong>Clinical Workflow:</strong> Patient registration, triage and emergency assessment, appointment scheduling and queue management, clinical documentation using the SOAP (Subjective, Objective, Assessment, Plan) format, vital signs recording with automatic BMI calculation, laboratory order placement and result entry, pharmacy prescribing and dispensing, inpatient ward management, critical care documentation (ICU), and dialysis session tracking.</li>
+    <li><strong>Administrative Functions:</strong> Role-based user management, billing and payment processing with mobile money and bank transfer support, inventory and stock management, equipment maintenance tracking, incident reporting, audit logging, and quality indicator monitoring.</li>
+    <li><strong>Patient Self-Service Portal:</strong> Appointment booking, bill payment and receipt generation, laboratory result viewing, prescription history access, and patient rights education in English and Chichewa.</li>
+    <li><strong>Operational Dashboard:</strong> Aggregated views of hospital operations, disease surveillance monitoring, bed management status, and key performance indicator tracking with real-time WebSocket updates.</li>
+    <li><strong>Offline Capability:</strong> Progressive Web App (PWA) deployment with service worker caching, IndexedDB local data storage, and background synchronisation queue for low-connectivity environments.</li>
+  </ul>
+
+  <h3>1.4 Target Users</h3>
+  <p>The system shall serve the following user categories:</p>
+  <ul>
+    <li><strong>Healthcare professionals:</strong> Doctors, nurses, clinical officers, midwives, pharmacists, laboratory technicians, and radiographers who require efficient tools for clinical documentation and order management.</li>
+    <li><strong>Hospital administrators:</strong> Department heads, hospital administrators, and data entry staff who need oversight of operations, reporting, and patient registration.</li>
+    <li><strong>Patients:</strong> Individuals receiving care at MUST Teaching Hospital who shall have access to a self-service portal for appointment management, bill payment, and health information.</li>
+    <li><strong>System administrators:</strong> Technical staff responsible for user management, system configuration, and maintenance.</li>
+  </ul>
+
+  <h3>1.5 Document Structure</h3>
+  <p>This document is organised into twelve sections. Section 2 provides a system overview including goals and module descriptions. Sections 3 through 7 detail the technical architecture, technology stack, database design, API specification, and frontend design. Sections 8 and 9 cover security and offline/PWA considerations. Section 10 describes the user interface design. Section 11 addresses deployment. Section 12 concludes with evaluation criteria and future work.</p>
+
+  <div class="page-number">1</div>
+</div>
+
+<!-- ===== 2. SYSTEM OVERVIEW ===== -->
+<div class="page">
+  <h2>2. System Overview</h2>
+
+  <h3>2.1 System Goals</h3>
+  <p>The proposed MHT prototype shall achieve the following objectives:</p>
+  <ol>
+    <li><strong>Digitise patient records</strong> — Replace paper-based charts with structured electronic records accessible from any authorised workstation within the hospital network, reducing lost records and improving data completeness.</li>
+    <li><strong>Streamline clinical workflows</strong> — Provide intuitive, task-oriented interfaces for registration, triage, consultation, prescribing, and lab ordering to reduce documentation time and minimise transcription errors.</li>
+    <li><strong>Enable data-driven management</strong> — Deliver aggregated dashboards and analytics to hospital administrators for monitoring operations, tracking disease patterns, and supporting resource allocation decisions.</li>
+    <li><strong>Empower patients</strong> — Offer patients direct digital access to their health information, appointment scheduling, and bill payment through a dedicated portal accessible from personal mobile devices.</li>
+    <li><strong>Operate reliably in low-connectivity settings</strong> — Ensure core functionality remains available during internet outages through local caching and queued synchronisation, reflecting the reality of network infrastructure at many Malawian health facilities.</li>
+    <li><strong>Provide a foundation for scaling</strong> — Design the architecture to support future expansion to multiple facilities, integration with national health information systems, and addition of advanced features such as clinical decision support.</li>
+  </ol>
+
+  <h3>2.2 Proposed User Roles</h3>
+  <p>The system shall implement a role-based access control model with the following user categories:</p>
+  <table>
+    <thead><tr><th>Role</th><th>Description</th><th>Access Scope</th></tr></thead>
+    <tbody>
+      <tr><td>Super Admin</td><td>System-wide configuration, user account management, audit review</td><td>All modules, full access</td></tr>
+      <tr><td>Hospital Admin</td><td>Hospital-level operations oversight, reporting</td><td>All modules, read/write</td></tr>
+      <tr><td>Department In-Charge</td><td>Department management and reporting</td><td>Departmental scope</td></tr>
+      <tr><td>Doctor</td><td>Clinical documentation, prescribing, lab ordering</td><td>Clinical modules</td></tr>
+      <tr><td>Clinical Officer</td><td>Patient consultation, diagnosis, treatment planning</td><td>Clinical modules</td></tr>
+      <tr><td>Nurse</td><td>Triage, vital signs, nursing notes, medication administration</td><td>Clinical + nursing modules</td></tr>
+      <tr><td>Midwife</td><td>Maternal and neonatal care documentation</td><td>Maternity / clinical modules</td></tr>
+      <tr><td>Pharmacist</td><td>Prescription verification, dispensing, stock management</td><td>Pharmacy module</td></tr>
+      <tr><td>Lab Technician</td><td>Lab order processing, result entry, quality control</td><td>Laboratory module</td></tr>
+      <tr><td>Radiographer</td><td>Imaging study management and reporting</td><td>Radiology module</td></tr>
+      <tr><td>HSA</td><td>Community health data collection and referral</td><td>Limited clinical read/write</td></tr>
+      <tr><td>Data Entry</td><td>Patient registration and record updates</td><td>Patient registry, read-only on clinical</td></tr>
+      <tr><td>Student</td><td>Academic observation (read-only access)</td><td>Read-only on assigned cases</td></tr>
+      <tr><td>Researcher</td><td>Anonymised data access for research</td><td>Aggregated / de-identified data</td></tr>
+      <tr><td>Patient</td><td>Self-service portal access</td><td>Own records only</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.3 Functional Modules</h3>
+  <p>The prototype shall comprise the following functional modules, each addressing a specific domain of hospital operations:</p>
+  <table>
+    <thead><tr><th>Module</th><th>Key Functions</th><th>Target Users</th></tr></thead>
+    <tbody>
+      <tr><td>Patient Registry</td><td>Registration with auto-generated passport ID, search by name/ID/phone, demographic details, emergency contacts, next-of-kin</td><td>Data Entry, Nurses</td></tr>
+      <tr><td>Appointments &amp; Queue</td><td>Scheduling, check-in, queue positioning, teleconsult flagging, WhatsApp reminders</td><td>Nurses, Patients</td></tr>
+      <tr><td>Triage &amp; Emergency</td><td>Acuity categorisation, emergency assessment, vital signs capture</td><td>Nurses, Clinical Officers</td></tr>
+      <tr><td>Clinical Notes</td><td>SOAP documentation, visit history, discharge summaries, ICD-10 coding</td><td>Doctors, Clinical Officers</td></tr>
+      <tr><td>Vital Signs</td><td>BP, heart rate, temperature, SpO₂, GCS, BMI, pain score, trend display</td><td>Nurses</td></tr>
+      <tr><td>Laboratory</td><td>Order placement, specimen tracking, result entry, abnormal flagging</td><td>Doctors, Lab Technicians</td></tr>
+      <tr><td>Pharmacy</td><td>Prescription creation, dispensing, drug stock, controlled substance tracking</td><td>Doctors, Pharmacists</td></tr>
+      <tr><td>Inpatient Ward</td><td>Admission/discharge/transfer, bed management, nursing shift notes</td><td>Nurses, Clinical Officers</td></tr>
+      <tr><td>Critical Care (ICU)</td><td>ICU admissions, SOFA/APACHE scoring, fluid balance, ventilator settings</td><td>ICU Nurses, Intensivists</td></tr>
+      <tr><td>Dialysis &amp; CKD</td><td>Dialysis session documentation, CKD staging, lab trend tracking</td><td>Dialysis Nurses, Nephrologists</td></tr>
+      <tr><td>Billing &amp; Payments</td><td>Bill generation, mobile money (Mpamba/Airtel Money) and bank payment, receipt generation</td><td>Admin, Patients</td></tr>
+      <tr><td>Inventory</td><td>Stock tracking, reorder alerts, equipment maintenance scheduling</td><td>Admin, Pharmacists</td></tr>
+      <tr><td>Governance</td><td>Incident reporting, audit logs, quality indicators, mortality review</td><td>Admin, Department Heads</td></tr>
+      <tr><td>Notifications</td><td>WhatsApp and SMS alerts, opt-in/opt-out management, delivery logs</td><td>System (automated)</td></tr>
+      <tr><td>Announcements</td><td>Hospital bulletins, public health alerts, category-based display, read tracking</td><td>Admin, Patients</td></tr>
+      <tr><td>Dashboard &amp; Analytics</td><td>Operations centre, disease surveillance, bed board, AI insights, CSV export</td><td>Admin, Department Heads</td></tr>
+      <tr><td>Patient Portal</td><td>Appointment booking, bill payment, lab results, prescriptions, rights education, ratings, suggestions, corruption reporting</td><td>Patients</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-number">2</div>
+</div>
+
+<!-- ===== 3. SYSTEM ARCHITECTURE ===== -->
+<div class="page">
+  <h2>3. System Architecture</h2>
+
+  <h3>3.1 Proposed Architectural Pattern</h3>
+  <p>
+    The MHT system shall follow a <strong>single-page application (SPA) communicating with a 
+    RESTful API backend</strong>. This architecture provides clear separation between the 
+    presentation layer and the business logic layer, enabling independent development, testing, 
+    and scaling of each component. The system shall use a three-tier model:
+  </p>
+  <ol>
+    <li><strong>Client Tier:</strong> A browser-based SPA implemented in HTML, CSS, and JavaScript, served as a single HTML file. All user interface rendering and client-side logic executes in the browser. A service worker intercepts network requests for offline operation.</li>
+    <li><strong>Application Tier:</strong> A Python-based REST API server handling authentication, business logic, data validation, and persistence. The server also exposes a WebSocket endpoint for real-time dashboard updates.</li>
+    <li><strong>Data Tier:</strong> A relational database accessed through an Object-Relational Mapper (ORM). The prototype shall use SQLite for development and demonstration, with PostgreSQL as the production target.</li>
+  </ol>
+
+  <h3>3.2 Architecture Diagram</h3>
+  <div class="fig">
+    <strong>Figure 3.1 — Proposed Three-Tier Architecture</strong><br><br>
+    <pre style="background:transparent;color:#1e293b;font-size:12px;text-align:left;max-width:420px;margin:0 auto">
+┌─────────────────────────────────────────────────────┐
+│                   Client Browser                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌───────────┐  │
+│  │  SPA (HTML/  │  │   Service    │  │ IndexedDB │  │
+│  │  CSS/JS)     │  │   Worker     │  │ (Offline  │  │
+│  │              │  │   (Cache)    │  │  Store)   │  │
+│  └──────┬───────┘  └──────┬───────┘  └───────────┘  │
+│         │                 │                          │
+└─────────┼─────────────────┼──────────────────────────┘
+          │  HTTPS (REST)   │
+┌─────────┼─────────────────┼──────────────────────────┐
+│  ┌──────┴─────────────────┴──────────────────────┐   │
+│  │             FastAPI Backend Server             │   │
+│  │  ┌──────────┐  ┌──────────┐  ┌─────────────┐  │   │
+│  │  │  JWT     │  │  REST    │  │  WebSocket  │  │   │
+│  │  │  Auth    │  │  Endpoints│  │  (Live     │  │   │
+│  │  │          │  │          │  │  Dashboard) │  │   │
+│  │  └────┬─────┘  └────┬─────┘  └──────┬──────┘  │   │
+│  │       │              │               │          │   │
+│  │  ┌────┴──────────────┴───────────────┴──────┐   │   │
+│  │  │         SQLAlchemy ORM + Services        │   │   │
+│  │  └───────────────────┬──────────────────────┘   │   │
+│  │                      │                           │   │
+│  │  ┌───────────────────┴──────────────────────┐   │   │
+│  │  │        Database (SQLite / PostgreSQL)    │   │   │
+│  │  └──────────────────────────────────────────┘   │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+    </pre>
+    <em>The three-tier architecture with an offline support layer: service worker for cache, IndexedDB for structured offline data.</em>
+  </div>
+
+  <h3>3.3 Design Principles</h3>
+  <p>The proposed architecture shall adhere to the following principles:</p>
+  <ul>
+    <li><strong>Separation of concerns:</strong> The frontend handles all presentation and user interaction logic. The backend manages business rules, data validation, authentication, and persistence. The API contract is defined by OpenAPI specification.</li>
+    <li><strong>Stateless API:</strong> The backend shall not maintain client session state. All authentication information shall be carried in JWT tokens within HTTP headers, enabling horizontal scaling through simple load balancing.</li>
+    <li><strong>Async-first backend:</strong> All database operations and HTTP calls shall use Python async/await to maximise concurrency and throughput under load.</li>
+    <li><strong>Offline resilience:</strong> The client shall cache API responses locally and queue mutations for synchronisation when connectivity is restored, ensuring uninterrupted operation during network interruptions.</li>
+    <li><strong>Configuration-driven deployment:</strong> Environment-specific settings (database URLs, secret keys, API credentials) shall be externalised via environment variables and loaded through a Pydantic Settings model, allowing deployment across development, staging, and production environments without code changes.</li>
+  </ul>
+
+  <h3>3.4 Component Interaction Flow</h3>
+  <p>
+    The SPA shall communicate with the backend exclusively through HTTP REST requests with 
+    JSON payloads. A single WebSocket connection shall provide real-time dashboard updates 
+    with a 10-second broadcast interval. The service worker shall operate as a transparent 
+    proxy: when online, it forwards requests to the network and caches responses; when 
+    offline, it serves cached responses and returns a designated offline signal for 
+    uncached resources. The frontend JavaScript shall respond to the offline signal by 
+    reading from IndexedDB for read operations and queuing write operations for later 
+    synchronisation.
+  </p>
+
+  <h3>3.5 Patient Portal Separation</h3>
+  <p>
+    The patient portal shall be implemented as a logically separate set of API endpoints 
+    under the <code>/api/v1/patient/</code> prefix, with its own JWT authentication domain 
+    using a distinct secret key. For the prototype phase, patient data shall be stored 
+    in an in-memory data store seeded with demo records. This separation ensures that 
+    patient-facing functionality can be independently scaled, secured, and evolved 
+    without impacting clinical operations. In a production implementation, the patient 
+    portal backend would be migrated to use the same persistent database as the clinical 
+    system, with appropriate access controls.
+  </p>
+
+  <div class="page-number">3</div>
+</div>
+
+<!-- ===== 4. TECHNOLOGY STACK ===== -->
+<div class="page">
+  <h2>4. Technology Stack</h2>
+
+  <h3>4.1 Proposed Technology Choices</h3>
+  <p>
+    The following technology stack is proposed for the prototype implementation. All 
+    components are open-source or available under free-tier licensing, ensuring that the 
+    prototype can be developed and evaluated without licensing costs.
+  </p>
+
+  <table>
+    <thead><tr><th>Layer</th><th>Technology</th><th>Version</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>Backend Framework</td><td>FastAPI</td><td>0.115</td><td>Async-native Python framework with automatic OpenAPI documentation, high performance (on par with Node.js and Go), and strong typing via Pydantic integration</td></tr>
+      <tr><td>ASGI Server</td><td>Uvicorn</td><td>0.30</td><td>Lightweight ASGI server with hot-reload support for development</td></tr>
+      <tr><td>Database ORM</td><td>SQLAlchemy</td><td>2.0</td><td>Mature Python ORM with async support, Alembic migration integration, and database-agnostic abstraction layer</td></tr>
+      <tr><td>Prototype Database</td><td>SQLite</td><td>3.x</td><td>Zero-configuration file-based database. Enables prototype setup without database server installation. WAL mode for concurrent read/write access</td></tr>
+      <tr><td>Production Database</td><td>PostgreSQL</td><td>16</td><td>Production-grade relational database with geospatial extensions, excellent async driver support, and widespread deployment in health information systems</td></tr>
+      <tr><td>Data Validation</td><td>Pydantic</td><td>2.9</td><td>Type-safe data validation with JSON schema generation, integrated with FastAPI for automatic request/response validation</td></tr>
+      <tr><td>Authentication</td><td>python-jose + passlib</td><td>—</td><td>JWT encoding/decoding (HS256) with bcrypt password hashing (12 rounds)</td></tr>
+      <tr><td>Frontend Runtime</td><td>Vanilla HTML/CSS/JS</td><td>—</td><td>Zero build toolchain. Single-file deployment simplifies hosting and eliminates framework dependency for the prototype</td></tr>
+      <tr><td>PWA Support</td><td>Service Worker + Manifest</td><td>—</td><td>Standardised web platform APIs for installable apps and offline caching. No native development required</td></tr>
+      <tr><td>Client-Side Storage</td><td>IndexedDB</td><td>—</td><td>Structured client-side database with large storage capacity, suitable for caching API response data</td></tr>
+      <tr><td>Real-Time</td><td>WebSocket (via FastAPI)</td><td>—</td><td>Native WebSocket support in FastAPI for live dashboard updates</td></tr>
+      <tr><td>Notification Channel</td><td>Meta Cloud API (WhatsApp)</td><td>v18.0</td><td>Widely used messaging platform in Malawi. API-based integration for appointment reminders and alerts</td></tr>
+      <tr><td>Notification Channel</td><td>Africa's Talking (SMS)</td><td>—</td><td>Pan-African SMS gateway with local Malawi support, suitable for basic text alerts</td></tr>
+      <tr><td>Containerisation</td><td>Docker + Compose</td><td>—</td><td>Consistent development and deployment environment across different host systems</td></tr>
+      <tr><td>JSON Serialisation</td><td>orjson</td><td>3.10</td><td>Rust-based JSON library offering 3-5x faster serialisation than Python's standard json module</td></tr>
+      <tr><td>Async HTTP</td><td>httpx</td><td>0.27</td><td>Modern async HTTP client for notification service calls and inter-server sync requests</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.2 Rationale for Key Decisions</h3>
+  <h4>Python for Backend Development</h4>
+  <p>
+    Python is widely taught at MUST and in Malawian ICT programmes, ensuring that the 
+    system can be maintained and extended by local developers. The FastAPI framework's 
+    async support provides performance competitive with Node.js while retaining Python's 
+    readability and extensive library ecosystem. The healthcare domain has strong Python 
+    support through libraries such as FHIR (fhir.resources), HL7 (python-hl7), and 
+    medical coding (icd10-cm).
+  </p>
+
+  <h4>Vanilla JavaScript Frontend</h4>
+  <p>
+    A framework-free approach is chosen for the prototype to eliminate build toolchain 
+    complexity (Webpack, Vite, Babel, etc.) and allow the entire frontend to be served 
+    as a single HTML file directly from the backend without a separate static asset 
+    pipeline. This simplifies initial development and evaluation. If the prototype 
+    proceeds to production, a component-based framework (React or Vue) could be adopted 
+    for improved maintainability.
+  </p>
+
+  <h4>SQLite for Prototype, PostgreSQL for Production</h4>
+  <p>
+    SQLite eliminates the need for database server setup during development and evaluation, 
+    allowing the prototype to run on any system with Python installed. SQLAlchemy's 
+    database abstraction layer ensures that all queries are written in a dialect-independent 
+    manner, making the transition to PostgreSQL a simple configuration change 
+    (<code>OFFLINE_MODE=False</code> + <code>POSTGRES_URL</code> setting) without 
+    code modifications.
+  </p>
+
+  <h4>PWA over Native Mobile App</h4>
+  <p>
+    A Progressive Web App is proposed for the patient portal and clinical mobile access 
+    because it eliminates app store distribution requirements, reduces development cost, 
+    and provides automatic updates. The PWA can be installed on any modern smartphone 
+    and behaves like a native app with full-screen display and offline support through 
+    the service worker.
+  </p>
+
+  <div class="page-number">4</div>
+</div>
+
+<!-- ===== 5. DATABASE DESIGN ===== -->
+<div class="page">
+  <h2>5. Database Design</h2>
+
+  <h3>5.1 Design Approach</h3>
+  <p>
+    The database shall follow a modular schema design with domain-specific tables organised 
+    around the central <code>patients</code> table. The schema shall include approximately 
+    35 tables covering all clinical and administrative domains. Every table shall include 
+    <code>created_at</code> and <code>updated_at</code> timestamp columns for audit 
+    purposes. Foreign key constraints shall enforce referential integrity at the database level.
+  </p>
+
+  <h3>5.2 Core Clinical Schema</h3>
+
+  <h4>patients</h4>
+  <p>Central demographic record for every individual receiving care. Fields shall include:</p>
+  <ul>
+    <li><code>id</code> (Integer, Primary Key), <code>passport_id</code> (String, Unique) — the MHT-format identifier</li>
+    <li><code>surname</code>, <code>first_name</code>, <code>middle_name</code> — patient name components</li>
+    <li><code>date_of_birth</code>, <code>gender</code> (Enum: MALE/FEMALE/OTHER), <code>blood_group</code></li>
+    <li><code>phone</code>, <code>email</code> — contact information</li>
+    <li><code>home_district</code>, <code>traditional_authority</code>, <code>village</code> — geographic location for public health reporting</li>
+    <li><code>emergency_contact_name</code>, <code>emergency_contact_relation</code>, <code>emergency_contact_phone</code></li>
+    <li><code>next_of_kin_name</code>, <code>next_of_kin_phone</code></li>
+    <li><code>occupation</code>, <code>marital_status</code></li>
+    <li><code>is_active</code>, <code>is_deceased</code>, <code>death_date</code>, <code>death_cause</code></li>
+  </ul>
+
+  <h4>visits</h4>
+  <p>Records every patient encounter with the health system. Visit types shall include OPD, 
+  IPD, Emergency, Referral, Review, and Telemedicine. Each visit shall track triage 
+  category, presenting complaint, consultation status, admission/discharge dates, ward 
+  and bed assignment, and discharge disposition.</p>
+
+  <h4>vital_signs</h4>
+  <p>Physiological measurements linked to a visit. Fields shall include systolic and 
+  diastolic blood pressure, heart rate, respiratory rate, temperature, oxygen saturation, 
+  weight (kg), height (cm), BMI (auto-calculated), blood glucose, pain score (0-10), 
+  Glasgow Coma Scale (eye/verbal/motor components and total), and MUAC (Mid-Upper Arm 
+  Circumference) for nutritional assessment.</p>
+
+  <h4>clinical_notes</h4>
+  <p>Clinical documentation in SOAP (Subjective, Objective, Assessment, Plan) format. 
+  Notes shall support multiple types (consultation, progress, discharge summary, procedure 
+  note) and include a signing workflow with optional cosigning.</p>
+
+  <h3>5.3 Appointments and Queue Schema</h3>
+
+  <h4>appointments</h4>
+  <p>Scheduled patient appointments with support for status tracking, priority assignment, 
+  and teleconsultation. Status values shall include: SCHEDULED, CONFIRMED, IN_PROGRESS, 
+  COMPLETED, CANCELLED, DID_NOT_ATTEND, RESCHEDULED. Priority levels: ROUTINE, URGENT, 
+  EMERGENCY, FOLLOW_UP. The table shall also track reminder delivery status and 
+  cancellation reasons.</p>
+
+  <h4>queue</h4>
+  <p>Real-time patient queue positions within departments. Each entry shall track 
+  queue position, department, priority level, status (waiting/called/in consultation/completed), 
+  room assignment, and target clinician.</p>
+
+  <h3>5.4 Diagnostics Schema</h3>
+
+  <h4>lab_orders + lab_tests</h4>
+  <p>A two-table design where <code>lab_orders</code> represents the overall order 
+  (with auto-generated order number, clinician, specimen tracking, and status workflow) 
+  and <code>lab_tests</code> represents individual test requests within each order 
+  (test name, result value, reference range, abnormal flag). Radiology orders shall 
+  be stored in a separate <code>radiology_orders</code> table.</p>
+
+  <h3>5.5 Pharmacy Schema</h3>
+
+  <h4>prescriptions + prescription_items</h4>
+  <p>A two-table design for medication prescribing. The <code>prescriptions</code> 
+  table tracks the overall order (prescriber, status, clinical indication). The 
+  <code>prescription_items</code> table stores individual medications with dosage, 
+  route, frequency, duration, and dispensing status. A separate 
+  <code>medication_administrations</code> table shall record each administered dose 
+  for inpatients.</p>
+
+  <h4>drug_stock</h4>
+  <p>Pharmacy inventory tracking with batch numbers, expiry dates, reorder levels, 
+  controlled substance flags, and supplier information.</p>
+
+  <h3>5.6 Billing Schema</h3>
+
+  <h4>bills</h4>
+  <p>Patient financial records with title, description, amount, status (unpaid/paid/cancelled), 
+  payment method, account number, unique receipt reference, and payment timestamp.</p>
+
+  <h3>5.7 Administration Schema</h3>
+
+  <h4>users</h4>
+  <p>Staff accounts with username, email, bcrypt-hashed password, role (16-level enum), 
+  professional designation, licence number, department, facility assignment, login 
+  tracking (failed attempts, lockout timestamp), and WhatsApp notification opt-in status.</p>
+
+  <h4>audit_trails / audit_logs</h4>
+  <p>Two tables for tracking user actions and system-level changes. Each entry shall 
+  record the acting user, action type, affected resource, timestamp, IP address, and 
+  detailed changes where applicable.</p>
+
+  <h3>5.8 Additional Schemas</h3>
+  <p>The complete schema shall also include tables for <strong>inventory</strong> 
+  (items, stock movements, equipment maintenance), <strong>critical care</strong> 
+  (ICU admissions, severity scores, fluid balance), <strong>dialysis</strong> 
+  (sessions, CKD records), <strong>governance</strong> (incident reports, quality 
+  indicators, mortality reviews), <strong>announcements</strong>, 
+  <strong>notifications</strong> (log), <strong>departments</strong>, and 
+  <strong>facilities</strong>.</p>
+
+  <h3>5.9 Database Configuration</h3>
+  <p>
+    The SQLite database for the prototype shall be configured with <strong>Write-Ahead 
+    Logging (WAL) mode</strong> to allow concurrent read operations during write 
+    transactions. Foreign key constraints shall be explicitly enabled via 
+    <code>PRAGMA foreign_keys = ON</code>. The database file shall reside at 
+    <code>backend/ehealth_malawi.db</code>.
+  </p>
+
+  <div class="page-number">5</div>
+</div>
+
+<!-- ===== 6. API DESIGN ===== -->
+<div class="page">
+  <h2>6. API Design</h2>
+
+  <h3>6.1 API Strategy</h3>
+  <p>
+    The backend shall expose a <strong>RESTful JSON API</strong> under the 
+    <code>/api/v1/</code> URL prefix. All endpoints shall follow consistent naming 
+    conventions: plural nouns for resource collections (<code>/patients</code>, 
+    <code>/appointments</code>), HTTP methods for CRUD operations (GET for retrieval, 
+    POST for creation, PUT for update, DELETE for removal), and nested routes for 
+    sub-resources (<code>/patients/{id}/visits</code>). The API shall be self-documenting 
+    via automatically generated OpenAPI (Swagger) documentation available at the 
+    <code>/docs</code> endpoint.
+  </p>
+
+  <h3>6.2 Proposed Endpoint Inventory</h3>
+  <p>The API shall expose the following endpoint groups:</p>
+
+  <table>
+    <thead><tr><th>Prefix</th><th>Methods and Routes</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>/auth</code></td><td><code>POST /login</code>, <code>POST /register</code></td><td>Staff authentication — login with username/password, register new staff accounts</td></tr>
+      <tr><td><code>/patients</code></td><td><code>GET /search?q=</code>, <code>GET /{id}</code>, <code>POST /</code>, <code>PUT /{id}</code></td><td>Patient registration, lookup by ID, text search across names/ID/phone, demographic updates</td></tr>
+      <tr><td><code>/clinical</code></td><td><code>POST /visits</code>, <code>GET /visits/{id}</code>, <code>GET /visits/patient/{pid}</code>, <code>GET /visits/active</code>, <code>POST /vitals</code>, <code>GET /vitals/{pid}</code>, <code>POST /notes</code>, <code>GET /notes/{pid}</code></td><td>Visit management (create, read, list by patient, active visits), vital signs recording and history, clinical note creation and retrieval</td></tr>
+      <tr><td><code>/appointments</code></td><td><code>POST /</code>, <code>GET /{id}</code>, <code>PUT /{id}</code>, <code>GET /patient/{pid}</code>, <code>GET /today/upcoming</code>, <code>GET /queue/</code></td><td>Appointment CRUD, patient appointment history, today's upcoming schedule, queue management</td></tr>
+      <tr><td><code>/labs</code></td><td><code>POST /orders</code>, <code>GET /orders/{id}</code>, <code>GET /orders/patient/{pid}</code>, <code>GET /pending</code>, <code>PUT /orders/{id}/results</code></td><td>Lab order placement and tracking, result entry, pending orders list</td></tr>
+      <tr><td><code>/pharmacy</code></td><td><code>POST /prescriptions</code>, <code>GET /prescriptions/{id}</code>, <code>GET /prescriptions/patient/{pid}</code>, <code>PUT /prescriptions/{id}/dispense</code></td><td>Prescription creation with multiple items, dispensing workflow</td></tr>
+      <tr><td><code>/dashboard</code></td><td><code>GET /summary</code>, <code>GET /full</code>, <code>GET /ops-center</code>, <code>GET /disease-surveillance</code>, <code>GET /analytics</code>, <code>GET /map-data</code>, <code>GET /ai-insights</code></td><td>Aggregated operational data, disease monitoring, analytics, AI-generated alerts</td></tr>
+      <tr><td><code>/billing</code></td><td><code>POST /bills</code>, <code>GET /bills</code>, <code>GET /bills/{id}</code>, <code>GET /patient/{pid}</code>, <code>POST /bills/{id}/pay</code>, <code>DELETE /bills/{id}</code>, <code>PUT /bills/{id}</code></td><td>Bill generation, listing, payment processing (with receipt generation), deletion and updates</td></tr>
+      <tr><td><code>/info</code></td><td><code>GET /announcements</code>, <code>POST /announcements</code>, <code>PUT /announcements/{id}</code>, <code>DELETE /announcements/{id}</code>, <code>POST /announcements/{id}/read</code>, <code>GET /intelligence</code>, <code>GET /search?q=</code></td><td>Announcement management with category/role filtering, health intelligence overview, universal search</td></tr>
+      <tr><td><code>/notifications</code></td><td><code>POST /optin</code>, <code>POST /optout</code>, <code>GET /status</code>, <code>POST /send</code>, <code>GET /history</code></td><td>WhatsApp opt-in/opt-out, notification sending, delivery history</td></tr>
+      <tr><td><code>/sync</code></td><td><code>POST /push</code>, <code>POST /pull</code>, <code>GET /status</code></td><td>Multi-site data synchronisation (push local changes, pull remote changes, status check)</td></tr>
+      <tr><td><code>/patient</code></td><td><code>POST /register</code>, <code>POST /login</code>, <code>GET /profile</code>, <code>PUT /profile</code>, <code>GET /appointments</code>, <code>POST /appointments</code>, <code>PUT /appointments/{id}/cancel</code>, <code>GET /bills</code>, <code>POST /bills/{id}/pay</code>, <code>GET /results</code>, <code>GET /prescriptions</code>, <code>GET /allergies</code>, <code>GET /conditions</code></td><td>Patient self-service portal — registration, login, profile management, appointment booking and cancellation, bill viewing and payment, lab results, prescriptions, allergies, chronic conditions</td></tr>
+    </tbody>
+  </table>
+
+  <h3>6.3 Authentication for API Access</h3>
+  <p>
+    All endpoints except the following shall require a valid JWT bearer token in the 
+    <code>Authorization: Bearer &lt;token&gt;</code> header: <code>POST /auth/login</code>, 
+    <code>POST /auth/register</code>, <code>POST /patient/register</code>, 
+    <code>POST /patient/login</code>, and <code>GET /info/announcements</code> (public). 
+    The main system shall use an HS256-signed JWT with an 8-hour expiry period. The 
+    patient portal shall use a separate signing key to maintain authentication domain 
+    isolation.
+  </p>
+
+  <h3>6.4 Real-Time Dashboard</h3>
+  <p>
+    A WebSocket endpoint at <code>/api/v1/ws/dashboard</code> shall provide real-time 
+    updates. When a client connects (authenticated via a token query parameter), the 
+    server shall register the connection with a <code>ConnectionManager</code> and 
+    begin broadcasting aggregated operational data every 10 seconds. The broadcast 
+    shall include bed occupancy, queue lengths, stock alerts, and disease surveillance 
+    counts. Disconnected clients shall be automatically cleaned up.
+  </p>
+
+  <h3>6.5 Response Format</h3>
+  <p>
+    All responses shall use a consistent JSON structure. Successful GET requests shall 
+    return the requested resource or array directly. Successful POST requests shall 
+    return the created resource with HTTP 201 status. Errors shall return an appropriate 
+    HTTP status code with a JSON body containing a <code>detail</code> field with a 
+    human-readable error message. Validation errors shall return 400, authentication 
+    failures 401, permission errors 403, and not-found errors 404.
+  </p>
+
+  <div class="page-number">6</div>
+</div>
+
+<!-- ===== 7. FRONTEND DESIGN ===== -->
+<div class="page">
+  <h2>7. Frontend Design</h2>
+
+  <h3>7.1 Proposed Frontend Architecture</h3>
+  <p>
+    The frontend shall be implemented as a <strong>single-page application (SPA)</strong> 
+    contained within a single HTML file. This approach eliminates the need for a build 
+    toolchain and allows the frontend to be served directly by the backend without a 
+    separate static file server. All CSS and JavaScript shall be embedded within the 
+    HTML file. The SPA shall manage page transitions by toggling the <code>display</code> 
+    CSS property of page <code>&lt;div&gt;</code> elements based on user navigation.
+  </p>
+
+  <h3>7.2 Multi-Portal Navigation Model</h3>
+  <p>The system shall implement two distinct navigation models for the two user populations:</p>
+
+  <h4>Administrative Interface (Health Professional)</h4>
+  <ul>
+    <li><strong>Navigation mechanism:</strong> A fixed left sidebar listing all available 
+    modules with icons and text labels. The active page shall be indicated with a 
+    coloured left border accent. The sidebar shall be collapsible via a hamburger 
+    menu toggle for narrow screens.</li>
+    <li><strong>Header bar:</strong> Global search field, notification bell with badge, 
+    user profile dropdown, PWA install button, and an online/offline connection status 
+    indicator.</li>
+    <li><strong>Content area:</strong> The remaining screen area shall display the 
+    selected page's content, which may include data tables, KPI cards, charts, and 
+    action buttons. Modal overlays shall handle data entry without navigating away 
+    from the current page.</li>
+    <li><strong>Proposed pages (18):</strong> Dashboard (Home), Patient Registry, 
+    Appointments, Queue Management, Triage &amp; Emergency, Clinical Notes, Vital 
+    Signs, Inpatient Ward, Critical Care (ICU), Dialysis &amp; CKD, Laboratory, 
+    Pharmacy, Inventory, Billing &amp; Payments, Governance, Administration, 
+    plus modal-based workflows.</li>
+  </ul>
+
+  <h4>Patient Portal</h4>
+  <ul>
+    <li><strong>Navigation mechanism:</strong> A fixed bottom tab bar with five icons 
+    and labels. The active tab shall be highlighted with a purple accent colour 
+    (<code>#a78bfa</code>) to visually distinguish the patient experience from the 
+    admin interface.</li>
+    <li><strong>Proposed tabs:</strong> Home (dashboard with greeting, KPI cards, 
+    allergies, conditions, upcoming appointments), Appts (appointment list, booking 
+    form, detail modal), Bills (bill list with pay flow including method selection, 
+    PIN entry, and receipt generation), Results (laboratory results display), 
+    More (tabbed panel with My Rights, Rate HCW, Suggestion Box, Corruption Report).</li>
+    <li><strong>Profile:</strong> Accessible via a hamburger menu icon, displayed as 
+    a card-based layout with avatar upload support.</li>
+  </ul>
+
+  <h3>7.3 Proposed Client-Side Data Management</h3>
+  <p>The frontend shall implement a three-tier data management strategy:</p>
+  <ol>
+    <li><strong>Session state:</strong> JWT tokens and user preferences shall be stored 
+    in <code>localStorage</code>. The token shall be attached to all API requests via 
+    a wrapper function around the native <code>fetch</code> API.</li>
+    <li><strong>API response cache:</strong> Successful GET responses for key resources 
+    (patients, appointments, lab orders, prescriptions, bills) shall be stored in 
+    IndexedDB object stores for offline read access. The cache shall be updated on 
+    each successful fetch and used as fallback during network failures.</li>
+    <li><strong>Mutation queue:</strong> POST, PUT, and DELETE operations performed 
+    while offline shall be stored in a <code>sync_queue</code> IndexedDB object store. 
+    Each queue entry shall contain the HTTP method, endpoint URL, request body, 
+    timestamp, and retry count.</li>
+  </ol>
+
+  <h3>7.4 Proposed Visual Design System</h3>
+  <p>The user interface shall follow a dark-theme design with the following colour tokens:</p>
+  <table>
+    <thead><tr><th>Token</th><th>Colour</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td>Background</td><td><code>#0f172a</code></td><td>Main content areas</td></tr>
+      <tr><td>Surface</td><td><code>#1e293b</code></td><td>Cards, sidebars, modals</td></tr>
+      <tr><td>Admin Accent</td><td><code>#38bdf8</code></td><td>Active indicators, selection highlights</td></tr>
+      <tr><td>Patient Accent</td><td><code>#a78bfa</code></td><td>Active tabs, portal-specific highlights</td></tr>
+      <tr><td>Primary Text</td><td><code>#f1f5f9</code></td><td>Headings and primary labels</td></tr>
+      <tr><td>Secondary Text</td><td><code>#94a3b8</code></td><td>Descriptions and metadata</td></tr>
+      <tr><td>Success</td><td><code>#22c55e</code></td><td>Confirmed/completed status</td></tr>
+      <tr><td>Warning</td><td><code>#facc15</code></td><td>Pending/warning status</td></tr>
+      <tr><td>Error</td><td><code>#ef4444</code></td><td>Error, cancelled, critical alerts</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The design shall include a responsive breakpoint at <code>480px</code> for mobile 
+    optimisation, adjusting grid layouts, font sizes, and modal widths for smaller 
+    screens. Form components shall use consistent spacing, labels, and input styling 
+    throughout the application.
+  </p>
+
+  <div class="page-number">7</div>
+</div>
+
+<!-- ===== 8. AUTHENTICATION & SECURITY ===== -->
+<div class="page">
+  <h2>8. Authentication &amp; Security</h2>
+
+  <h3>8.1 Proposed Authentication Architecture</h3>
+  <p>
+    The system shall implement a <strong>dual authentication domain</strong> model to 
+    separate clinical staff access from patient self-service access, each with 
+    appropriate security policies.
+  </p>
+
+  <h4>Health Professional Authentication Domain</h4>
+  <ul>
+    <li>Users shall authenticate via <code>POST /api/v1/auth/login</code> with username 
+    and password credentials.</li>
+    <li>Passwords shall be hashed using <strong>bcrypt</strong> (12 salt rounds) via 
+    the <code>passlib</code> library before storage in the database.</li>
+    <li>On successful authentication, the server shall issue a JWT token signed with 
+    the HS256 algorithm using a configurable secret key. The token shall encode the 
+    user ID, role, and an 8-hour expiration timestamp.</li>
+    <li>The client shall store the token in <code>localStorage</code> and attach it 
+    to all subsequent requests via the <code>Authorization: Bearer &lt;token&gt;</code> 
+    header.</li>
+    <li>The server shall validate the token on every protected request via a 
+    <code>get_current_user</code> dependency that decodes the token, fetches the 
+    user record, and verifies the account is active and not locked.</li>
+    <li>Role-based access shall be enforced through a <code>require_role(roles)</code> 
+    dependency that checks the authenticated user's role against a permitted list 
+    for each endpoint.</li>
+  </ul>
+
+  <h4>Patient Portal Authentication Domain</h4>
+  <ul>
+    <li>Patients shall authenticate using their <strong>passport ID</strong> (MHT-format 
+    identifier) and <strong>phone number</strong> — credentials that patients can 
+    reliably recall without needing to remember a username and password.</li>
+    <li>A separate JWT secret key (<code>patient-secret-key</code>) shall be used to 
+    sign patient tokens, ensuring that patient tokens cannot authenticate against 
+    clinical endpoints and vice versa.</li>
+    <li>The patient JWT shall encode the patient's passport ID, which is used to 
+    filter all data access to only the authenticated patient's records.</li>
+    <li>New patients shall register via <code>POST /api/v1/patient/register</code> 
+    providing personal details. The system shall auto-generate a unique passport ID 
+    in the MHT-XXXXXX format.</li>
+  </ul>
+
+  <h3>8.2 Security Controls</h3>
+  <p>The following security controls shall be implemented in the prototype:</p>
+  <table>
+    <thead><tr><th>Control</th><th>Implementation Strategy</th></tr></thead>
+    <tbody>
+      <tr><td>Password Storage</td><td>bcrypt hashing with 12 salt rounds via passlib CryptContext</td></tr>
+      <tr><td>Session Management</td><td>JWT tokens with 480-minute (8-hour) expiration, stored client-side in localStorage</td></tr>
+      <tr><td>Access Control</td><td>Role-based middleware using 16-level UserRole enum, endpoint-level require_role() dependency</td></tr>
+      <tr><td>Cross-Origin Policy</td><td>Configurable CORS middleware allowing specific origins via CORS_ORIGINS setting</td></tr>
+      <tr><td>Input Validation</td><td>Pydantic models on all request bodies with type checking and constraint validation</td></tr>
+      <tr><td>Audit Trail</td><td>database-level audit_trails and audit_logs tables recording user, action, resource, timestamp, and IP address</td></tr>
+      <tr><td>Brute Force Protection</td><td>failed_login_attempts counter and locked_until timestamp on User model</td></tr>
+      <tr><td>PIN Security</td><td>Client-side SHA-256 hashing via Web Crypto API before transmission on payment PINs</td></tr>
+      <tr><td>SQL Injection</td><td>Parameterised queries via SQLAlchemy ORM (no raw SQL concatenation)</td></tr>
+      <tr><td>Secrets Management</td><td>All secrets stored in .env file excluded from version control via .gitignore</td></tr>
+      <tr><td>Data Segregation</td><td>Patient portal users access only their own records via passport ID claim in JWT</td></tr>
+    </tbody>
+  </table>
+
+  <h3>8.3 Data Privacy Considerations</h3>
+  <ul>
+    <li>Patient consent for data processing shall be obtained at registration (implied by use of the system).</li>
+    <li>The corruption reporting feature shall default to anonymous submission, concealing the reporter's identity unless explicitly opted out.</li>
+    <li>Account deletion shall be offered via the privacy settings, clearing personal data as appropriate.</li>
+    <li>Audit logs shall capture all access to patient records for accountability and breach investigation.</li>
+    <li>HTTPS shall be enforced in production deployment through a reverse proxy with TLS termination.</li>
+  </ul>
+
+  <div class="page-number">8</div>
+</div>
+
+<!-- ===== 9. OFFLINE & PWA SUPPORT ===== -->
+<div class="page">
+  <h2>9. Offline &amp; PWA Support</h2>
+
+  <h3>9.1 Requirement for Offline Operation</h3>
+  <p>
+    Internet connectivity in many Malawian healthcare facilities is characterised by 
+    frequent interruptions, low bandwidth, and high latency. The prototype shall 
+    address this constraint through an offline-first design that ensures core 
+    functionality remains available during network outages. The system shall 
+    synchronise data automatically when connectivity is restored.
+  </p>
+
+  <h3>9.2 Proposed Service Worker Strategy</h3>
+  <p>
+    A service worker registered at the root path shall implement the following 
+    caching strategies:
+  </p>
+  <ul>
+    <li><strong>Cache-first for static assets:</strong> The application shell 
+    (<code>index.html</code>, <code>manifest.json</code>, PWA icons, Google Fonts, 
+    html2canvas, jsPDF) shall be pre-cached during service worker installation. On 
+    subsequent loads, these assets shall be served from cache with background updates 
+    when the network is available.</li>
+    <li><strong>Network-first for API calls:</strong> All requests to <code>/api/</code> 
+    shall attempt the network first. On success, the response shall be cached and 
+    returned to the application. On network failure, the cached response shall be 
+    served. If no cached response exists, a JSON response with <code>{offline: true}</code> 
+    shall be returned to trigger IndexedDB fallback in the application layer.</li>
+  </ul>
+
+  <h3>9.3 IndexedDB Client-Side Database</h3>
+  <p>
+    The frontend shall create and manage an IndexedDB database named 
+    <code>ehealth_mw_offline</code> with the following object stores:
+  </p>
+  <table>
+    <thead><tr><th>Store Name</th><th>Key Path</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>patients</code></td><td><code>id</code></td><td>Cached patient records for offline lookup</td></tr>
+      <tr><td><code>appointments</code></td><td><code>id</code></td><td>Cached appointment data</td></tr>
+      <tr><td><code>lab_orders</code></td><td><code>id</code></td><td>Cached lab orders and results</td></tr>
+      <tr><td><code>prescriptions</code></td><td><code>id</code></td><td>Cached prescription records</td></tr>
+      <tr><td><code>bills</code></td><td><code>id</code></td><td>Cached billing records</td></tr>
+      <tr><td><code>sync_queue</code></td><td>Auto-increment</td><td>Queue of mutations performed while offline</td></tr>
+      <tr><td><code>meta</code></td><td><code>key</code></td><td>Sync metadata, timestamps, and version tracking</td></tr>
+    </tbody>
+  </table>
+
+  <h3>9.4 Proposed Background Synchronisation Process</h3>
+  <p>
+    When the application detects a transition from offline to online state (via the 
+    <code>window.online</code> event), the following synchronisation process shall 
+    be triggered:
+  </p>
+  <ol>
+    <li>Read all entries from the <code>sync_queue</code> store in FIFO order, 
+    filtering to those with status <code>pending</code> and retry count below 5.</li>
+    <li>For each entry, replay the original HTTP request (method, URL, headers, body) 
+    against the live API.</li>
+    <li>On successful response (2xx status code), mark the entry as <code>synced</code> 
+    and update the corresponding data cache with the server response.</li>
+    <li>On network or server error, increment the retry count. Entries exceeding 5 
+    retries shall be flagged as <code>failed</code> for manual review.</li>
+    <li>Display a synchronisation status indicator in the application header showing 
+    the queue count and current sync status (idle/syncing/synced/failed).</li>
+  </ol>
+
+  <h3>9.5 Progressive Web App Features</h3>
+  <ul>
+    <li><strong>Web App Manifest:</strong> A <code>manifest.json</code> file shall 
+    declare the application name, icons (192x192 and 512x512), theme colour 
+    (<code>#1e293b</code>), background colour (<code>#0f172a</code>), and display 
+    mode (<code>standalone</code> for full-screen experience).</li>
+    <li><strong>Install Prompt:</strong> The application shall listen for the 
+    <code>beforeinstallprompt</code> event and display an install button. The 
+    button shall be hidden after the <code>appinstalled</code> event fires or 
+    if the app is already installed.</li>
+    <li><strong>Offline Launch:</strong> When launched without network, the 
+    service worker shall serve the cached application shell, enabling the user 
+    to view previously loaded data and queue new entries for later synchronisation.</li>
+  </ul>
+
+  <div class="page-number">9</div>
+</div>
+
+<!-- ===== 10. USER INTERFACE DESIGN ===== -->
+<div class="page">
+  <h2>10. User Interface Design</h2>
+
+  <h3>10.1 Login Screen</h3>
+  <p>
+    The login screen shall present two authentication paths via tabbed selection. The 
+    Health Professional tab shall provide username and password fields with pre-filled 
+    demo credentials (<code>ehealth_mw</code> and <code>must@ghs</code>) for prototype 
+    evaluation. The Patient Portal tab shall provide passport ID and phone number fields 
+    with a pre-filled demo patient (<code>MHT-000001</code>, <code>0999123456</code>). 
+    Both tabs shall display validation errors inline and provide a clear path to 
+    registration for new patients.
+  </p>
+
+  <h3>10.2 Administrative Interface Layout</h3>
+  <div class="fig">
+    <strong>Figure 10.1 — Proposed Administrative Interface Layout</strong><br><br>
+    <pre style="background:transparent;color:#1e293b;font-size:12px;text-align:left;max-width:500px;margin:0 auto">
+┌──────────┬──────────────────────────────────────────┐
+│          │  Header: Search | Notifications | Profile │
+│  Sidebar ├──────────────────────────────────────────┤
+│  (Icons +│                                          │
+│   Labels)│         Main Content Area                 │
+│          │                                          │
+│  Active   │  ┌─────────┐ ┌─────────┐ ┌─────────┐   │
+│  page     │  │  KPI    │ │  KPI    │ │  KPI    │   │
+│  high-    │  │  Card   │ │  Card   │ │  Card   │   │
+│  lighted  │  └─────────┘ └─────────┘ └─────────┘   │
+│          │                                          │
+│          │  ┌────────────────────────────────────┐  │
+│          │  │         Data Table                 │  │
+│          │  │  [Search] [Filter] [+ New]         │  │
+│          │  ├────────────────────────────────────┤  │
+│          │  │ Col 1 │ Col 2 │ Col 3 │ Actions    │  │
+│          │  ├────────────────────────────────────┤  │
+│          │  │ ...   │ ...   │ ...   │ [Edit]     │  │
+│          │  └────────────────────────────────────┘  │
+│          │                                          │
+│          │  Modal Overlays for Create/Edit forms    │
+└──────────┴──────────────────────────────────────────┘
+    </pre>
+    <em>Proposed layout: fixed left sidebar, header bar, scrollable content area with KPI cards, tables, and modal overlays.</em>
+  </div>
+
+  <h3>10.3 Patient Portal Layout</h3>
+  <div class="fig">
+    <strong>Figure 10.2 — Proposed Patient Portal Layout</strong><br><br>
+    <pre style="background:transparent;color:#1e293b;font-size:12px;text-align:left;max-width:500px;margin:0 auto">
+┌─────────────────────────────────────────────────────┐
+│  ┌───────────────────────────────────────────────┐  │
+│  │  Header: Profile (hamburger) | Connection    │  │
+│  │          Badge                                │  │
+│  ├───────────────────────────────────────────────┤  │
+│  │                                               │  │
+│  │         Content Area (scrollable)             │  │
+│  │                                               │  │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────────┐  │  │
+│  │  │ Appts    │ │ Bills    │ │ Results      │  │  │
+│  │  │ Count: N │ │ Due: N   │ │ New: N       │  │  │
+│  │  └──────────┘ └──────────┘ └──────────────┘  │  │
+│  │                                               │  │
+│  │  ┌───────────────────────────────────────┐    │  │
+│  │  │  Upcoming Appointments / Data Table   │    │  │
+│  │  └───────────────────────────────────────┘    │  │
+│  │                                               │  │
+│  │  Modal Overlays for booking, pay, detail      │  │
+│  │                                               │  │
+│  ├───────────────────────────────────────────────┤  │
+│  │  [Home] [Appts] [Bills] [Results] [More]      │  │
+│  │  Bottom Tab Navigation (fixed)                │  │
+│  └───────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
+    </pre>
+    <em>Proposed patient portal layout: fixed bottom tab bar, scrollable content, modal overlays for interactions.</em>
+  </div>
+
+  <h3>10.4 Dashboard Components</h3>
+  <p>The operations centre dashboard shall display the following components:</p>
+  <ul>
+    <li><strong>KPI Cards:</strong> Total patient encounters, active admissions, pending lab orders, and billable services — each with a numeric count and trend indicator.</li>
+    <li><strong>Bed Board:</strong> Colour-coded occupancy display for ICU, HDU, and general wards with percentage utilisation.</li>
+    <li><strong>Disease Surveillance:</strong> Bar chart visualisations for Malaria, HIV, TB, Cholera, and Measles case counts with period-over-period comparison.</li>
+    <li><strong>Operations Centre:</strong> Grid of real-time status cards for ambulance availability, blood bank stock levels, equipment maintenance status, and on-call staffing.</li>
+    <li><strong>AI-Generated Insights:</strong> Automated alert cards highlighting potential malaria surges, ICU capacity concerns, and stockout risks.</li>
+  </ul>
+
+  <h3>10.5 "More" Panel Features</h3>
+  <p>The patient portal "More" tab shall contain four sub-panels:</p>
+  <ul>
+    <li><strong>My Rights:</strong> A bilingual (English/Chichewa) table pairing patient or research subject rights with corresponding responsibilities, presented as a two-column table with toggle for language selection.</li>
+    <li><strong>Rate Health Care Worker:</strong> A 5-star rating form with worker name/ID, department dropdown, and optional comment textarea. Ratings shall be stored in localStorage.</li>
+    <li><strong>Suggestion Box:</strong> A categorised feedback form (Compliment, Complaint, Idea, Facility, Other) with optional name and contact fields. Submissions shall be stored in localStorage.</li>
+    <li><strong>Report Corruption:</strong> Anonymous whistleblowing form with type dropdown (Bribery, Fraud, Theft, Abuse, Nepotism, Other), description, optional file attachment, and a default-anonymous toggle that hides name and contact fields.</li>
+  </ul>
+
+  <div class="page-number">10</div>
+</div>
+
+<!-- ===== 11. DEPLOYMENT & DEVOPS ===== -->
+<div class="page">
+  <h2>11. Deployment &amp; DevOps</h2>
+
+  <h3>11.1 Development Environment Specifications</h3>
+  <p>
+    The prototype shall be developed and tested in the following environment. These 
+    specifications represent the minimum requirements for local development:
+  </p>
+  <table>
+    <thead><tr><th>Component</th><th>Requirement</th></tr></thead>
+    <tbody>
+      <tr><td>Operating System</td><td>Windows 10/11 (primary), macOS 12+, or Linux (Ubuntu 22.04+)</td></tr>
+      <tr><td>Python</td><td>3.11 or higher</td></tr>
+      <tr><td>Python Environment</td><td>Virtual environment via <code>venv</code> or <code>conda</code></td></tr>
+      <tr><td>Database</td><td>SQLite 3.x (bundled with Python, no separate installation needed)</td></tr>
+      <tr><td>Browser</td><td>Chrome or Edge (latest versions) for full PWA and Web Crypto API support</td></tr>
+      <tr><td>Disk Space</td><td>Minimum 500 MB for code, dependencies, and database</td></tr>
+      <tr><td>RAM</td><td>Minimum 4 GB recommended</td></tr>
+    </tbody>
+  </table>
+
+  <h3>11.2 Proposed Startup Procedure</h3>
+  <p>The prototype shall be started with the following commands:</p>
+  <pre># 1. Navigate to the backend directory
+cd backend
+
+# 2. Create and activate a virtual environment (first time only)
+python -m venv venv
+.\venv\Scripts\Activate   # Windows
+# source venv/bin/activate  # macOS/Linux
+
+# 3. Install dependencies (first time only)
+pip install -r requirements.txt
+
+# 4. Start the development server
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload</pre>
+  <p>
+    The frontend shall be served directly by the backend at <code>http://127.0.0.1:8000</code>. 
+    No separate web server or build step is required. The API documentation shall be 
+    available at <code>http://127.0.0.1:8000/docs</code>.
+  </p>
+
+  <h3>11.3 Docker-Based Deployment</h3>
+  <p>
+    For consistent deployment across different environments, a Docker setup is proposed:
+  </p>
+  <pre># Using Docker Compose
+docker-compose up --build</pre>
+  <p>
+    The <code>Dockerfile</code> shall use a <code>python:3.11-slim</code> base image, 
+    copy the backend directory, install Python dependencies, and expose port 8000. 
+    The <code>docker-compose.yml</code> shall mount the SQLite database file as a 
+    persisted volume and map port 8000 to the host.
+  </p>
+
+  <h3>11.4 Database Migration Strategy</h3>
+  <p>
+    Schema changes shall be managed through <strong>Alembic</strong> migrations:
+  </p>
+  <pre># Generate a new migration after model changes
+alembic revision --autogenerate -m "description_of_change"
+
+# Apply pending migrations
+alembic upgrade head
+
+# Rollback one migration
+alembic downgrade -1</pre>
+  <p>
+    The prototype shall seed demo data automatically on first startup. The seed data 
+    shall include at least one demo patient (<code>MHT-000001</code>), sample 
+    appointments, bills, lab results, allergies, and chronic conditions to enable 
+    immediate evaluation without manual data entry.
+  </p>
+
+  <h3>11.5 Production Deployment Recommendations</h3>
+  <p>If the prototype proceeds to production, the following migrations are recommended:</p>
+  <ol>
+    <li><strong>Database:</strong> Switch from SQLite to PostgreSQL by setting 
+    <code>OFFLINE_MODE=False</code> and configuring <code>POSTGRES_URL</code> in 
+    the <code>.env</code> file.</li>
+    <li><strong>TLS Termination:</strong> Deploy behind Nginx or Caddy as a reverse 
+    proxy to provide HTTPS encryption.</li>
+    <li><strong>Secret Rotation:</strong> Replace all default secret keys 
+    (<code>SECRET_KEY</code>, <code>PATIENT_SECRET_KEY</code>) with cryptographically 
+    random values generated via <code>openssl rand -hex 32</code>.</li>
+    <li><strong>CORS Restriction:</strong> Replace the development wildcard 
+    <code>CORS_ORIGINS=*</code> with the specific production domain.</li>
+    <li><strong>Caching Layer:</strong> Enable Redis for API response caching and 
+    WebSocket pub/sub to reduce database load under concurrent access.</li>
+    <li><strong>Backup Automation:</strong> Schedule regular database backups using 
+    the provided <code>deploy.ps1</code> script or cron-based equivalent.</li>
+    <li><strong>Monitoring:</strong> Implement health check endpoints 
+    (<code>/health</code>) and structured logging for integration with monitoring 
+    tools such as Prometheus and Grafana.</li>
+  </ol>
+
+  <div class="page-number">11</div>
+</div>
+
+<!-- ===== 12. CONCLUSION & FUTURE WORK ===== -->
+<div class="page">
+  <h2>12. Conclusion &amp; Future Work</h2>
+
+  <h3>12.1 Design Summary</h3>
+  <p>
+    This document has presented a comprehensive system design specification for the 
+    <strong>MUST Health Tech (MHT)</strong> prototype — an Electronic Health Record 
+    and Hospital Management System proposed for the MUST Teaching Hospital. The design 
+    covers the full spectrum of hospital operations through seventeen functional 
+    modules organised across two user portals (clinical staff and patient self-service), 
+    supported by a RESTful API backend and an offline-capable single-page frontend.
+  </p>
+  <p>The key design highlights of the proposed system include:</p>
+  <ul>
+    <li>A <strong>dual-portal architecture</strong> with distinct navigation models 
+    (sidebar for staff, bottom tabs for patients) and separate authentication domains 
+    to ensure appropriate access control for each user population.</li>
+    <li><strong>Offline-first operation</strong> achieved through a service worker 
+    with dual caching strategies, an IndexedDB local database for structured data 
+    caching, and a background synchronisation queue for offline mutations.</li>
+    <li><strong>Progressive Web App</strong> deployment enabling installation on 
+    user devices without app store distribution, with full-screen display and 
+    offline launch capability.</li>
+    <li>A <strong>comprehensive clinical data model</strong> spanning 35 database 
+    tables covering patient demographics, visits, vital signs, clinical documentation, 
+    laboratory, pharmacy, billing, inventory, critical care, dialysis, governance, 
+    and notifications.</li>
+    <li><strong>Localised features</strong> including mobile money payment integration 
+    (Mpamba, Airtel Money, Malawian banks), bilingual patient rights education 
+    (English/Chichewa), and anonymous corruption reporting.</li>
+  </ul>
+
+  <h3>12.2 Prototype Evaluation Criteria</h3>
+  <p>
+    The success of the prototype shall be evaluated against the following criteria 
+    during stakeholder review:
+  </p>
+  <table>
+    <thead><tr><th>Criterion</th><th>Target</th><th>Measurement Method</th></tr></thead>
+    <tbody>
+      <tr><td>Functional Coverage</td><td>All 17 modules operational with demo data</td><td>Walkthrough checklist against module list</td></tr>
+      <tr><td>Usability (Staff)</td><td>Common tasks completed in under 2 minutes</td><td>Timed task completion during demonstration</td></tr>
+      <tr><td>Usability (Patient)</td><td>Booking and payment completed without assistance</td><td>Observed user testing session</td></tr>
+      <tr><td>Offline Operation</td><td>Core read functions available without network</td><td>Network disconnection test during demo</td></tr>
+      <tr><td>Data Integrity</td><td>All modifications captured in audit trail</td><td>Audit log inspection after test operations</td></tr>
+      <tr><td>Page Load Time</td><td>Under 3 seconds on local network</td><td>Browser developer tools timing</td></tr>
+    </tbody>
+  </table>
+
+  <h3>12.3 Proposed Development Phases</h3>
+  <p>The prototype development is proposed to proceed in three phases:</p>
+  <ol>
+    <li><strong>Phase 1 — Core Infrastructure (Weeks 1-4):</strong> Backend setup with FastAPI and SQLAlchemy, database schema creation, JWT authentication system, patient registration API, frontend SPA shell with login and admin sidebar, patient portal login. Deliverable: working login for both portals with patient registration.</li>
+    <li><strong>Phase 2 — Clinical Modules (Weeks 5-10):</strong> Appointments, clinical notes, vital signs, laboratory, pharmacy, billing, and patient portal read features (appointments, bills, results). Deliverable: end-to-end clinical workflow from registration through discharge and billing.</li>
+    <li><strong>Phase 3 — Advanced Features (Weeks 11-14):</strong> Dashboard and analytics, inpatient/critical care/dialysis modules, governance reporting, offline/PWA support, notifications, patient portal More panel, responsive design polish, and documentation. Deliverable: complete prototype ready for evaluation.</li>
+  </ol>
+
+  <h3>12.4 Future Development Opportunities</h3>
+  <p>Beyond the prototype phase, the following enhancements are identified for future development:</p>
+  <ol>
+    <li><strong>Health Information Exchange:</strong> Implementation of HL7 FHIR R4 APIs for interoperability with national health systems (DHIS2, Malawi EMRS, electronic immunisation registry).</li>
+    <li><strong>Clinical Decision Support:</strong> Drug-drug interaction checking, allergy alerting, and evidence-based treatment protocol suggestions integrated into the prescribing workflow.</li>
+    <li><strong>Advanced Analytics and AI:</strong> Machine learning models for early warning of patient deterioration, disease outbreak prediction from surveillance data, and automated radiology report triage.</li>
+    <li><strong>Telemedicine Integration:</strong> Video consultation capabilities with real-time vital signs streaming for remote specialist review, particularly relevant for MUST's role as a referral centre.</li>
+    <li><strong>Biometric Patient Identification:</strong> Fingerprint or iris scanning to eliminate duplicate patient records and ensure accurate identification, especially for patients without formal identification documents.</li>
+    <li><strong>Laboratory Instrument Interface:</strong> Direct HL7/LIS integration with laboratory analysers for automated result capture, reducing manual transcription errors.</li>
+    <li><strong>Mobile Money API Integration:</strong> Direct server-to-server API connection with Airtel Malawi and TNM for automated payment processing and reconciliation.</li>
+    <li><strong>Multi-Facility Support:</strong> Extension to support district hospital networks with central data aggregation, referral tracking, and cross-facility record access.</li>
+  </ol>
+
+  <h3>12.5 Conclusion</h3>
+  <p>
+    The MUST Health Tech (MHT) system design presented in this document offers a 
+    comprehensive, context-appropriate solution for the digital transformation of 
+    the MUST Teaching Hospital. The proposed architecture balances the need for 
+    clinical functionality with the realities of operating in a resource-constrained 
+    environment, prioritising offline resilience, local language support, and 
+    accessible technology choices. The prototype, once developed according to this 
+    specification, will provide a demonstrable proof-of-concept that can inform 
+    future investment in health information systems at MUST and serve as a reference 
+    model for similar initiatives across Malawi's healthcare sector. The successful 
+    implementation of this system has the potential to improve patient care quality, 
+    operational efficiency, and data-driven decision-making at one of Malawi's 
+    premier teaching hospitals.
+  </p>
+
+  <div style="margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0;text-align:center;font-size:12px;color:#94a3b8">
+    <em>End of Document — MUST Health Tech (MHT) System Design Specification v1.0</em>
+  </div>
+
+  <div class="page-number">12</div>
+</div>
+
+</body>
+</html>

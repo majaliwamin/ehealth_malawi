@@ -4,7 +4,7 @@ from sqlalchemy import select, desc, func, or_
 from typing import List, Optional
 from datetime import datetime
 from ....core.database import get_async_session
-from ....middleware.auth import get_current_user
+from ....middleware.auth import get_current_user, get_optional_user
 from ....models import User, Patient, LabOrder, Prescription, DrugStock
 from ....models.announcement import Announcement
 from ....models.billing import Bill
@@ -22,7 +22,7 @@ async def list_announcements(
     active_only: bool = True,
     target_role: Optional[str] = None,
     db: AsyncSession = Depends(get_async_session),
-    current_user: User = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_optional_user),
 ):
     stmt = select(Announcement).order_by(desc(Announcement.priority), desc(Announcement.created_at))
     if active_only:

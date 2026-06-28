@@ -1,15 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1e293b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="MHT">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
-<title>MUST Health Tech (MHT) — Smart Health, Smarter Malawi</title>
+<title>MUST Health Tech (MHT) - Smart Health, Smarter Malawi</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>&#9670;</text></svg>">
 <style>
@@ -32,7 +32,7 @@ a{color:#38bdf8;text-decoration:none}
 .sidebar{width:220px;background:#1e293b;border-right:1px solid #334155;padding:8px 0;overflow-y:auto;flex-shrink:0}
 .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;color:#94a3b8;cursor:pointer;transition:all .15s;border-left:3px solid transparent}
 .sidebar-item:hover{background:#0f172a;color:#e2e8f0}
-.sidebar-item.active{background:#0f172a;color:#38bdf8;border-left-color:#38bdf8;font-weight:600}
+.sidebar-item.active{background:#0f172a;color:#a78bfa;border-left-color:#a78bfa;font-weight:600}
 .sidebar-item .icon{width:18px;text-align:center;font-size:14px}
 
 .content{flex:1;overflow-y:auto;padding:24px}
@@ -242,7 +242,7 @@ tr:hover td{background:#0f172a}
 .badge-green{background:#065f46;color:#6ee7b7}
 .badge-yellow{background:#5c3d0e;color:#fbbf24}
 .badge-red{background:#5c1010;color:#f87171}
-.badge-purple{background:#3b1f6e;color:#a78bfa}
+.badge-purple{background:#3b1f5e;color:#c084fc}
 
 /* forms */
 .form-group{margin-bottom:14px}
@@ -441,6 +441,31 @@ textarea{resize:vertical;min-height:80px}
   .dash-charts-row{flex-direction:column}
   .dash-chart-card.flex-1,.dash-chart-card.flex-2{flex:none}
   .content{padding:16px}
+  .qa-grid{grid-template-columns:1fr 1fr}
+  .pp-table{font-size:12px}
+  .pp-table th,.pp-table td{padding:6px 4px}
+  .modal{width:95%;max-width:none;margin:10px auto;padding:16px;max-height:90vh;overflow-y:auto}
+  #payMethodButtons,#ppPayMethodButtons{flex-wrap:wrap}
+  #payMethodButtons .pay-method-btn,#ppPayMethodButtons .pay-method-btn{flex:1 0 45%;min-width:0}
+}
+@media(max-width:480px){
+  .qa-grid{grid-template-columns:1fr}
+  .clinic-header h1{font-size:16px}
+  .clinic-kpi{grid-template-columns:1fr 1fr}
+  .page h2{font-size:16px!important}
+  .kpi-card{min-width:80px;padding:10px}
+  .kpi-card .kpi-val{font-size:20px!important}
+  .nav-brand{font-size:14px}
+  .row{flex-direction:column!important}
+  #ppNav{justify-content:space-around!important}
+  #ppNav > div{padding:4px!important;font-size:11px!important}
+  #ppNav > div > div{font-size:16px!important}
+  #ppSidebar{width:200px}
+  .receipt-row{font-size:11px!important}
+  .account-modal .am-content{width:95%}
+  .account-modal .am-tabs button{font-size:12px;padding:6px 10px}
+  .form-group label{font-size:12px}
+  input,select,textarea{font-size:13px!important}
 }
 
 /* color coding */
@@ -473,7 +498,11 @@ textarea{resize:vertical;min-height:80px}
 /* login overlay */
 .login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#0f172a;z-index:999;display:flex;justify-content:center;align-items:center}
 .login-overlay.hidden{display:none}
-.login-box{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:40px;width:380px;max-width:90%}
+.login-box{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:40px;width:420px;max-width:90%}
+.login-tabs{display:flex;gap:4px;margin-bottom:20px;background:#0f172a;border-radius:10px;padding:3px}
+.login-tab{flex:1;text-align:center;padding:8px 6px;font-size:12px;font-weight:500;color:#64748b;cursor:pointer;border-radius:8px;transition:all .15s}
+.login-tab.active{background:#1e293b;color:#38bdf8;font-weight:600}
+.login-form{width:100%}
 .login-box h2{font-size:22px;font-weight:700;color:#f1f5f9;margin-bottom:4px;display:flex;align-items:center;gap:10px}
 .login-box h2 .diamond{color:#38bdf8}
 .login-box .subtitle{font-size:12px;color:#64748b;margin-bottom:24px}
@@ -484,6 +513,23 @@ textarea{resize:vertical;min-height:80px}
 .login-box .btn{width:100%;padding:12px;justify-content:center;font-size:14px}
 .login-error{color:#f87171;font-size:12px;margin-top:8px;display:none}
 .login-spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none;margin:0 auto}
+
+.pp-card .kpi-val{font-size:24px;font-weight:700;color:#38bdf8}
+.pp-card{background:#1e293b;border:1px solid #334155;transition:border .15s;cursor:pointer}
+.pp-card:hover{border-color:#38bdf8}
+.pp-more-tab.active{color:#a78bfa!important;border-bottom-color:#a78bfa!important;background:rgba(167,139,250,.05)}
+.pp-more-panel{display:none}
+.pp-more-panel.active{display:block}
+.pp-more-panel ul li::marker{color:#a78bfa}
+.pp-success{color:#34d399;font-size:13px;font-weight:600}
+.pp-cancelled{color:#f87171;font-size:13px}
+.pp-pending{color:#facc15;font-size:13px}
+.pp-scheduled{color:#38bdf8;font-size:13px}
+.pp-table{width:100%;border-collapse:collapse;font-size:13px}
+.pp-page{padding-left:20px;border-left:4px solid #7c3aed;margin-left:4px;min-height:calc(100vh - 120px)}
+.pp-table th{padding:10px 12px;text-align:left;color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #334155;white-space:nowrap}
+.pp-table td{padding:10px 12px;border-bottom:1px solid #1e293b;color:#cbd5e1}
+.pp-table tr:hover td{background:#0f172a}
 
 /* hamburger */
 .hamburger-btn{background:none;border:none;color:#e2e8f0;font-size:22px;cursor:pointer;padding:4px 8px;display:flex;align-items:center}
@@ -600,20 +646,67 @@ textarea{resize:vertical;min-height:80px}
 
 <!-- login overlay -->
 <div class="login-overlay" id="loginOverlay">
-  <div class="login-box">
+  <div class="login-box" id="loginBox">
     <h2><span class="diamond">&#9670;</span> MUST Health Tech (MHT)</h2>
-    <p class="subtitle">Digital Health Platform â€” Secure Login</p>
-    <div class="form-group"><label>Username</label><input type="text" id="loginUser" value="ehealth_mw" autocomplete="username" onkeydown="if(event.key==='Enter') login()"></div>
-    <div class="form-group"><label>Password</label><input type="password" id="loginPass" value="must@ghs" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()"></div>
-    <button class="btn btn-primary" onclick="login()">Sign In</button>
-    <div class="login-error" id="loginError">Invalid credentials</div>
-    <div style="text-align:center;margin-top:12px;font-size:11px;color:#64748b">Demo: ehealth_mw / must@ghs</div>
-    <div class="login-spinner" id="loginSpinner"></div>
+    <p class="subtitle">Smart Health, Smarter Malawi</p>
+
+    <div class="login-tabs">
+      <div class="login-tab active" id="tab-hp" onclick="switchLoginTab('hp')">&#128137; Health Professional</div>
+      <div class="login-tab" id="tab-patient" onclick="switchLoginTab('patient')">&#9787; Patient Portal</div>
+    </div>
+
+    <div class="login-form" id="form-hp">
+      <div class="form-group"><label>Username</label><input type="text" id="loginUser" value="ehealth_mw" autocomplete="username" onkeydown="if(event.key==='Enter') login()"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPass" value="must@ghs" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()"></div>
+      <button class="btn btn-primary" onclick="login()">Sign In</button>
+      <div id="loginError" class="login-error"></div>
+      <div id="loginSpinner" class="login-spinner"></div>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:#64748b">Demo: ehealth_mw / must@ghs</div>
+    </div>
+
+    <div class="login-form" id="form-patient" style="display:none">
+      <div id="ppLoginForm">
+        <div class="form-group"><label>Passport ID</label><input type="text" id="ppLoginId" placeholder="e.g. MHT-0000001" value="MHT-000001" onkeydown="if(event.key==='Enter') patientLogin()"></div>
+        <div class="form-group"><label>Phone Number</label><input type="text" id="ppLoginPhone" placeholder="e.g. 0999123456" value="0999123456" onkeydown="if(event.key==='Enter') patientLogin()"></div>
+        <button class="btn btn-primary" onclick="patientLogin()">Sign In</button>
+        <div id="ppLoginError" class="login-error"></div>
+        <div id="ppLoginSpinner" class="login-spinner"></div>
+        <div style="text-align:center;margin-top:12px;font-size:11px;color:#64748b">Demo: MHT-000001 / 0999123456</div>
+        <div style="text-align:center;margin-top:6px">
+          <a onclick="showPatientRegister()" style="color:#38bdf8;font-size:12px;cursor:pointer">Don't have an account? Register here</a>
+        </div>
+      </div>
+      <div id="ppRegForm" style="display:none">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="ppRegName" placeholder="First and last name"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Date of Birth *</label><input type="date" id="ppRegDob"></div>
+          <div class="form-group"><label>Gender *</label>
+            <select id="ppRegGender"><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Phone *</label><input type="text" id="ppRegPhone" placeholder="e.g. 0999123456"></div>
+          <div class="form-group"><label>Email</label><input type="email" id="ppRegEmail" placeholder="patient@example.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>District</label><input type="text" id="ppRegDistrict" placeholder="e.g. Lilongwe"></div>
+          <div class="form-group"><label>Traditional Authority</label><input type="text" id="ppRegTa" placeholder="e.g. Kabudula"></div>
+        </div>
+        <div class="form-group"><label>Village</label><input type="text" id="ppRegVillage" placeholder="Village name"></div>
+        <div class="form-group"><label>Occupation</label><input type="text" id="ppRegOccupation" placeholder="e.g. Farmer"></div>
+        <div id="ppRegError" class="login-error"></div>
+        <div id="ppRegSpinner" class="login-spinner"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary" onclick="patientRegister()" style="flex:1">Register</button>
+          <button class="btn btn-ghost" onclick="showPatientLogin()" style="flex:1">Back to Login</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- NHISC header -->
-<div style="position:sticky;top:0;z-index:100">
+<div id="adminHeader" style="position:sticky;top:0;z-index:100">
   <!-- Row 1: Search bar -->
   <div class="nhisc-search">
     <div style="display:flex;align-items:center;gap:4px;flex:1">
@@ -634,6 +727,10 @@ textarea{resize:vertical;min-height:80px}
     <div style="display:flex;align-items:center;gap:12px;justify-content:flex-end;flex:1">
       <span id="connectionBadge" style="font-size:11px;color:#64748b"><span class="status-dot" style="background:#34d399;width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:3px"></span><span id="connectionStatus">Online</span></span>
       <span id="installBtn" onclick="installPwa()" title="Install App" style="display:none;align-items:center;gap:4px;font-size:10px;color:#38bdf8;cursor:pointer;padding:3px 8px;border:1px solid #38bdf8;border-radius:12px;background:rgba(56,189,248,.1)">&#9661; Install</span>
+      <span id="notifBell" onclick="toggleNotifDropdown()" style="position:relative;cursor:pointer;color:#94a3b8;font-size:18px;display:none;align-items:center" title="Pending Approvals">
+        &#128276;
+        <span id="notifBadge" style="position:absolute;top:-6px;right:-8px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;display:none">0</span>
+      </span>
       <span id="navUserName" style="font-size:12px;color:#94a3b8">User</span>
       <a onclick="logout()" style="font-size:11px;color:#f87171;cursor:pointer">Logout</a>
     </div>
@@ -644,10 +741,21 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
+<!-- Notification dropdown -->
+<div id="notifDropdown" style="display:none;position:fixed;top:56px;right:60px;width:380px;max-height:480px;background:#1e293b;border:1px solid #334155;border-radius:10px;z-index:200;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.4)">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid #334155">
+    <span style="font-size:13px;font-weight:600;color:#f1f5f9">&#128276; Pending Approvals</span>
+    <span style="cursor:pointer;color:#94a3b8;font-size:16px" onclick="closeNotifDropdown()">&times;</span>
+  </div>
+  <div id="notifList" style="overflow-y:auto;max-height:420px;padding:8px">
+    <p style="color:#64748b;font-size:12px;text-align:center;padding:20px 0">No pending approvals.</p>
+  </div>
+</div>
+
 <div class="layout">
-  <!-- sidebar -->
+  <!-- sidebar (admin) -->
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-item" data-page="dashboard" onclick="showPage('dashboard',this)" style="border-left-color:#38bdf8;margin-bottom:4px"><span class="icon">&#8962;</span> Home</div>
+    <div class="sidebar-item" data-page="dashboard" onclick="showPage('dashboard',this)" style="margin-bottom:4px"><span class="icon">&#8962;</span> Home</div>
     <div class="sidebar-group">Clinical Services</div>
     <div class="sidebar-item" data-page="patients" onclick="showPage('patients',this)"><span class="icon">&#9787;</span> Patient Registry</div>
     <div class="sidebar-item" data-page="appointments" onclick="showPage('appointments',this)"><span class="icon">&#128197;</span> Appointments</div>
@@ -667,6 +775,20 @@ textarea{resize:vertical;min-height:80px}
     <div class="sidebar-item" data-page="billing" onclick="showPage('billing',this)"><span class="icon">&#128176;</span> Billing & Payments</div>
     <div class="sidebar-item" data-page="governance" onclick="showPage('governance',this)"><span class="icon">&#9878;</span> Governance</div>
     <div class="sidebar-item" data-page="admin" onclick="showPage('admin',this)"><span class="icon">&#9881;</span> Administration</div>
+  </div>
+
+  <!-- sidebar (patient portal) -->
+  <div class="sidebar" id="ppSidebar" style="display:none">
+    <div style="display:flex;align-items:center;padding:8px 16px;border-bottom:1px solid #334155;margin-bottom:8px">
+      <button class="hamburger-btn" id="ppHamburgerBtn">&#9776;</button>
+    </div>
+    <div class="hamburger-dropdown" id="ppHamburgerDropdown">
+      <div class="hd-section">Account</div>
+      <a onclick="showPage('pp-profile',null)">&#9881; My Profile</a>
+      <a onclick="showPage('pp-settings',null)">&#9881; Settings</a>
+      <a onclick="patientLogout()" style="color:#f87171;border-top:1px solid #334155;margin-top:4px;padding-top:10px">&#128682; Log Out</a>
+    </div>
+
   </div>
 
   <!-- main content -->
@@ -866,11 +988,33 @@ textarea{resize:vertical;min-height:80px}
         <button class="btn btn-primary" onclick="openAppointmentModal()">+ New Appointment</button>
         <button class="btn btn-ghost">View Queue</button>
       </div>
-      <div class="card">
+      <div class="card" id="pendingApprovalsCard" style="display:none">
+        <div class="card-title">&#128276; Pending Patient Approvals <span id="pendingCountBadge" style="background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 8px;border-radius:10px;margin-left:6px">0</span></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Patient</th><th>Date & Time</th><th>Type</th><th>Clinician</th><th>Status</th><th>Priority</th></tr></thead>
-            <tbody id="appointmentTableBody"><tr><td colspan="6" class="empty-state">No appointments scheduled</td></tr></tbody>
+            <thead><tr><th>Patient</th><th>Passport</th><th>Date</th><th>Type</th><th>Clinician</th><th>Action</th></tr></thead>
+            <tbody id="pendingApprovalsBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <select id="apptStatusFilter" onchange="loadAppointments()" style="background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:6px 10px;border-radius:6px;font-size:12px">
+            <option value="">All Statuses</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="completed">Completed</option>
+          </select>
+          <button class="btn btn-sm btn-ghost" onclick="loadAppointments()" style="font-size:12px">&#8635; Refresh</button>
+          <label style="font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:4px;margin-left:auto">
+            <input type="checkbox" id="apptAutoRefresh" onchange="toggleAutoRefresh()" style="accent-color:#3b82f6"> Auto-refresh (30s)
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Patient</th><th>Date & Time</th><th>Type</th><th>Clinician</th><th>Location</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
+            <tbody id="appointmentTableBody"><tr><td colspan="8" class="empty-state">No appointments scheduled</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -1145,14 +1289,14 @@ textarea{resize:vertical;min-height:80px}
             </select>
           </div>
         </div>
-        <div class="form-group"><label id="payAccountLabel">Mpamba Number</label><input type="text" id="payAccount" placeholder="e.g. 088 XXXX XXX"></div>
+        <div class="form-group"><label id="payAccountLabel">Mpamba Number</label><input type="text" id="payAccount" placeholder="+265 88 XXXXXXX  |  08XXXXXXXXX"></div>
         <div class="form-group"><label>PIN</label>
-          <div style="position:relative">
-            <input type="password" id="payPin" placeholder="Enter 4-digit PIN" maxlength="4" style="padding-right:40px">
-            <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;color:#94a3b8;font-size:14px" onclick="togglePin()" id="pinToggle">&#128065;</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="password" id="payPin" placeholder="Enter 4-digit PIN" maxlength="4" style="flex:1">
+            <span style="cursor:pointer;color:#64748b;font-size:18px;user-select:none" onclick="togglePin('payPin',this)">&#128065;</span>
           </div>
         </div>
-        <button class="btn btn-success" onclick="confirmPayStep()" style="width:100%;justify-content:center">Continue â€” MWK <span id="payBtnAmount">0</span></button>
+        <button class="btn btn-success" onclick="confirmPayStep()" style="width:100%;justify-content:center">Continue — MWK <span id="payBtnAmount">0</span></button>
         <div class="login-error" id="payError" style="margin-top:8px"></div>
       </div>
     </div>
@@ -1241,6 +1385,351 @@ textarea{resize:vertical;min-height:80px}
       </div>
     </div>
 
+    <!-- ===== PATIENT PORTAL PAGES ===== -->
+    <!-- Patient portal announcement banner -->
+    <div id="ppBanner" class="nhisc-banner" style="display:none;margin-bottom:12px">
+      <div id="ppBannerInner" class="nhisc-banner-inner"></div>
+    </div>
+    <div class="page pp-page" id="page-pp-dashboard">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div>
+          <p style="font-size:13px;color:#94a3b8;margin:0 0 0" id="ppGreeting"></p>
+        </div>
+        <span style="font-size:11px;color:#64748b" id="ppPassportDisplay"></span>
+      </div>
+      <div class="kpi-row" style="margin-bottom:16px">
+        <div class="kpi-card pp-card" onclick="showPage('pp-appointments',null)" style="cursor:pointer"><div class="kpi-val" id="ppApptCount">-</div><div class="kpi-label">Appointments</div></div>
+        <div class="kpi-card pp-card" onclick="showPage('pp-bills',null)" style="cursor:pointer"><div class="kpi-val" id="ppBillCount">-</div><div class="kpi-label">Unpaid Bills</div></div>
+        <div class="kpi-card pp-card" onclick="showPage('pp-results',null)" style="cursor:pointer"><div class="kpi-val" id="ppResultCount">-</div><div class="kpi-label">Results</div></div>
+        <div class="kpi-card pp-card" onclick="showPage('pp-prescriptions',null)" style="cursor:pointer"><div class="kpi-val" id="ppRxCount">-</div><div class="kpi-label">Prescriptions</div></div>
+      </div>
+      <div class="row" style="display:flex;gap:12px;margin-bottom:12px">
+        <div class="card" style="flex:1;margin-bottom:0">
+          <div class="card-title" style="color:#f87171">&#9888; Allergies</div>
+          <div id="ppAllergies"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+        </div>
+        <div class="card" style="flex:1;margin-bottom:0">
+          <div class="card-title" style="color:#fbbf24">&#128138; Chronic Conditions</div>
+          <div id="ppConditions"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title">&#128197; Upcoming Appointments</div>
+        <div id="ppUpcomingAppts"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+      </div>
+
+    </div>
+
+    <div class="page pp-page" id="page-pp-appointments">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin:0">&#128197; My Appointments</h2>
+        <button class="btn btn-primary btn-sm" onclick="showPpBookAppointment()">+ Book Appointment</button>
+      </div>
+      <div id="ppAppointmentsList"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+    </div>
+
+    <div class="page pp-page" id="page-pp-bills">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin:0">&#128176; My Bills</h2>
+        <span style="font-size:12px;color:#64748b" id="ppBillsTotal"></span>
+      </div>
+      <div id="ppBillsList"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+    </div>
+
+    <!-- Patient Pay Bill Modal -->
+    <div class="modal-overlay" id="ppPayModal">
+      <div class="modal" style="max-width:480px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <h3 style="color:#f1f5f9;font-size:16px">Pay Bill</h3>
+          <span style="cursor:pointer;color:#94a3b8;font-size:20px" onclick="closeModal('ppPayModal')">&times;</span>
+        </div>
+        <div style="margin-bottom:16px;padding:12px;background:#0f172a;border-radius:8px">
+          <div style="font-size:13px;color:#94a3b8" id="ppPayBillInfo">Loading...</div>
+        </div>
+        <div class="form-group"><label>Amount (MWK)</label><input type="number" min="0" step="100" id="ppPayAmount" oninput="ppUpdatePayAmount()" style="font-size:18px;font-weight:700;color:#a78bfa"></div>
+        <div class="form-group"><label>Payment Method</label>
+          <div style="display:flex;gap:8px" id="ppPayMethodButtons">
+            <button class="pay-method-btn active" data-method="mpamba" onclick="ppSelectPayMethod('mpamba')"><span style="font-size:20px">&#128241;</span><br>Mpamba</button>
+            <button class="pay-method-btn" data-method="airtel_money" onclick="ppSelectPayMethod('airtel_money')"><span style="font-size:20px">&#128222;</span><br>Airtel Money</button>
+            <button class="pay-method-btn" data-method="bank" onclick="ppSelectPayMethod('bank')"><span style="font-size:20px">&#127974;</span><br>Bank</button>
+          </div>
+        </div>
+        <div id="ppBankSelector" style="display:none">
+          <div class="form-group"><label>Select Bank</label>
+            <select id="ppPayBank" style="width:100%">
+              <option value="FDH Bank">FDH Bank</option>
+              <option value="First Capital Bank">First Capital Bank</option>
+              <option value="National Bank">National Bank</option>
+              <option value="NBS Bank">NBS Bank</option>
+              <option value="Standard Bank">Standard Bank</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label id="ppPayAccountLabel">Mpamba Number</label><input type="text" id="ppPayAccount" placeholder="+265 88 XXXX XXX"></div>
+        <div class="form-group"><label>PIN</label>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="password" id="ppPayPin" placeholder="Enter 4-digit PIN" maxlength="4" inputmode="numeric" pattern="\d*" style="flex:1">
+            <span style="cursor:pointer;color:#64748b;font-size:18px;user-select:none" onclick="ppTogglePin('ppPayPin',this)">&#128065;</span>
+          </div>
+        </div>
+        <button class="btn btn-success" onclick="ppConfirmPayStep()" style="width:100%;justify-content:center">Continue — MWK <span id="ppPayBtnAmount">0</span></button>
+        <div class="login-error" id="ppPayError" style="margin-top:8px"></div>
+      </div>
+    </div>
+
+    <!-- Patient Appointment Detail Modal -->
+    <div class="modal-overlay" id="ppApptDetailModal">
+      <div class="modal" style="max-width:480px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h3 style="margin:0">Appointment Details</h3>
+          <span style="cursor:pointer;color:#94a3b8;font-size:20px" onclick="closeModal('ppApptDetailModal')">&times;</span>
+        </div>
+        <div id="ppApptDetailBody"></div>
+        <button class="btn btn-ghost" onclick="closeModal('ppApptDetailModal')" style="width:100%;justify-content:center;margin-top:8px">Close</button>
+      </div>
+    </div>
+
+    <!-- Patient Confirm Payment Modal -->
+    <div class="modal-overlay" id="ppConfirmModal">
+      <div class="modal" style="max-width:480px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <h3 style="color:#a78bfa;font-size:16px">Confirm Payment</h3>
+          <span style="cursor:pointer;color:#94a3b8;font-size:20px" onclick="closeModal('ppConfirmModal')">&times;</span>
+        </div>
+        <div id="ppConfirmDetails" style="background:#0f172a;border-radius:8px;padding:16px;margin-bottom:16px"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="closeModal('ppConfirmModal')" style="flex:1;justify-content:center">Cancel</button>
+          <button class="btn btn-success" onclick="ppPayBill()" style="flex:1;justify-content:center">Confirm & Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Receipt Modal -->
+    <div class="modal-overlay" id="ppReceiptModal">
+      <div class="modal" style="max-width:480px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <h3 style="color:#a78bfa;font-size:16px">&#128203; Payment Receipt</h3>
+          <span style="cursor:pointer;color:#94a3b8;font-size:20px" onclick="closeModal('ppReceiptModal')">&times;</span>
+        </div>
+        <div id="ppReceiptContent" style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:20px;margin-bottom:16px">
+          <div id="ppReceiptInner"></div>
+        </div>
+        <div class="form-group"><label>Share via</label>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-sm btn-ghost active" onclick="ppSetShareMode(0)" id="ppShareMode0">WhatsApp</button>
+            <button class="btn btn-sm btn-ghost" onclick="ppSetShareMode(1)" id="ppShareMode1">Email</button>
+          </div>
+        </div>
+        <div class="form-group" id="ppShareRecipientGroup">
+          <label id="ppShareRecipientLabel">WhatsApp Number</label>
+          <input type="text" id="ppShareRecipient" placeholder="e.g. +265 XXX XXX XXX">
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" onclick="ppDownloadReceipt('png')" style="flex:1;justify-content:center">&#128247; PNG</button>
+          <button class="btn btn-primary" onclick="ppDownloadReceipt('pdf')" style="flex:1;justify-content:center">&#128196; PDF</button>
+          <button class="btn btn-success" onclick="ppSendShare()" style="flex:1;justify-content:center">&#128172; Send</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page pp-page" id="page-pp-results">
+      <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin-bottom:16px">&#128300; Lab Results</h2>
+      <div id="ppResultsList"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+    </div>
+
+    <div class="page pp-page" id="page-pp-prescriptions">
+      <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin-bottom:16px">&#128137; My Prescriptions</h2>
+      <div id="ppPrescriptionsList"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+    </div>
+
+    <div class="page pp-page" id="page-pp-more">
+      <div id="ppMoreContent" style="max-width:700px;margin:0 auto">
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;overflow:hidden">
+          <div style="display:flex;border-bottom:1px solid #334155">
+            <button class="pp-more-tab active" data-mtab="rights" id="rightsTabLabel" onclick="switchMoreTab('rights')" style="flex:1;padding:10px 6px;background:none;border:none;color:#94a3b8;font-size:11px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-align:center">&#128214; My Rights</button>
+            <button class="pp-more-tab" data-mtab="rate" onclick="switchMoreTab('rate')" style="flex:1;padding:10px 6px;background:none;border:none;color:#94a3b8;font-size:11px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-align:center">&#11088; Rate HCW</button>
+            <button class="pp-more-tab" data-mtab="suggestion" onclick="switchMoreTab('suggestion')" style="flex:1;padding:10px 6px;background:none;border:none;color:#94a3b8;font-size:11px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-align:center">&#128221; Suggest</button>
+            <button class="pp-more-tab" data-mtab="corruption" onclick="switchMoreTab('corruption')" style="flex:1;padding:10px 6px;background:none;border:none;color:#94a3b8;font-size:11px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-align:center">&#128683; Report</button>
+          </div>
+
+          <!-- Rights & Responsibilities -->
+          <div class="pp-more-panel active" id="ppMoreRights">
+            <div style="padding:16px">
+              <div style="display:flex;gap:8px;margin-bottom:12px">
+                <button class="btn btn-sm" onclick="switchRightsTab('patient')" id="rightsTabPatient" style="flex:1;background:#0f172a;border:1px solid #a78bfa;color:#a78bfa">As a Patient</button>
+                <button class="btn btn-sm" onclick="switchRightsTab('research')" id="rightsTabResearch" style="flex:1;background:#0f172a;border:1px solid #334155;color:#94a3b8">As a Research Subject</button>
+                <button class="btn btn-sm" onclick="toggleRightsLang()" id="rightsLangBtn" style="background:#0f172a;border:1px solid #334155;color:#94a3b8;min-width:90px">&#127760; Chichewa</button>
+              </div>
+              <div id="rightsPatientContent">
+                <table style="width:100%;border-collapse:collapse;font-size:13px">
+                  <thead><tr style="border-bottom:2px solid #334155">
+                    <th id="rightsPatRightsHead" style="color:#a78bfa;padding:6px 8px;text-align:left;width:50%">&#128200; Rights</th>
+                    <th id="rightsPatRespHead" style="color:#f87171;padding:6px 8px;text-align:left;width:50%">&#128200; Responsibilities</th>
+                  </tr></thead>
+                  <tbody id="rightsPatientTable">
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Respectful &amp; dignified care</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Provide accurate health information</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Informed consent before procedures</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Follow agreed treatment plans</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Access your medical records</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Keep appointments or cancel in advance</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Privacy &amp; confidentiality</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Treat staff &amp; other patients with respect</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Refuse treatment (where lawful)</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Pay for services as agreed</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Second opinion</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Cooperate with healthcare team</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Clear explanations in your language</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Ask questions when unsure</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="rightsResearchContent" style="display:none">
+                <table style="width:100%;border-collapse:collapse;font-size:13px">
+                  <thead><tr style="border-bottom:2px solid #334155">
+                    <th id="rightsResRightsHead" style="color:#a78bfa;padding:6px 8px;text-align:left;width:50%">&#128300; Rights</th>
+                    <th id="rightsResRespHead" style="color:#f87171;padding:6px 8px;text-align:left;width:50%">&#128300; Responsibilities</th>
+                  </tr></thead>
+                  <tbody id="rightsResearchTable">
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Voluntary participation — no coercion</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Provide honest and accurate information</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Withdraw at any time without penalty</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Follow study protocols and instructions</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Full disclosure of risks &amp; benefits</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Report any adverse effects immediately</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Ask questions about the research</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Inform researchers of changes in health status</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Privacy &amp; data protection</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; Respect confidentiality of other participants</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Compensation for research-related injury</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; —</td></tr>
+                    <tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; Receive results of the study</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; —</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rate Health Care Worker -->
+          <div class="pp-more-panel" id="ppMoreRate">
+            <div style="padding:16px">
+              <h4 style="color:#f1f5f9;font-size:14px;margin:0 0 4px">&#11088; Rate a Health Care Worker</h4>
+              <p style="font-size:12px;color:#64748b;margin:0 0 12px">Help us improve by rating your experience</p>
+              <div class="form-group"><label>Worker Name / ID</label><input type="text" id="rateHcwName" placeholder="e.g. Nurse Mwale or ID #"></div>
+              <div class="form-group"><label>Department</label>
+                <select id="rateHcwDept" style="width:100%">
+                  <option value="">Select department</option>
+                  <option value="Outpatient">Outpatient</option>
+                  <option value="Inpatient">Inpatient</option>
+                  <option value="Emergency">Emergency</option>
+                  <option value="Laboratory">Laboratory</option>
+                  <option value="Pharmacy">Pharmacy</option>
+                  <option value="Maternity">Maternity</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="Surgery">Surgery</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Rating</label>
+                <div style="display:flex;gap:4px;font-size:24px" id="rateStars">
+                  <span onclick="setRating(1)" style="cursor:pointer;color:#475569" id="star1">&#9733;</span>
+                  <span onclick="setRating(2)" style="cursor:pointer;color:#475569" id="star2">&#9733;</span>
+                  <span onclick="setRating(3)" style="cursor:pointer;color:#475569" id="star3">&#9733;</span>
+                  <span onclick="setRating(4)" style="cursor:pointer;color:#475569" id="star4">&#9733;</span>
+                  <span onclick="setRating(5)" style="cursor:pointer;color:#475569" id="star5">&#9733;</span>
+                </div>
+              </div>
+              <div class="form-group"><label>Comment (optional)</label><textarea id="rateHcwComment" rows="3" placeholder="Share your experience..." style="width:100%;box-sizing:border-box"></textarea></div>
+              <button class="btn btn-primary btn-sm" onclick="submitRating()" style="width:100%;justify-content:center">Submit Rating</button>
+              <div id="rateHcwDone" style="display:none;color:#34d399;font-size:13px;text-align:center;margin-top:8px">&#10003; Thank you for your feedback!</div>
+            </div>
+          </div>
+
+          <!-- Suggestion Box -->
+          <div class="pp-more-panel" id="ppMoreSuggestion">
+            <div style="padding:16px">
+              <h4 style="color:#f1f5f9;font-size:14px;margin:0 0 4px">&#128221; Suggestion Box</h4>
+              <p style="font-size:12px;color:#64748b;margin:0 0 12px">Your voice matters — compliments, complaints, or ideas</p>
+              <div class="form-group"><label>Category</label>
+                <select id="suggCategory" style="width:100%">
+                  <option value="compliment">&#128077; Compliment</option>
+                  <option value="complaint">&#128683; Complaint</option>
+                  <option value="idea">&#128161; Idea / Suggestion</option>
+                  <option value="facility">&#127963; Facility Issue</option>
+                  <option value="other">&#128220; Other</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Your message *</label><textarea id="suggMessage" rows="4" placeholder="Please describe in detail..." style="width:100%;box-sizing:border-box"></textarea></div>
+              <div class="form-group"><label>Your name (optional)</label><input type="text" id="suggName" placeholder="Leave blank for anonymous"></div>
+              <div class="form-group"><label>Contact (optional)</label><input type="text" id="suggContact" placeholder="Phone or email if you want a reply"></div>
+              <button class="btn btn-primary btn-sm" onclick="submitSuggestion()" style="width:100%;justify-content:center">Submit</button>
+              <div id="suggDone" style="display:none;color:#34d399;font-size:13px;text-align:center;margin-top:8px">&#10003; Thank you! We value your input.</div>
+            </div>
+          </div>
+
+          <!-- Report Corruption -->
+          <div class="pp-more-panel" id="ppMoreCorruption">
+            <div style="padding:16px">
+              <h4 style="color:#f87171;font-size:14px;margin:0 0 4px">&#128683; Report Corruption</h4>
+              <p style="font-size:12px;color:#64748b;margin:0 0 12px">Help us fight corruption at MHT. Reports are taken seriously.</p>
+              <div class="form-group"><label>Type of incident</label>
+                <select id="corrType" style="width:100%">
+                  <option value="bribery">&#128176; Bribery / Kickback</option>
+                  <option value="fraud">&#128202; Fraud / Forgery</option>
+                  <option value="theft">&#128128; Theft of supplies or funds</option>
+                  <option value="abuse">&#128683; Abuse of power</option>
+                  <option value="nepotism">&#128101; Nepotism / Favoritism</option>
+                  <option value="other">&#128220; Other</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Description *</label><textarea id="corrDescription" rows="4" placeholder="Provide as much detail as possible (dates, names, locations, amounts)..." style="width:100%;box-sizing:border-box"></textarea></div>
+              <div class="form-group"><label>Evidence (optional)</label>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <button class="btn btn-sm btn-ghost" onclick="document.getElementById('corrFileInput').click()">&#128206; Attach File</button>
+                  <span style="font-size:11px;color:#64748b" id="corrFileName">No file chosen</span>
+                  <input type="file" id="corrFileInput" style="display:none" onchange="document.getElementById('corrFileName').textContent=this.files[0]?.name||'No file chosen'">
+                </div>
+              </div>
+              <div class="form-group">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                  <input type="checkbox" id="corrAnonymous" checked> Report anonymously
+                </label>
+                <p style="font-size:11px;color:#64748b;margin:4px 0 0 24px">Your identity will be protected. Anonymous reports are investigated equally.</p>
+              </div>
+              <div id="corrIdentityFields" style="display:none">
+                <div class="form-group"><label>Your name</label><input type="text" id="corrName" placeholder="Full name"></div>
+                <div class="form-group"><label>Contact</label><input type="text" id="corrContact" placeholder="Phone or email"></div>
+              </div>
+              <button class="btn btn-danger btn-sm" onclick="submitCorruptionReport()" style="width:100%;justify-content:center">Submit Report</button>
+              <div id="corrDone" style="display:none;color:#34d399;font-size:13px;text-align:center;margin-top:8px">&#10003; Report submitted. Thank you for helping keep MHT accountable.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="page pp-page" id="page-pp-profile">
+      <div id="ppProfileContent" style="max-width:700px;margin:0 auto"><p style="color:#64748b;font-size:13px">Loading...</p></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Patient portal bottom nav -->
+<div id="ppNav" style="display:none;position:fixed;bottom:0;left:0;width:100%;background:#1e293b;border-top:1px solid #334155;z-index:200;padding:4px 0;justify-content:space-around">
+  <div onclick="showPage('pp-dashboard',null)" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:13px"><div style="font-size:20px;margin-bottom:2px">&#127968;</div>Home</div>
+  <div onclick="showPage('pp-appointments',null)" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:13px"><div style="font-size:20px;margin-bottom:2px">&#128197;</div>Appts</div>
+  <div onclick="showPage('pp-bills',null)" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:13px"><div style="font-size:20px;margin-bottom:2px">&#128176;</div>Bills</div>
+  <div onclick="showPage('pp-results',null)" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:13px"><div style="font-size:20px;margin-bottom:2px">&#128300;</div>Results</div>
+  <div onclick="showPage('pp-more',null)" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:13px"><div style="font-size:20px;margin-bottom:2px">&#8942;</div>More</div>
+</div>
+
+<!-- Book appointment modal (patient portal) -->
+<div class="modal-overlay" id="ppBookApptModal">
+  <div class="modal" style="max-width:440px">
+    <h3>Book Appointment</h3>
+    <div class="form-group"><label>Date & Time *</label><input type="datetime-local" id="ppApptDateTime"></div>
+    <div class="form-group"><label>Type *</label>
+      <select id="ppApptType"><option value="General Checkup">General Checkup</option><option value="Follow-up">Follow-up</option><option value="Consultation">Consultation</option><option value="Lab Test">Lab Test</option><option value="Vaccination">Vaccination</option><option value="Emergency">Emergency</option></select>
+    </div>
+    <div class="form-group"><label>Department</label>
+      <select id="ppApptDept"><option value="">Any</option><option value="Outpatient">Outpatient</option><option value="Internal Medicine">Internal Medicine</option><option value="Pediatrics">Pediatrics</option><option value="Obstetrics & Gynecology">Obstetrics & Gynecology</option><option value="Surgery">Surgery</option><option value="Orthopedics">Orthopedics</option><option value="Ophthalmology">Ophthalmology</option><option value="ENT">ENT</option></select>
+    </div>
+    <div class="form-group"><label>Reason</label><textarea id="ppApptReason" rows="2" placeholder="Brief description of your visit..."></textarea></div>
+    <div class="form-group"><label>Preferred Clinician</label><input type="text" id="ppApptClinician" placeholder="Doctor's name (optional)"></div>
+    <div class="form-group"><label>Location / Room</label><input type="text" id="ppApptLocation" placeholder="e.g. Room 12, Wing B (optional)"></div>
+    <div class="form-group"><label>Notes</label><textarea id="ppApptNotes" rows="2" placeholder="Any additional information..."></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-primary" onclick="ppBookAppointment()" style="flex:1">Book Appointment</button>
+      <button class="btn btn-ghost" onclick="closeModal('ppBookApptModal')">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -1302,7 +1791,12 @@ textarea{resize:vertical;min-height:80px}
         <select id="apptTeleconsult"><option value="false">No</option><option value="true">Yes</option></select>
       </div>
     </div>
+    <div class="form-row">
+      <div class="form-group"><label>Location / Room</label><input type="text" id="apptLocation" placeholder="e.g. Room 12"></div>
+      <div class="form-group"><label>End Time</label><input type="time" id="apptEndTime"></div>
+    </div>
     <div class="form-group"><label>Reason</label><textarea id="apptReason" rows="2"></textarea></div>
+    <div class="form-group"><label>Notes</label><textarea id="apptNotes" rows="2" placeholder="Internal notes / instructions..."></textarea></div>
     <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-primary" onclick="createAppointment()">Schedule</button>
       <button class="btn btn-ghost" onclick="closeModal('appointmentModal')">Cancel</button>
@@ -1395,8 +1889,18 @@ async function authFetch(url, options = {}) {
 
 function showLogin() {
   document.getElementById('loginOverlay').classList.remove('hidden');
+  document.getElementById('adminHeader').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('ppSidebar').style.display = 'none';
   document.getElementById('loginError').style.display = 'none';
   document.getElementById('loginSpinner').style.display = 'none';
+  switchLoginTab('hp');
+  document.getElementById('ppLoginForm').style.display = 'block';
+  document.getElementById('ppRegForm').style.display = 'none';
+  document.getElementById('ppLoginError').style.display = 'none';
+  document.getElementById('ppLoginSpinner').style.display = 'none';
+  document.getElementById('ppRegError').style.display = 'none';
+  document.getElementById('ppRegSpinner').style.display = 'none';
 }
 
 function hideLogin() {
@@ -1414,9 +1918,17 @@ async function login() {
     const r = await fetch(API_BASE + '/auth/login', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({username, password}) });
     if (!r.ok) { const e = await r.json(); throw new Error(e.detail || 'Login failed'); }
     const d = await r.json();
+    localStorage.removeItem('ehealth_ptoken');
+    localStorage.removeItem('ehealth_puser');
+    hidePatientPortal();
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-dashboard').classList.add('active');
     localStorage.setItem('ehealth_token', d.access_token);
     localStorage.setItem('ehealth_user', JSON.stringify({id: d.user_id, name: d.full_name, role: d.role, whatsapp_number: d.whatsapp_number || '', whatsapp_optin: d.whatsapp_optin === true}));
     document.getElementById('navUserName').textContent = d.full_name;
+    document.getElementById('ppSidebar').style.display = 'none';
+    document.getElementById('adminHeader').style.display = '';
+    document.getElementById('sidebar').style.display = '';
     hideLogin();
     loadDashboard();
     loadAppointments();
@@ -1424,6 +1936,10 @@ async function login() {
     loadPrescriptions();
     loadBills();
     loadAnnouncements();
+    switchView('clinic');
+    loadPendingBookings();
+    if (window._notifInterval) clearInterval(window._notifInterval);
+    window._notifInterval = setInterval(loadPendingBookings, 15000);
   } catch (e) {
     document.getElementById('loginError').textContent = e.message;
     document.getElementById('loginError').style.display = 'block';
@@ -1433,10 +1949,955 @@ async function login() {
 }
 
 function logout() {
+  if (window._notifInterval) clearInterval(window._notifInterval);
   localStorage.removeItem('ehealth_token');
   localStorage.removeItem('ehealth_user');
   showLogin();
 }
+
+function switchLoginTab(tab) {
+  document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.login-form').forEach(f => f.style.display = 'none');
+  document.getElementById('form-' + tab).style.display = 'block';
+  const h2 = document.querySelector('#loginBox h2');
+  const sub = document.querySelector('#loginBox .subtitle');
+  if (tab === 'patient') {
+    h2.innerHTML = '<span class="diamond">&#9670;</span> Patient Portal';
+    sub.textContent = 'View your health records, appointments, and more';
+  } else {
+    h2.innerHTML = '<span class="diamond">&#9670;</span> MUST Health Tech (MHT)';
+    sub.textContent = 'Smart Health, Smarter Malawi';
+  }
+}
+
+
+// ===== PATIENT PORTAL =====
+function getPatientToken() { return localStorage.getItem('ehealth_ptoken'); }
+function getPatientUser() { const u = localStorage.getItem('ehealth_puser'); return u ? JSON.parse(u) : null; }
+
+async function patientAuthFetch(url, options = {}) {
+  const token = getPatientToken();
+  if (!token) { window.location.reload(); return; }
+  const headers = { 'Authorization': 'Bearer ' + token, ...options.headers };
+  try {
+    const resp = await fetch(url, { ...options, headers });
+    if (resp.status === 401) { localStorage.removeItem('ehealth_ptoken'); localStorage.removeItem('ehealth_puser'); window.location.reload(); return; }
+    if (!resp.ok) { const err = await resp.json(); throw new Error(err.detail || 'Request failed'); }
+    return resp;
+  } catch(e) { if (!navigator.onLine) return null; throw e; }
+}
+
+function patientLogin() {
+  const id = document.getElementById('ppLoginId').value.trim();
+  const phone = document.getElementById('ppLoginPhone').value.trim();
+  if (!id || !phone) { document.getElementById('ppLoginError').textContent = 'Please enter Passport ID and Phone.'; document.getElementById('ppLoginError').style.display = 'block'; return; }
+  document.getElementById('ppLoginError').style.display = 'none';
+  document.getElementById('ppLoginSpinner').style.display = 'block';
+  localStorage.removeItem('ehealth_token');
+  localStorage.removeItem('ehealth_user');
+  fetch('/api/v1/patient/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ passport_id: id, phone: phone })
+  }).then(r => r.json()).then(d => {
+    document.getElementById('ppLoginSpinner').style.display = 'none';
+    if (d.access_token) {
+      localStorage.setItem('ehealth_ptoken', d.access_token);
+      localStorage.setItem('ehealth_puser', JSON.stringify(d.user));
+      showPatientPortal();
+    } else { document.getElementById('ppLoginError').textContent = d.detail || 'Login failed'; document.getElementById('ppLoginError').style.display = 'block'; }
+  }).catch(e => {
+    document.getElementById('ppLoginSpinner').style.display = 'none';
+    document.getElementById('ppLoginError').textContent = 'Connection error.'; document.getElementById('ppLoginError').style.display = 'block';
+  });
+}
+
+function showPatientLogin() {
+  document.getElementById('ppRegForm').style.display = 'none';
+  document.getElementById('ppLoginForm').style.display = 'block';
+}
+
+function showPatientRegister() {
+  document.getElementById('ppLoginForm').style.display = 'none';
+  document.getElementById('ppRegForm').style.display = 'block';
+}
+
+async function patientRegister() {
+  const name = document.getElementById('ppRegName').value.trim();
+  const dob = document.getElementById('ppRegDob').value;
+  const gender = document.getElementById('ppRegGender').value;
+  const phone = document.getElementById('ppRegPhone').value.trim();
+  if (!name || !dob || !gender || !phone) { document.getElementById('ppRegError').textContent = 'Please fill in required fields.'; return; }
+  document.getElementById('ppRegError').textContent = '';
+  document.getElementById('ppRegSpinner').style.display = 'block';
+  const body = {
+    full_name: name, date_of_birth: dob, gender, phone,
+    email: document.getElementById('ppRegEmail').value.trim() || undefined,
+    district: document.getElementById('ppRegDistrict').value.trim() || undefined,
+    traditional_authority: document.getElementById('ppRegTa').value.trim() || undefined,
+    village: document.getElementById('ppRegVillage').value.trim() || undefined,
+    occupation: document.getElementById('ppRegOccupation').value.trim() || undefined
+  };
+  try {
+    const resp = await fetch('/api/v1/patient/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await resp.json();
+    document.getElementById('ppRegSpinner').style.display = 'none';
+    if (resp.ok && data.access_token) {
+      localStorage.removeItem('ehealth_token');
+      localStorage.removeItem('ehealth_user');
+      localStorage.setItem('ehealth_ptoken', data.access_token);
+      localStorage.setItem('ehealth_puser', JSON.stringify(data.user));
+      showPatientPortal();
+    } else { document.getElementById('ppRegError').textContent = data.detail || 'Registration failed'; }
+  } catch(e) { document.getElementById('ppRegSpinner').style.display = 'none'; document.getElementById('ppRegError').textContent = 'Connection error.'; }
+}
+
+function patientLogout() {
+  localStorage.removeItem('ehealth_ptoken');
+  localStorage.removeItem('ehealth_puser');
+  hidePatientPortal();
+  showLogin(null);
+}
+
+// ===== PENDING BOOKINGS / CLINICIAN NOTIFICATIONS =====
+let notifDropdownOpen = false;
+function toggleNotifDropdown() {
+  notifDropdownOpen = !notifDropdownOpen;
+  document.getElementById('notifDropdown').style.display = notifDropdownOpen ? 'block' : 'none';
+}
+function closeNotifDropdown() { notifDropdownOpen = false; document.getElementById('notifDropdown').style.display = 'none'; }
+
+async function loadPendingBookings() {
+  try {
+    const resp = await fetch('/api/v1/patient/pending-bookings');
+    if (!resp.ok) return;
+    const bookings = await resp.json();
+    const pending = bookings.filter(b => b.status === 'pending');
+    const bell = document.getElementById('notifBell');
+    const badge = document.getElementById('notifBadge');
+    if (pending.length > 0) {
+      bell.style.display = 'inline-flex';
+      badge.textContent = pending.length > 99 ? '99+' : pending.length;
+      badge.style.display = 'flex';
+    } else {
+      bell.style.display = 'none';
+      badge.style.display = 'none';
+    }
+    const list = document.getElementById('notifList');
+    const card = document.getElementById('pendingApprovalsCard');
+    const badge2 = document.getElementById('pendingCountBadge');
+    const tbody = document.getElementById('pendingApprovalsBody');
+    if (!pending.length) {
+      list.innerHTML = '<p style="color:#64748b;font-size:12px;text-align:center;padding:20px 0">No pending approvals.</p>';
+      if (card) card.style.display = 'none';
+      return;
+    }
+    if (card) { card.style.display = 'block'; if (badge2) badge2.textContent = pending.length; }
+    if (tbody) {
+      tbody.innerHTML = pending.map(b => '<tr>' +
+        '<td>' + b.patient_name + '</td>' +
+        '<td style="color:#94a3b8;font-size:11px">' + b.patient_passport_id + '</td>' +
+        '<td style="font-size:11px">' + new Date(b.appointment_date).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) + '</td>' +
+        '<td>' + (b.appointment_type || '') + '</td>' +
+        '<td>' + (b.clinician_name || '--') + '</td>' +
+        '<td><button class="btn btn-sm" onclick="approveBooking(' + b.id + ')" style="background:#065f46;color:#6ee7b7;border:none;padding:2px 10px;border-radius:6px;cursor:pointer;font-size:10px">&#10003; Approve</button> ' +
+        '<button class="btn btn-sm" onclick="rejectBooking(' + b.id + ')" style="background:#5c1010;color:#f87171;border:none;padding:2px 10px;border-radius:6px;cursor:pointer;font-size:10px">&#10007;</button></td></tr>'
+      ).join('');
+    }
+    list.innerHTML = pending.map(b => `
+      <div style="padding:10px;border-bottom:1px solid #1e293b;font-size:12px">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div>
+            <strong style="color:#e2e8f0">${b.patient_name}</strong>
+            <span style="color:#94a3b8;margin-left:4px">(${b.patient_passport_id})</span>
+          </div>
+          <span style="font-size:10px;color:#64748b">${new Date(b.created_at).toLocaleDateString()}</span>
+        </div>
+        <div style="color:#94a3b8;margin:4px 0">${b.appointment_type} &mdash; ${b.department || 'Any'}</div>
+        <div style="color:#64748b;font-size:10px">${new Date(b.appointment_date).toLocaleString()}</div>
+        ${b.clinician_name ? '<div style="color:#64748b;font-size:10px">Dr: ' + b.clinician_name + '</div>' : ''}
+        ${b.reason ? '<div style="color:#64748b;font-size:10px">Reason: ' + b.reason + '</div>' : ''}
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <button class="btn btn-sm" onclick="approveBooking(${b.id})" style="background:#065f46;color:#6ee7b7;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px">&#10003; Approve</button>
+          <button class="btn btn-sm" onclick="rejectBooking(${b.id})" style="background:#5c1010;color:#f87171;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:11px">&#10007; Reject</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { /* silent */ }
+}
+
+async function approveBooking(id) {
+  try {
+    const resp = await fetch('/api/v1/patient/pending-bookings/' + id + '/approve', { method: 'PUT' });
+    if (!resp.ok) { const e = await resp.json(); showToast(e.detail || 'Approve failed', 'error'); return; }
+    const result = await resp.json();
+    showToast(result.message || 'Booking approved!', 'success');
+    loadPendingBookings();
+    loadAppointments();
+  } catch(e) { showToast('Error: ' + e.message, 'error'); }
+}
+
+async function rejectBooking(id) {
+  if (!confirm('Reject this booking?')) return;
+  try {
+    const resp = await fetch('/api/v1/patient/pending-bookings/' + id + '/reject', { method: 'PUT' });
+    if (!resp.ok) { const e = await resp.json(); showToast(e.detail || 'Reject failed', 'error'); return; }
+    const result = await resp.json();
+    showToast(result.message || 'Booking rejected', 'info');
+    loadPendingBookings();
+    loadAppointments();
+  } catch(e) { showToast('Error: ' + e.message, 'error'); }
+}
+
+// Click outside to close notification dropdown
+document.addEventListener('click', function(e) {
+  const dd = document.getElementById('notifDropdown');
+  const bell = document.getElementById('notifBell');
+  if (notifDropdownOpen && dd && !dd.contains(e.target) && bell && !bell.contains(e.target)) {
+    closeNotifDropdown();
+  }
+});
+
+function showPatientPortal() {
+  document.getElementById('loginOverlay').classList.add('hidden');
+  document.getElementById('adminHeader').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'none';
+  document.getElementById('ppSidebar').style.display = 'block';
+  document.getElementById('ppBanner').style.display = 'flex';
+  document.getElementById('ppNav').style.display = 'flex';
+  document.getElementById('ppBookApptModal').classList.add('hidden');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-pp-dashboard').classList.add('active');
+  document.querySelectorAll('#ppSidebar .sidebar-item').forEach(s => s.classList.remove('active'));
+  const homeItem = document.querySelector('#ppSidebar .sidebar-item[data-pppage="pp-dashboard"]');
+  if (homeItem) homeItem.classList.add('active');
+  document.querySelector('.layout').style.height = '100vh';
+  document.querySelector('.content').style.paddingBottom = '70px';
+  localStorage.removeItem('ehealth_token');
+  localStorage.removeItem('ehealth_user');
+  loadPatientDashboard();
+  loadPatientBannerAnnouncements();
+}
+
+function hidePatientPortal() {
+  document.getElementById('ppBanner').style.display = 'none';
+  document.getElementById('ppNav').style.display = 'none';
+  document.getElementById('ppSidebar').style.display = 'none';
+  document.getElementById('adminHeader').style.display = '';
+  document.getElementById('sidebar').style.display = '';
+  document.querySelector('.layout').style.height = '';
+  document.querySelector('.content').style.paddingBottom = '24px';
+}
+
+function getPatientGreeting(firstName) {
+  const today = new Date().toDateString();
+  const lastVisit = localStorage.getItem('pp_last_visit_date');
+  const name = firstName || '';
+  if (lastVisit === today) {
+    return 'Welcome back' + (name ? ', ' + name : '');
+  }
+  localStorage.setItem('pp_last_visit_date', today);
+  const h = new Date().getHours();
+  let timeGreeting = 'Good evening';
+  if (h < 12) timeGreeting = 'Good morning';
+  else if (h < 17) timeGreeting = 'Good afternoon';
+  return timeGreeting + (name ? ', ' + name : '');
+}
+async function loadPatientDashboard() {
+  const user = getPatientUser();
+  if (user) {
+    document.getElementById('ppGreeting').textContent = getPatientGreeting((user.full_name || '').split(' ')[0]);
+    document.getElementById('ppPassportDisplay').textContent = user.passport_id || '';
+  }
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/appointments');
+    const docs = resp ? (await resp.json()) : JSON.parse(localStorage.getItem('cache_pp_appointments') || '[]');
+    if (!resp) { /* offline */ }
+    localStorage.setItem('cache_pp_appointments', JSON.stringify(docs));
+    const upcoming = docs.filter(d => d.status === 'pending' || d.status === 'scheduled' || d.status === 'confirmed').slice(0, 5);
+    document.getElementById('ppApptCount').textContent = docs.length;
+    document.getElementById('ppUpcomingAppts').innerHTML = upcoming.length ? upcoming.map(a =>
+      '<div style="padding:6px 0;border-bottom:1px solid #1e293b;font-size:13px"><span style="color:#38bdf8">' +
+      new Date(a.appointment_date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) +
+      '</span> &mdash; ' + (a.appointment_type || '') + '</div>'
+    ).join('') : '<p style="color:#64748b;font-size:13px">No upcoming appointments.</p>';
+  } catch(e) { document.getElementById('ppApptCount').textContent = '0'; }
+  try {
+    const resp2 = await patientAuthFetch('/api/v1/patient/bills');
+    const bills = resp2 ? (await resp2.json()) : [];
+    document.getElementById('ppBillCount').textContent = bills.filter(b => b.status !== 'paid').length;
+  } catch(e) { document.getElementById('ppBillCount').textContent = '0'; }
+  try {
+    const resp3 = await patientAuthFetch('/api/v1/patient/results');
+    const results = resp3 ? (await resp3.json()) : [];
+    document.getElementById('ppResultCount').textContent = results.length;
+  } catch(e) { document.getElementById('ppResultCount').textContent = '0'; }
+  try {
+    const resp4 = await patientAuthFetch('/api/v1/patient/prescriptions');
+    const rx = resp4 ? (await resp4.json()) : [];
+    document.getElementById('ppRxCount').textContent = rx.length;
+  } catch(e) { document.getElementById('ppRxCount').textContent = '0'; }
+  try {
+    const resp5 = await patientAuthFetch('/api/v1/patient/allergies');
+    const allergies = resp5 ? (await resp5.json()) : [];
+    const el = document.getElementById('ppAllergies');
+    if (allergies.length) {
+      el.innerHTML = allergies.map(a =>
+        '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #1e293b;font-size:13px">' +
+        '<span style="color:' + (a.severity === 'severe' ? '#f87171' : a.severity === 'moderate' ? '#fbbf24' : '#94a3b8') + '">&#9679;</span>' +
+        '<span style="color:#e2e8f0;font-weight:500">' + a.allergen + '</span>' +
+        (a.reaction ? '<span style="color:#94a3b8;font-size:11px">' + a.reaction + '</span>' : '') +
+        '<span style="margin-left:auto;font-size:10px;color:#64748b;text-transform:uppercase">' + a.severity + '</span></div>'
+      ).join('');
+    } else { el.innerHTML = '<p style="color:#64748b;font-size:13px">No known allergies.</p>'; }
+  } catch(e) { document.getElementById('ppAllergies').innerHTML = '<p style="color:#64748b;font-size:13px">No known allergies.</p>'; }
+  try {
+    const resp6 = await patientAuthFetch('/api/v1/patient/conditions');
+    const conditions = resp6 ? (await resp6.json()) : [];
+    const el = document.getElementById('ppConditions');
+    if (conditions.length) {
+      el.innerHTML = conditions.map(c =>
+        '<div style="padding:6px 0;border-bottom:1px solid #1e293b;font-size:13px">' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+        '<span style="color:#e2e8f0;font-weight:500">' + c.diagnosis_name + '</span>' +
+        (c.icd_code ? '<span style="font-size:10px;color:#64748b">(' + c.icd_code + ')</span>' : '') +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-top:2px">' +
+        '<span class="badge" style="font-size:10px;padding:1px 8px;border-radius:10px;background:' + (c.status === 'well-managed' ? '#065f46' : c.status === 'managed' ? '#1e40af' : '#92400e') + ';color:#e2e8f0">' + (c.status || 'active') + '</span>' +
+        (c.notes ? '<span style="font-size:11px;color:#94a3b8">' + c.notes + '</span>' : '') +
+        '</div></div>'
+      ).join('');
+    } else { el.innerHTML = '<p style="color:#64748b;font-size:13px">No chronic conditions recorded.</p>'; }
+  } catch(e) { document.getElementById('ppConditions').innerHTML = '<p style="color:#64748b;font-size:13px">No chronic conditions recorded.</p>'; }
+}
+
+async function loadPatientAppointments() {
+  ppAppointmentsCache = [];
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/appointments');
+    const docs = resp ? (await resp.json()) : JSON.parse(localStorage.getItem('cache_pp_appointments') || '[]');
+    if (!resp) localStorage.setItem('cache_pp_appointments', JSON.stringify(docs));
+    ppAppointmentsCache = docs;
+    if (!docs.length) { document.getElementById('ppAppointmentsList').innerHTML = '<p style="color:#64748b;font-size:13px">No appointments found.</p>'; return; }
+    document.getElementById('ppAppointmentsList').innerHTML =
+      '<table class="pp-table"><tr><th>Date</th><th>Type</th><th>Clinician</th><th>Status</th></tr>' +
+      docs.map(a => '<tr>' +
+        '<td><a href="#" onclick="ppShowApptDetails(' + a.id + ');return false" style="color:#a78bfa;text-decoration:none">' + new Date(a.appointment_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + '</a></td>' +
+        '<td>' + (a.appointment_type || '') + '</td>' +
+        '<td>' + (a.clinician_name || '--') + '</td>' +
+        '<td><span class="badge ' + (a.status === 'cancelled' ? 'badge-red' : a.status === 'confirmed' ? 'badge-green' : a.status === 'scheduled' ? 'badge-blue' : 'badge-yellow') + '">' +
+        (a.status || '') + '</span></td></tr>').join('') + '</table>';
+  } catch(e) { document.getElementById('ppAppointmentsList').innerHTML = '<p style="color:#64748b;font-size:13px">Error loading appointments.</p>'; }
+}
+
+let ppAppointmentsCache = [];
+function ppShowApptDetails(id) {
+  const a = ppAppointmentsCache.find(x => x.id === id);
+  if (!a) return;
+  const fields = [
+    { label: 'Date & Time', value: new Date(a.appointment_date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) },
+    { label: 'Type', value: a.appointment_type || '--' },
+    { label: 'Department', value: a.department || '--' },
+    { label: 'Clinician', value: a.clinician_name || '--' },
+    { label: 'Location / Room', value: a.location || '--' },
+    { label: 'Reason', value: a.reason || '--' },
+    { label: 'Notes', value: a.notes || '--' },
+    { label: 'Status', value: a.status || '--' },
+    { label: 'Created', value: a.created_at ? new Date(a.created_at).toLocaleString() : '--' },
+  ];
+  document.getElementById('ppApptDetailBody').innerHTML = fields.map(f =>
+    '<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #1e293b;font-size:13px">' +
+    '<span style="color:#64748b">' + f.label + '</span><br><span style="color:#e2e8f0">' + f.value + '</span></div>'
+  ).join('');
+  openModal('ppApptDetailModal');
+}
+
+function showPpBookAppointment() { document.getElementById('ppBookApptModal').classList.add('active'); }
+
+async function ppBookAppointment() {
+  const dt = document.getElementById('ppApptDateTime').value;
+  const type = document.getElementById('ppApptType').value;
+  const dept = document.getElementById('ppApptDept').value;
+  const reason = document.getElementById('ppApptReason').value.trim();
+  const clinician = document.getElementById('ppApptClinician').value.trim();
+  const location = document.getElementById('ppApptLocation').value.trim();
+  const notes = document.getElementById('ppApptNotes').value.trim();
+  if (!dt || !type) { showToast('Please fill in date and type.', 'error'); return; }
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/appointments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        appointment_date: dt,
+        appointment_type: type,
+        department: dept || undefined,
+        reason: reason || undefined,
+        clinician_name: clinician || undefined,
+        location: location || undefined,
+        notes: notes || undefined
+      })
+    });
+    if (resp && resp.ok) { showToast('Appointment submitted! Pending clinician approval.', 'success'); closeModal('ppBookApptModal'); loadPatientAppointments(); }
+    else { const e = await resp.json(); showToast(e.detail || 'Booking failed', 'error'); }
+  } catch(e) { showToast('Error: ' + e.message, 'error'); }
+}
+
+let ppCurrentBillId = null;
+let ppCurrentReceipt = null;
+let ppShareMode = 0;
+
+function ppSetShareMode(mode) {
+  ppShareMode = mode;
+  document.querySelectorAll('#ppReceiptModal .btn-ghost').forEach(b => b.classList.remove('active'));
+  document.getElementById('ppShareMode' + mode).classList.add('active');
+  const label = mode === 0 ? 'WhatsApp Number' : 'Email Address';
+  const placeholder = mode === 0 ? 'e.g. +265 XXX XXX XXX' : 'e.g. patient@example.com';
+  document.getElementById('ppShareRecipientLabel').textContent = label;
+  document.getElementById('ppShareRecipient').placeholder = placeholder;
+}
+
+function ppTogglePin(inputId, el) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === 'password') { inp.type = 'text'; el.style.color = '#a78bfa'; }
+  else { inp.type = 'password'; el.style.color = '#64748b'; }
+}
+
+async function ppHashPin(pin) {
+  const enc = new TextEncoder().encode(pin);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function ppUpdatePayAmount() {
+  const inp = document.getElementById('ppPayAmount');
+  let val = inp.value.trim();
+  if (val.length > 1 && val.startsWith('0')) { inp.value = val.replace(/^0+/, ''); val = inp.value; }
+  const num = parseFloat(val);
+  document.getElementById('ppPayBtnAmount').textContent = isNaN(num) || num <= 0 ? '0' : Number(num).toLocaleString();
+}
+
+function normalizeAccountField(el) {
+  let v = el.value;
+  let digits = v.replace(/[^0-9+]/g, '');
+  if (digits.startsWith('+')) { digits = '+' + digits.replace(/[^0-9]/g, ''); }
+  else { digits = digits.replace(/[^0-9]/g, ''); }
+  const isPlus265 = digits.startsWith('+265') || digits.startsWith('265');
+  if (isPlus265) {
+    const raw = digits.replace(/\D/g, '');
+    if (raw.length > 12) { el.value = el.value.slice(0, -1); return; }
+  } else if (digits.startsWith('0')) {
+    if (digits.length > 10) { el.value = el.value.slice(0, -1); return; }
+  }
+  if (document.activeElement !== el) {
+    if (digits.startsWith('+265')) {
+      const d = digits.replace(/\D/g, '');
+      if (d.length >= 7) el.value = '+265 ' + d.slice(3,5) + ' ' + d.slice(5,8) + ' ' + d.slice(8);
+      else if (d.length > 3) el.value = '+265 ' + d.slice(3);
+      else el.value = '+265';
+    } else if (digits.startsWith('0')) {
+      if (digits.length >= 7) el.value = digits.slice(0,3) + ' ' + digits.slice(3,6) + ' ' + digits.slice(6);
+      else el.value = digits;
+    }
+  } else {
+    el.value = v.replace(/[^0-9+ ]/g, '').replace(/\s+/g, ' ').trim();
+  }
+}
+function ppSelectPayMethod(method) {
+  document.querySelectorAll('#ppPayMethodButtons .pay-method-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('#ppPayMethodButtons .pay-method-btn[data-method="' + method + '"]').classList.add('active');
+  document.getElementById('ppBankSelector').style.display = method === 'bank' ? 'block' : 'none';
+  const labels = {mpamba: 'Mpamba Number', airtel_money: 'Airtel Money Number', bank: 'Bank Account Number'};
+  document.getElementById('ppPayAccountLabel').textContent = labels[method] || 'Account Number';
+  const accountInput = document.getElementById('ppPayAccount');
+  if (method === 'mpamba') { accountInput.value = '+265 88'; accountInput.placeholder = '+265 88 XXXXXXX  |  08XXXXXXXXX'; }
+  else if (method === 'airtel_money') { accountInput.value = '+265 99'; accountInput.placeholder = '+265 99 XXXXXXX  |  09XXXXXXXXX'; }
+  else { accountInput.value = ''; accountInput.placeholder = 'e.g. 1234567890'; }
+  accountInput.oninput = function(){ normalizeAccountField(this); };
+  accountInput.onblur = function(){ normalizeAccountField(this); };
+}
+
+function ppOpenPayModal(billId, title, description, amount) {
+  ppCurrentBillId = billId;
+  document.getElementById('ppPayBillInfo').innerHTML = '<strong>' + title + '</strong>' + (description ? '<br><span style="color:#64748b;font-size:12px">' + description + '</span>' : '');
+  document.getElementById('ppPayAmount').value = Number(amount).toLocaleString();
+  document.getElementById('ppPayBtnAmount').textContent = Number(amount).toLocaleString();
+  document.getElementById('ppPayError').style.display = 'none';
+  document.getElementById('ppPayPin').value = '';
+  document.getElementById('ppPayPin').type = 'password';
+  ppSelectPayMethod('mpamba');
+  openModal('ppPayModal');
+}
+
+async function ppConfirmPayStep() {
+  const amountInp = document.getElementById('ppPayAmount');
+  let val = amountInp.value.trim();
+  if (val.length > 1 && val.startsWith('0')) { amountInp.value = val.replace(/^0+/, ''); val = amountInp.value; }
+  const amountNum = parseFloat(val);
+  if (isNaN(amountNum) || amountNum <= 0) { document.getElementById('ppPayError').textContent = 'Please enter a valid amount'; document.getElementById('ppPayError').style.display = 'block'; return; }
+  const method = document.querySelector('#ppPayMethodButtons .pay-method-btn.active').getAttribute('data-method');
+  const account = document.getElementById('ppPayAccount').value.trim();
+  if (!account) { document.getElementById('ppPayError').textContent = 'Please enter your account number'; document.getElementById('ppPayError').style.display = 'block'; return; }
+  if (method === 'mpamba' || method === 'airtel_money') {
+    const digits = account.replace(/\D/g, '');
+    if (digits.startsWith('265')) { if (digits.length !== 12) { document.getElementById('ppPayError').textContent = 'Account must be 12 digits with +265 country code (e.g. +265 88 123 4567)'; document.getElementById('ppPayError').style.display = 'block'; return; } }
+    else if (digits.startsWith('0')) { if (digits.length !== 10) { document.getElementById('ppPayError').textContent = 'Account must be 10 digits starting with 0 (e.g. 0881 234 567)'; document.getElementById('ppPayError').style.display = 'block'; return; } }
+    else { document.getElementById('ppPayError').textContent = 'Account must start with +265 (12 digits) or 0 (10 digits)'; document.getElementById('ppPayError').style.display = 'block'; return; }
+  }
+  const pin = document.getElementById('ppPayPin').value.trim();
+  if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) { document.getElementById('ppPayError').textContent = 'Please enter a valid 4-digit PIN'; document.getElementById('ppPayError').style.display = 'block'; return; }
+  document.getElementById('ppPayError').style.display = 'none';
+  ppPendingPinHash = await ppHashPin(pin);
+  const bankSelect = document.getElementById('ppPayBank');
+  const methodLabels = {mpamba: 'Mpamba', airtel_money: 'Airtel Money', bank: 'Bank Transfer — ' + (bankSelect ? bankSelect.value : '')};
+  document.getElementById('ppConfirmDetails').innerHTML =
+    '<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #334155;font-size:13px"><span style="color:#64748b">Method</span><br><span style="color:#e2e8f0">' + (methodLabels[method] || method) + '</span></div>' +
+    '<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #334155;font-size:13px"><span style="color:#64748b">Account</span><br><span style="color:#e2e8f0">' + account + '</span></div>' +
+    '<div style="font-size:13px"><span style="color:#64748b">Amount</span><br><span style="color:#22c55e;font-size:20px;font-weight:700">MWK ' + Number(amountNum).toLocaleString() + '</span></div>';
+  closeModal('ppPayModal');
+  openModal('ppConfirmModal');
+}
+
+let ppPendingPinHash = '';
+
+async function ppPayBill() {
+  const method = document.querySelector('#ppPayMethodButtons .pay-method-btn.active').getAttribute('data-method');
+  const account = document.getElementById('ppPayAccount').value.trim();
+  const amount = parseFloat(document.getElementById('ppPayAmount').value.trim()) || 0;
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/bills/' + ppCurrentBillId + '/pay', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({payment_method: method, account_number: account, pin_hash: ppPendingPinHash, amount: amount}),
+    });
+    if (!resp || !resp.ok) { const e = resp ? await resp.json() : {}; throw new Error(e.detail || 'Payment failed'); }
+    const receipt = await resp.json();
+    ppCurrentReceipt = receipt;
+    ppPendingPinHash = '';
+    closeModal('ppConfirmModal');
+    ppShowReceipt(receipt);
+    loadPatientBills();
+  } catch (e) {
+    document.getElementById('ppPayError').textContent = e.message;
+    document.getElementById('ppPayError').style.display = 'block';
+    closeModal('ppConfirmModal');
+    openModal('ppPayModal');
+  }
+}
+
+function ppShowReceipt(r) {
+  const methodLabels = {mpamba: 'Mpamba', airtel_money: 'Airtel Money', bank: 'Bank Transfer'};
+  document.getElementById('ppReceiptInner').innerHTML = `
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:32px;margin-bottom:4px;color:#a78bfa">&#9670;</div>
+      <h3 style="color:#a78bfa;font-size:15px;margin:0;letter-spacing:1px">MUST Health Tech (MHT)</h3>
+      <div style="font-size:11px;color:#64748b;margin-top:2px">Payment Receipt</div>
+    </div>
+    <div style="border-top:1px dashed #334155;border-bottom:1px dashed #334155;padding:12px 0;margin-bottom:12px">
+      <div class="receipt-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:#64748b">Reference</span><span style="font-family:monospace;color:#a78bfa">${r.receipt_ref}</span></div>
+      <div class="receipt-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:#64748b">Patient</span><span style="color:#e2e8f0">${r.patient_name}</span></div>
+      <div class="receipt-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:#64748b">Service</span><span style="color:#e2e8f0">${r.title}</span></div>
+      <div class="receipt-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:#64748b">Amount</span><span style="color:#22c55e;font-weight:700">MWK ${Number(r.amount).toLocaleString()}</span></div>
+      <div class="receipt-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:#64748b">Method</span><span style="color:#e2e8f0">${methodLabels[r.payment_method] || r.payment_method}</span></div>
+      <div class="receipt-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:#64748b">Account</span><span style="color:#e2e8f0">${r.account_number}</span></div>
+      <div class="receipt-row" style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px"><span style="color:#64748b">Date</span><span style="color:#e2e8f0">${new Date(r.paid_date).toLocaleString('en-GB', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span></div>
+    </div>
+    <div style="font-size:10px;color:#64748b;text-align:center">Thank you for choosing MUST Health Tech.</div>`;
+  openModal('ppReceiptModal');
+}
+
+function ppDownloadReceipt(format) {
+  if (!ppCurrentReceipt) return;
+  const receipt = ppCurrentReceipt;
+  const methodLabels = {mpamba: 'Mpamba', airtel_money: 'Airtel Money', bank: 'Bank Transfer'};
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+    body{font-family:Arial,sans-serif;background:#1e293b;color:#e2e8f0;padding:40px;max-width:480px;margin:0 auto}
+    .header{text-align:center;margin-bottom:20px}
+    .header h1{color:#a78bfa;font-size:18px;margin:4px 0;letter-spacing:1px}
+    .header .sub{color:#64748b;font-size:12px}
+    .divider{border-top:1px dashed #475569;margin:12px 0}
+    .row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+    .row .l{color:#64748b}.row .r{color:#e2e8f0}
+    .amount{color:#22c55e;font-weight:700}
+    .footer{text-align:center;font-size:10px;color:#64748b;margin-top:16px}
+    .ref{font-family:monospace;color:#a78bfa}</style></head><body>
+    <div class="header"><div style="font-size:40px;color:#a78bfa;margin-bottom:4px">&#9670;</div>
+    <h1>MUST Health Tech (MHT)</h1><div class="sub">Payment Receipt</div></div>
+    <div class="divider"></div>
+    <div class="row"><span class="l">Reference</span><span class="ref">${receipt.receipt_ref}</span></div>
+    <div class="row"><span class="l">Patient</span><span class="r">${receipt.patient_name}</span></div>
+    <div class="row"><span class="l">Service</span><span class="r">${receipt.title}</span></div>
+    <div class="row"><span class="l">Amount</span><span class="amount">MWK ${Number(receipt.amount).toLocaleString()}</span></div>
+    <div class="row"><span class="l">Method</span><span class="r">${methodLabels[receipt.payment_method] || receipt.payment_method}</span></div>
+    <div class="row"><span class="l">Account</span><span class="r">${receipt.account_number}</span></div>
+    <div class="row"><span class="l">Date</span><span class="r">${new Date(receipt.paid_date).toLocaleString('en-GB', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span></div>
+    <div class="divider"></div>
+    <div class="footer">Thank you for choosing MUST Health Tech.</div></body></html>`;
+  if (format === 'pdf') {
+    const win = window.open('', '_blank');
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    win.print();
+  } else {
+    const blob = new Blob([html], {type: 'image/svg+xml'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'receipt_' + receipt.receipt_ref + '.html';
+    a.click();
+  }
+}
+
+function ppSendShare() {
+  if (!ppCurrentReceipt) return;
+  const recipient = document.getElementById('ppShareRecipient').value.trim();
+  if (!recipient) { showToast('Please enter a ' + (ppShareMode === 0 ? 'WhatsApp number' : 'email address'), 'info'); return; }
+  if (ppShareMode === 0) {
+    const url = 'https://wa.me/' + recipient.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(ppCurrentReceipt.share_text);
+    window.open(url, '_blank');
+  } else {
+    const subject = encodeURIComponent('Payment Receipt — ' + ppCurrentReceipt.receipt_ref);
+    const body = encodeURIComponent(ppCurrentReceipt.share_text);
+    window.open('mailto:' + recipient + '?subject=' + subject + '&body=' + body, '_blank');
+  }
+  showToast('Receipt shared', 'success');
+}
+
+async function loadPatientBills() {
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/bills');
+    const bills = resp ? (await resp.json()) : [];
+    const el = document.getElementById('ppBillsList');
+    const totalEl = document.getElementById('ppBillsTotal');
+    const unpaid = bills.filter(b => b.status === 'unpaid');
+    totalEl.textContent = unpaid.length + ' unpaid of ' + bills.length + ' bills';
+    if (!bills.length) { el.innerHTML = '<p style="color:#64748b;font-size:13px">No bills found.</p>'; return; }
+    const methods = {mpamba: 'Mpamba', airtel_money: 'Airtel Money', bank: 'Bank Transfer'};
+    el.innerHTML = bills.map(b => `
+      <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px">
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600;color:#f1f5f9">${b.title || 'Bill'}</div>
+          <div style="font-size:12px;color:#64748b">${b.description || ''}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:2px">${new Date(b.created_at).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:16px;font-weight:700;color:#f1f5f9">MWK ${Number(b.amount).toLocaleString()}</div>
+          <div class="${b.status === 'paid' ? 'pp-success' : b.status === 'cancelled' ? 'pp-cancelled' : 'pp-pending'}" style="font-size:11px;font-weight:600;margin-top:2px">${b.status === 'paid' ? 'Paid' + (b.payment_method ? ' via ' + (methods[b.payment_method] || b.payment_method) : '') : b.status === 'cancelled' ? 'Cancelled' : 'Unpaid'}</div>
+          ${b.status === 'unpaid' ? '<button class="btn btn-primary btn-sm" onclick="ppOpenPayModal(' + b.id + ',\'' + b.title.replace(/'/g,"\\'") + '\',\'' + (b.description||'').replace(/'/g,"\\'") + '\',' + b.amount + ')" style="margin-top:6px;font-size:11px">Pay Now</button>' : ''}
+        </div>
+      </div>`).join('');
+  } catch(e) { document.getElementById('ppBillsList').innerHTML = '<p style="color:#64748b;font-size:13px">Error loading bills.</p>'; }
+}
+
+async function loadPatientResults() {
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/results');
+    const results = resp ? (await resp.json()) : [];
+    if (!results.length) { document.getElementById('ppResultsList').innerHTML = '<p style="color:#64748b;font-size:13px">No lab results found.</p>'; return; }
+    document.getElementById('ppResultsList').innerHTML =
+      '<table class="pp-table"><tr><th>Date</th><th>Test</th><th>Result</th><th>Status</th></tr>' +
+      results.map(r => '<tr><td>' + new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) +
+      '</td><td>' + (r.test_name || '') + '</td><td>' + (r.result_value || '') + '</td><td class="' + (r.status === 'completed' ? 'pp-success' : 'pp-pending') + '">' +
+      (r.status || '') + '</td></tr>').join('') + '</table>';
+  } catch(e) { document.getElementById('ppResultsList').innerHTML = '<p style="color:#64748b;font-size:13px">Error loading results.</p>'; }
+}
+
+async function loadPatientPrescriptions() {
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/prescriptions');
+    const rx = resp ? (await resp.json()) : [];
+    if (!rx.length) { document.getElementById('ppPrescriptionsList').innerHTML = '<p style="color:#64748b;font-size:13px">No prescriptions found.</p>'; return; }
+    document.getElementById('ppPrescriptionsList').innerHTML =
+      '<table class="pp-table"><tr><th>Date</th><th>Medication</th><th>Dosage</th><th>Status</th></tr>' +
+      rx.map(r => '<tr><td>' + new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) +
+      '</td><td>' + (r.medication || '') + '</td><td>' + (r.dosage || '') + '</td><td class="' + (r.status === 'dispensed' ? 'pp-success' : r.status === 'cancelled' ? 'pp-cancelled' : 'pp-pending') + '">' +
+      (r.status || '') + '</td></tr>').join('') + '</table>';
+  } catch(e) { document.getElementById('ppPrescriptionsList').innerHTML = '<p style="color:#64748b;font-size:13px">Error loading prescriptions.'; }
+}
+
+// ===== MORE PAGE =====
+let ppCurrentRating = 0;
+
+function switchMoreTab(tab) {
+  document.querySelectorAll('.pp-more-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.pp-more-tab[data-mtab="' + tab + '"]').classList.add('active');
+  document.querySelectorAll('.pp-more-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('ppMore' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+}
+
+let rightsLang = 'en';
+const rightsData = {
+  patient: {
+    en: {
+      rights: ['Respectful &amp; dignified care','Informed consent before procedures','Access your medical records','Privacy &amp; confidentiality','Refuse treatment (where lawful)','Second opinion','Clear explanations in your language'],
+      resp:  ['Provide accurate health information','Follow agreed treatment plans','Keep appointments or cancel in advance','Treat staff &amp; other patients with respect','Pay for services as agreed','Cooperate with healthcare team','Ask questions when unsure'],
+    },
+    ny: {
+      rights: ['Chisamaliro cholemekezeka','Kuvomereza mutadziwa zonse musanachitidwe','Kupeza mbiri yanu yachipatala','Chinsinsi','Kukana chithandizo (pamene kuli kovomerezeka)','Maganizo a dokotala wina','Kufotokozeredwa m\'chinenero chanu'],
+      resp:  ['Kupereka zambiri zolondola za thanzi','Kutsatira ndondomeko ya chithandizo','Kusunga nthawi ya apaintimenti kapena kuletsa masiku asanakwane','Kuchitira ogwira ntchito ndi odwala ena ulemu','Kulipira chithandizo monga momwe mwagwirizana','Kugwirizana ndi gulu la zaumoyo','Kufunsa mukakayika'],
+    },
+  },
+  research: {
+    en: {
+      rights: ['Voluntary participation — no coercion','Withdraw at any time without penalty','Full disclosure of risks &amp; benefits','Ask questions about the research','Privacy &amp; data protection','Compensation for research-related injury','Receive results of the study'],
+      resp:  ['Provide honest and accurate information','Follow study protocols and instructions','Report any adverse effects immediately','Inform researchers of changes in health status','Respect confidentiality of other participants','—','—'],
+    },
+    ny: {
+      rights: ['Kutenga nawo mbali mwaufulu — popanda kukakamizidwa','Kusiya nthawi iliyonse popanda chilango','Kudziwa zowopsa ndi phindu lonse','Kufunsa mafunso okhudza kafukufuku','Chinsinsi ndi chitetezo cha deta','Kupeza chipukuta misozi ngati mwavulala','Kupeza zotsatira za kafukufuku'],
+      resp:  ['Kupereka zambiri zowona ndi zolondola','Kutsatira ndondomeko za kafukufuku','Kuwuza ofufuza nthawi yomweyo ngati mwazindikira zoopsa','Kudziwitsa ofufuza ngati thanzi lasintha','Kulemekeza chinsinsi cha ena otenga nawo mbali','—','—'],
+    },
+  },
+};
+function switchRightsTab(tab) {
+  document.getElementById('rightsTabPatient').style.borderColor = tab === 'patient' ? '#a78bfa' : '#334155';
+  document.getElementById('rightsTabPatient').style.color = tab === 'patient' ? '#a78bfa' : '#94a3b8';
+  document.getElementById('rightsTabResearch').style.borderColor = tab === 'research' ? '#a78bfa' : '#334155';
+  document.getElementById('rightsTabResearch').style.color = tab === 'research' ? '#a78bfa' : '#94a3b8';
+  document.getElementById('rightsPatientContent').style.display = tab === 'patient' ? 'block' : 'none';
+  document.getElementById('rightsResearchContent').style.display = tab === 'research' ? 'block' : 'none';
+}
+function toggleRightsLang() {
+  const isNy = rightsLang === 'en';
+  rightsLang = isNy ? 'ny' : 'en';
+  document.getElementById('rightsLangBtn').textContent = isNy ? '\u{1F310} English' : '\u{1F310} Chichewa';
+  document.getElementById('rightsTabLabel').innerHTML = isNy ? '\u{1F214} Ufulu Wanga' : '\u{1F214} My Rights';
+  document.getElementById('rightsTabPatient').textContent = isNy ? 'Monga Wodwala' : 'As a Patient';
+  document.getElementById('rightsTabResearch').textContent = isNy ? 'Monga Wofufuzidwa' : 'As a Research Subject';
+  document.getElementById('rightsPatRightsHead').innerHTML = isNy ? '\u{1F4C8} Ufulu' : '\u{1F4C8} Rights';
+  document.getElementById('rightsPatRespHead').innerHTML = isNy ? '\u{1F4C8} Udindo' : '\u{1F4C8} Responsibilities';
+  document.getElementById('rightsResRightsHead').innerHTML = isNy ? '\u{1F4E6} Ufulu' : '\u{1F4E6} Rights';
+  document.getElementById('rightsResRespHead').innerHTML = isNy ? '\u{1F4E6} Udindo' : '\u{1F4E6} Responsibilities';
+  ['patient','research'].forEach(tab => {
+    const d = rightsData[tab][rightsLang];
+    const tbody = document.getElementById('rights' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Table');
+    tbody.innerHTML = d.rights.map((r, i) =>
+      '<tr style="border-bottom:1px solid #1e293b"><td style="padding:6px 8px;color:#cbd5e1">&#8226; ' + r + '</td><td style="padding:6px 8px;color:#cbd5e1">&#8226; ' + d.resp[i] + '</td></tr>'
+    ).join('');
+  });
+}
+
+function setRating(n) {
+  ppCurrentRating = n;
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById('star' + i).style.color = i <= n ? '#fbbf24' : '#475569';
+  }
+}
+
+function submitRating() {
+  const name = document.getElementById('rateHcwName').value.trim();
+  const dept = document.getElementById('rateHcwDept').value;
+  if (!name) { showToast('Please enter the worker name or ID', 'info'); return; }
+  if (!ppCurrentRating) { showToast('Please select a rating', 'info'); return; }
+  const entries = JSON.parse(localStorage.getItem('pp_ratings') || '[]');
+  entries.push({ worker: name, dept, rating: ppCurrentRating, comment: document.getElementById('rateHcwComment').value.trim(), date: new Date().toISOString() });
+  localStorage.setItem('pp_ratings', JSON.stringify(entries));
+  document.getElementById('rateHcwDone').style.display = 'block';
+  setTimeout(() => document.getElementById('rateHcwDone').style.display = 'none', 3000);
+}
+
+function submitSuggestion() {
+  const msg = document.getElementById('suggMessage').value.trim();
+  if (!msg) { showToast('Please enter your message', 'info'); return; }
+  const entries = JSON.parse(localStorage.getItem('pp_suggestions') || '[]');
+  entries.push({
+    category: document.getElementById('suggCategory').value,
+    message: msg,
+    name: document.getElementById('suggName').value.trim() || 'Anonymous',
+    contact: document.getElementById('suggContact').value.trim(),
+    date: new Date().toISOString(),
+  });
+  localStorage.setItem('pp_suggestions', JSON.stringify(entries));
+  document.getElementById('suggMessage').value = '';
+  document.getElementById('suggName').value = '';
+  document.getElementById('suggContact').value = '';
+  document.getElementById('suggDone').style.display = 'block';
+  setTimeout(() => document.getElementById('suggDone').style.display = 'none', 3000);
+}
+
+function submitCorruptionReport() {
+  const desc = document.getElementById('corrDescription').value.trim();
+  if (!desc) { showToast('Please describe the incident', 'info'); return; }
+  const isAnonymous = document.getElementById('corrAnonymous').checked;
+  const entries = JSON.parse(localStorage.getItem('pp_corruption_reports') || '[]');
+  entries.push({
+    type: document.getElementById('corrType').value,
+    description: desc,
+    anonymous: isAnonymous,
+    name: isAnonymous ? '' : document.getElementById('corrName').value.trim(),
+    contact: isAnonymous ? '' : document.getElementById('corrContact').value.trim(),
+    file: document.getElementById('corrFileName').textContent,
+    date: new Date().toISOString(),
+  });
+  localStorage.setItem('pp_corruption_reports', JSON.stringify(entries));
+  document.getElementById('corrDescription').value = '';
+  document.getElementById('corrName').value = '';
+  document.getElementById('corrContact').value = '';
+  document.getElementById('corrFileName').textContent = 'No file chosen';
+  document.getElementById('corrDone').style.display = 'block';
+  setTimeout(() => document.getElementById('corrDone').style.display = 'none', 3000);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('corrAnonymous')?.addEventListener('change', function() {
+    document.getElementById('corrIdentityFields').style.display = this.checked ? 'none' : 'block';
+  });
+});
+
+function getPatientAvatarSrc(passportId) {
+  const saved = localStorage.getItem('patient_avatar_' + passportId);
+  return saved || '';
+}
+function setPatientAvatar(passportId, dataUrl) {
+  localStorage.setItem('patient_avatar_' + passportId, dataUrl);
+}
+function renderAvatarHtml(passportId, fullName, size) {
+  size = size || 56;
+  const saved = getPatientAvatarSrc(passportId);
+  if (saved) {
+    return `<img src="${saved}" style="width:${size}px;height:${size}px;border-radius:50%;border:2px solid #334155;object-fit:cover">`;
+  }
+  const initial = (fullName || 'U').charAt(0).toUpperCase();
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:#1e3a5f;border:2px solid #334155;display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.43)}px;color:#a78bfa;font-weight:700">${initial}</div>`;
+}
+function ppUploadAvatar() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const user = getPatientUser();
+      if (user && user.passport_id) setPatientAvatar(user.passport_id, ev.target.result);
+      showToast('Photo updated', 'success');
+      loadPatientProfile();
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+async function loadPatientProfile() {
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/profile');
+    const p = resp ? (await resp.json()) : getPatientUser();
+    if (!p) { document.getElementById('ppProfileContent').innerHTML = '<p style="color:#64748b;font-size:13px">Unable to load profile.</p>'; return; }
+    const initial = (p.full_name || 'U').charAt(0).toUpperCase();
+    const dob = p.date_of_birth ? new Date(p.date_of_birth).toLocaleDateString('en-GB') : '';
+    const avatarHtml = renderAvatarHtml(p.passport_id, p.full_name);
+    document.getElementById('ppProfileContent').innerHTML = `
+      <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:20px">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #334155">
+          ${avatarHtml}
+          <div>
+            <div style="font-size:18px;font-weight:600;color:#f1f5f9">${p.full_name || ''}</div>
+            <div style="font-size:12px;color:#64748b">${p.passport_id || ''}</div>
+            <button class="btn btn-sm" onclick="ppUploadAvatar()" style="margin-top:6px;font-size:11px">Change Photo</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="form-group"><label>Passport ID</label><input value="${p.passport_id || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>Full Name</label><input value="${p.full_name || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>Date of Birth</label><input value="${dob}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>Gender</label><input value="${p.gender || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>Phone</label><input value="${p.phone || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>Email</label><input value="${p.email || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>District</label><input value="${p.district || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>TA</label><input value="${p.traditional_authority || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>Village</label><input value="${p.village || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+          <div class="form-group"><label>Occupation</label><input value="${p.occupation || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid #334155">
+          <button class="btn btn-primary btn-sm" onclick="ppEditProfile()" style="width:100%">Edit Profile</button>
+        </div>
+      </div>`;
+  } catch(e) { document.getElementById('ppProfileContent').innerHTML = '<p style="color:#64748b;font-size:13px">Error loading profile.</p>'; }
+}
+
+function ppEditProfile() {
+  const p = getPatientUser() || {};
+  const dob = p.date_of_birth ? new Date(p.date_of_birth).toLocaleDateString('en-GB') : '';
+  const avatarHtml = renderAvatarHtml(p.passport_id, p.full_name);
+  document.getElementById('ppProfileContent').innerHTML = `
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:20px">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #334155">
+        ${avatarHtml}
+        <div>
+          <div style="font-size:18px;font-weight:600;color:#f1f5f9">${p.full_name || ''}</div>
+          <div style="font-size:12px;color:#64748b">${p.passport_id || ''}</div>
+          <button class="btn btn-sm" onclick="ppUploadAvatar()" style="margin-top:6px;font-size:11px">Change Photo</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group"><label>Passport ID</label><input value="${p.passport_id || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>Full Name</label><input value="${p.full_name || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>Date of Birth</label><input value="${dob}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>Gender</label><input value="${p.gender || ''}" readonly style="color:#94a3b8;background:#0f172a;border:1px solid #334155;padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>Phone</label><input type="text" id="ppEditPhone" value="${p.phone || ''}" placeholder="Phone number" style="padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="ppEditEmail" value="${p.email || ''}" placeholder="patient@example.com" style="padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>District</label><input type="text" id="ppEditDistrict" value="${p.district || ''}" placeholder="e.g. Lilongwe" style="padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>TA</label><input type="text" id="ppEditTa" value="${p.traditional_authority || ''}" placeholder="e.g. Kabudula" style="padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>Village</label><input type="text" id="ppEditVillage" value="${p.village || ''}" placeholder="Village name" style="padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+        <div class="form-group"><label>Occupation</label><input type="text" id="ppEditOccupation" value="${p.occupation || ''}" placeholder="e.g. Farmer" style="padding:8px 12px;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box"></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid #334155">
+        <button class="btn btn-primary btn-sm" onclick="ppUpdateProfile()" style="flex:1">Save Changes</button>
+        <button class="btn btn-ghost btn-sm" onclick="loadPatientProfile()" style="flex:1">Cancel</button>
+      </div>
+    </div>`;
+}
+
+async function ppUpdateProfile() {
+  const body = {};
+  ['email','phone','district','ta','village','occupation'].forEach(k => {
+    const v = document.getElementById('ppEdit' + k.charAt(0).toUpperCase() + k.slice(1));
+    if (v && v.value.trim()) body[k === 'ta' ? 'traditional_authority' : k] = v.value.trim();
+  });
+  if (!Object.keys(body).length) { showToast('No changes to save.', 'info'); return; }
+  try {
+    const resp = await patientAuthFetch('/api/v1/patient/profile', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (resp && resp.ok) { showToast('Profile updated', 'success'); loadPatientProfile(); }
+    else { const e = await resp.json(); showToast(e.detail || 'Update failed', 'error'); }
+  } catch(e) { showToast('Error: ' + e.message, 'error'); }
+}
+
+function openPatientAnnouncement(title, content, category) {
+  const catColors = {critical:'#ef4444',public_health:'#f97316',service:'#34d399',admin:'#60a5fa'};
+  const catLabels = {critical:'Critical Alert',public_health:'Public Health',service:'Service Notice',admin:'Administrative'};
+  const color = catColors[category] || '#64748b';
+  const label = catLabels[category] || category;
+  const html = `
+    <div style="border-left:4px solid ${color};padding-left:14px;margin-bottom:12px">
+      <span style="font-size:11px;font-weight:600;color:${color};text-transform:uppercase;letter-spacing:.5px">${label}</span>
+      <h3 style="font-size:16px;font-weight:600;color:#f1f5f9;margin:4px 0">${title}</h3>
+      <p style="font-size:13px;color:#cbd5e1;line-height:1.6;margin-top:8px">${content}</p>
+    </div>`;
+  const existing = document.getElementById('toastContainer') || (() => {
+    const c = document.createElement('div'); c.id = 'toastContainer';
+    c.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;background:#1e293b;border:1px solid #334155;border-radius:8px;padding:16px 20px;max-width:480px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5)';
+    document.body.appendChild(c); return c;
+  })();
+  existing.innerHTML = html;
+  setTimeout(() => { existing.innerHTML = ''; }, 8000);
+}
+async function loadPatientBannerAnnouncements() {
+  try {
+    const resp = await fetch('/api/v1/info/announcements?active_only=true');
+    const data = resp && resp.ok ? (await resp.json()) : [];
+    const items = data.slice(0, 10);
+    const el = document.getElementById('ppBannerInner');
+    if (items.length) {
+      const makeItem = a => {
+        const catClass = 'banner-' + (a.category || 'admin');
+        return `<span class="banner-item ${catClass}" onclick="openPatientAnnouncement('${a.title.replace(/'/g,"\\'")}','${(a.content||'').replace(/'/g,"\\'")}','${a.category||'admin'}')" title="${a.title.replace(/"/g,'&quot;')} — ${(a.content||'').replace(/"/g,'&quot;')}">
+          <span class="banner-dot"></span>${a.title}
+        </span>`;
+      };
+      el.innerHTML = items.map(makeItem).join('') + items.map(makeItem).join('');
+    } else { el.innerHTML = '<span class="banner-item banner-service"><span class="banner-dot"></span>Welcome to the Patient Portal</span>'; }
+  } catch(e) { document.getElementById('ppBannerInner').innerHTML = '<span class="banner-item banner-service"><span class="banner-dot"></span>Welcome to the Patient Portal</span>'; }
+}
+
 
 // ===== TOAST =====
 function showToast(msg, type) {
@@ -1473,6 +2934,28 @@ document.getElementById('hamburgerDropdown').addEventListener('click', function(
   if (item.dataset.hamburger === 'logout') { logout(); return; }
   if (item.dataset.hamburger === 'account') openAccountModal();
 });
+
+// ===== PATIENT HAMBURGER =====
+const ppHamburger = document.getElementById('ppHamburgerBtn');
+const ppHamburgerDd = document.getElementById('ppHamburgerDropdown');
+if (ppHamburger) {
+  ppHamburger.addEventListener('click', function(e) {
+    e.stopPropagation();
+    ppHamburgerDd.classList.toggle('open');
+    if (ppHamburgerDd.classList.contains('open')) {
+      const rect = this.getBoundingClientRect();
+      ppHamburgerDd.style.top = (rect.bottom + 4) + 'px';
+      ppHamburgerDd.style.left = rect.left + 'px';
+    }
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#ppHamburgerBtn') && ppHamburgerDd.classList.contains('open')) ppHamburgerDd.classList.remove('open');
+  });
+  ppHamburgerDd.addEventListener('click', function(e) {
+    const item = e.target.closest('a');
+    if (item) ppHamburgerDd.classList.remove('open');
+  });
+}
 
 // ===== WHATSAPP NOTIFICATIONS =====
 function showModal(id) {
@@ -1622,6 +3105,28 @@ function showPage(pageId, sidebarItem) {
 
     if (pageId === 'dashboard') { loadDashboard(); switchView('clinic'); }
     if (pageId === 'admin') { loadSystemStatus(); }
+    if (pageId === 'appointments') { loadPendingBookings(); }
+    clearInterval(apptRefreshInterval); document.getElementById('apptAutoRefresh') && (document.getElementById('apptAutoRefresh').checked = false);
+
+  // patient portal data loading
+  if (pageId === 'pp-dashboard') { loadPatientDashboard(); }
+  else if (pageId === 'pp-appointments') { loadPatientAppointments(); }
+  else if (pageId === 'pp-bills') { loadPatientBills(); }
+  else if (pageId === 'pp-results') { loadPatientResults(); }
+  else if (pageId === 'pp-prescriptions') { loadPatientPrescriptions(); }
+  else if (pageId === 'pp-profile') { loadPatientProfile(); }
+
+  // highlight patient sidebar
+  if (pageId && pageId.startsWith('pp-')) {
+    document.querySelectorAll('#ppSidebar .sidebar-item').forEach(s => s.classList.remove('active'));
+    const ppSideItem = document.querySelector('#ppSidebar .sidebar-item[data-pppage="' + pageId + '"]');
+    if (ppSideItem) ppSideItem.classList.add('active');
+  }
+
+  // highlight patient bottom nav
+  document.querySelectorAll('#ppNav > div').forEach(d => d.style.color = '#94a3b8');
+  const ppTab = document.querySelector('#ppNav > div[onclick*="' + pageId + '"]');
+  if (ppTab) ppTab.style.color = '#a78bfa';
 }
 
 // ===== NOTIFICATIONS =====
@@ -2030,7 +3535,6 @@ function renderNewSections() {
       });
     }
   } catch(e) { console.error('equipment:', e); }
-  console.log('renderNewSections done');
 }
 
 function switchView(view) {
@@ -2292,9 +3796,12 @@ async function createAppointment() {
     appointment_type: document.getElementById('apptType').value,
     department: document.getElementById('apptDepartment').value || null,
     clinician_name: document.getElementById('apptClinician').value || null,
+    location: document.getElementById('apptLocation').value || null,
+    end_time: document.getElementById('apptEndTime').value || null,
     priority: document.getElementById('apptPriority').value,
     is_teleconsult: document.getElementById('apptTeleconsult').value === 'true',
     reason: document.getElementById('apptReason').value || null,
+    notes: document.getElementById('apptNotes').value || null,
   };
   if (!data.patient_id || !data.appointment_date) {
     showNotification('Patient ID and Date/Time are required', 'error'); return;
@@ -2312,26 +3819,72 @@ async function createAppointment() {
   }
 }
 
+let apptRefreshInterval = null;
+
+function toggleAutoRefresh() {
+  if (document.getElementById('apptAutoRefresh').checked) {
+    apptRefreshInterval = setInterval(loadAppointments, 30000);
+  } else {
+    clearInterval(apptRefreshInterval);
+    apptRefreshInterval = null;
+  }
+}
+
 async function loadAppointments() {
   try {
-    const r = await authFetch(API_BASE + '/appointments/today/upcoming');
+    const r = await authFetch(API_BASE + '/appointments/');
     if (!r.ok) throw new Error();
-    const appts = await r.json();
+    let appts = await r.json();
+    const filter = document.getElementById('apptStatusFilter')?.value;
+    if (filter) appts = appts.filter(a => a.status === filter);
     const tbody = document.getElementById('appointmentTableBody');
     if (appts.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No appointments found</td></tr>'; return;
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No appointments found</td></tr>'; return;
     }
     tbody.innerHTML = appts.map(a => `<tr>
       <td>Patient #${a.patient_id}</td>
       <td>${new Date(a.appointment_date).toLocaleString()}</td>
       <td>${a.appointment_type}</td>
       <td>${a.clinician_name || '--'}</td>
-      <td><span class="badge ${a.status === 'confirmed' ? 'badge-green' : a.status === 'cancelled' ? 'badge-red' : 'badge-yellow'}">${a.status}</span></td>
+      <td>${a.location || '--'}</td>
+      <td><span class="badge ${a.status === 'confirmed' ? 'badge-green' : a.status === 'cancelled' ? 'badge-red' : a.status === 'scheduled' ? 'badge-blue' : 'badge-yellow'}">${a.status}</span></td>
       <td>${a.priority}</td>
+      <td style="white-space:nowrap">
+        ${a.status === 'scheduled' ? '<button class="btn btn-sm btn-success" onclick="confirmAppointment(' + a.id + ')" style="margin-right:4px">Confirm</button><button class="btn btn-sm btn-ghost" onclick="cancelAppointment(' + a.id + ')">Cancel</button>' : ''}
+        ${a.status === 'confirmed' ? '<button class="btn btn-sm btn-ghost" onclick="cancelAppointment(' + a.id + ')">Cancel</button>' : ''}
+        ${a.status === 'cancelled' ? '<button class="btn btn-sm btn-ghost" onclick="reinstateAppointment(' + a.id + ')">Reinstate</button>' : ''}
+      </td>
     </tr>`).join('');
   } catch (e) {
-    document.getElementById('appointmentTableBody').innerHTML = '<tr><td colspan="6" class="empty-state">Backend unavailable</td></tr>';
+    document.getElementById('appointmentTableBody').innerHTML = '<tr><td colspan="8" class="empty-state">Backend unavailable</td></tr>';
   }
+}
+
+async function confirmAppointment(id) {
+  if (!confirm('Confirm this appointment?')) return;
+  try {
+    const r = await authFetch(API_BASE + '/appointments/' + id + '/confirm', { method: 'PUT' });
+    if (r.ok) { showNotification('Appointment confirmed', 'success'); loadAppointments(); }
+    else { const e = await r.json(); showNotification(e.detail || 'Confirm failed', 'error'); }
+  } catch(e) { showNotification('Error: ' + e.message, 'error'); }
+}
+
+async function cancelAppointment(id) {
+  if (!confirm('Cancel this appointment?')) return;
+  try {
+    const r = await authFetch(API_BASE + '/appointments/' + id + '/cancel', { method: 'PUT' });
+    if (r.ok) { showNotification('Appointment cancelled', 'success'); loadAppointments(); }
+    else { const e = await r.json(); showNotification(e.detail || 'Cancel failed', 'error'); }
+  } catch(e) { showNotification('Error: ' + e.message, 'error'); }
+}
+
+async function reinstateAppointment(id) {
+  if (!confirm('Reinstate this cancelled appointment?')) return;
+  try {
+    const r = await authFetch(API_BASE + '/appointments/' + id + '/reinstate', { method: 'PUT' });
+    if (r.ok) { showNotification('Appointment reinstated', 'success'); loadAppointments(); }
+    else { const e = await r.json(); showNotification(e.detail || 'Reinstate failed', 'error'); }
+  } catch(e) { showNotification('Error: ' + e.message, 'error'); }
 }
 
 // ===== CLINICAL NOTES =====
@@ -2521,7 +4074,7 @@ async function loadBills() {
       const statusLabel = b.status === 'paid' ? 'Paid' : b.status === 'cancelled' ? 'Cancelled' : 'Unpaid';
       const dateStr = b.created_at ? new Date(b.created_at).toLocaleDateString() : '-';
       return `<tr>
-        <td style="font-size:11px;color:#94a3b8;font-family:monospace">${b.receipt_ref || 'â€”'}</td>
+        <td style="font-size:11px;color:#94a3b8;font-family:monospace">${b.receipt_ref || '—'}</td>
         <td><strong>${b.patient_name}</strong><br><span style="font-size:11px;color:#64748b">ID: ${b.patient_id}</span></td>
         <td>${b.title}</td>
         <td><strong>MWK ${Number(b.amount).toLocaleString()}</strong></td>
@@ -2596,6 +4149,12 @@ function selectPayMethod(method) {
   document.getElementById('bankSelector').style.display = method === 'bank' ? 'block' : 'none';
   const label = method === 'mpamba' ? 'Mpamba Number' : method === 'airtel_money' ? 'Airtel Money Number' : 'Account Number';
   document.getElementById('payAccountLabel').textContent = label;
+  const inp = document.getElementById('payAccount');
+  if (method === 'mpamba') { inp.value = '+265 88'; inp.placeholder = '+265 88 XXXXXXX  |  08XXXXXXXXX'; }
+  else if (method === 'airtel_money') { inp.value = '+265 99'; inp.placeholder = '+265 99 XXXXXXX  |  09XXXXXXXXX'; }
+  else { inp.value = ''; inp.placeholder = 'e.g. 1234567890'; }
+  inp.oninput = function(){ normalizeAccountField(this); };
+  inp.onblur = function(){ normalizeAccountField(this); };
 }
 
 let shareMode = 0; // 0 = whatsapp, 1 = email
@@ -2607,12 +4166,6 @@ function setShareMode(mode) {
   document.getElementById('shareRecipientGroup').style.display = mode === 0 ? 'block' : 'block';
   document.getElementById('shareRecipientLabel').textContent = mode === 0 ? 'WhatsApp Number' : 'Email Address';
   document.getElementById('shareRecipient').placeholder = mode === 0 ? 'e.g. +265 XXX XXX XXX' : 'e.g. patient@example.com';
-}
-
-function togglePin() {
-  const inp = document.getElementById('payPin');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  document.getElementById('pinToggle').textContent = inp.type === 'password' ? '\u{1F441}' : '\u{1F441}';
 }
 
 async function openPayModal(billId, patientName, title, amount) {
@@ -2629,6 +4182,20 @@ async function openPayModal(billId, patientName, title, amount) {
   openModal('payModal');
 }
 
+function togglePin(inputId, el) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === 'password') { inp.type = 'text'; el.style.color = '#38bdf8'; }
+  else { inp.type = 'password'; el.style.color = '#64748b'; }
+}
+
+async function hashPin(pin) {
+  const enc = new TextEncoder().encode(pin);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+let pendingPinHash = '';
+
 function confirmPayStep() {
   const methodEl = document.querySelector('.pay-method-btn.active');
   const method = methodEl ? methodEl.dataset.method : 'mpamba';
@@ -2637,11 +4204,19 @@ function confirmPayStep() {
   const pin = document.getElementById('payPin').value.trim();
   if (!account || !pin) { document.getElementById('payError').textContent = 'Account number and PIN required'; document.getElementById('payError').style.display = 'block'; return; }
   if (pin.length !== 4) { document.getElementById('payError').textContent = 'PIN must be 4 digits'; document.getElementById('payError').style.display = 'block'; return; }
+  if (method === 'mpamba' || method === 'airtel_money') {
+    const digits = account.replace(/\D/g, '');
+    if (digits.startsWith('265')) { if (digits.length !== 12) { document.getElementById('payError').textContent = 'Account must be 12 digits with +265 country code (e.g. +265 88 123 4567)'; document.getElementById('payError').style.display = 'block'; return; } }
+    else if (digits.startsWith('0')) { if (digits.length !== 10) { document.getElementById('payError').textContent = 'Account must be 10 digits starting with 0 (e.g. 0881 234 567)'; document.getElementById('payError').style.display = 'block'; return; } }
+    else { document.getElementById('payError').textContent = 'Account must start with +265 (12 digits) or 0 (10 digits)'; document.getElementById('payError').style.display = 'block'; return; }
+  }
   document.getElementById('payError').style.display = 'none';
 
   const now = new Date();
   const methodName = method === 'mpamba' ? 'Mpamba' : method === 'airtel_money' ? 'Airtel Money' : 'Bank Transfer';
   const accountDisplay = method === 'bank' ? bank + ' - ' + account : account;
+
+  hashPin(pin).then(hash => { pendingPinHash = hash; });
 
   document.getElementById('confirmDetails').innerHTML = `
     <div class="receipt-row"><span style="color:#94a3b8">Date:</span><span>${now.toLocaleDateString()}</span></div>
@@ -2661,13 +4236,12 @@ async function payBill() {
   const method = methodEl ? methodEl.dataset.method : 'mpamba';
   const bank = document.getElementById('payBank').value;
   let account = document.getElementById('payAccount').value.trim();
-  const pin = document.getElementById('payPin').value.trim();
   if (method === 'bank') account = bank + ' - ' + account;
   try {
     const r = await authFetch(API_BASE + '/billing/bills/' + currentBillId + '/pay', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({payment_method: method, account_number: account, pin: pin}),
+      body: JSON.stringify({payment_method: method, account_number: account, pin_hash: pendingPinHash}),
     });
     if (!r.ok) { const e = await r.json(); throw new Error(e.detail || 'Payment failed'); }
     const receipt = await r.json();
@@ -2724,7 +4298,7 @@ async function viewReceipt(billId) {
 function buildShareText() {
   if (!currentReceipt) return '';
   const methodName = currentReceipt.payment_method === 'mpamba' ? 'Mpamba' : currentReceipt.payment_method === 'airtel_money' ? 'Airtel Money' : 'Bank Transfer';
-  return `MUST Health Tech (MHT) — Payment Receipt
+  return `MUST Health Tech (MHT) � Payment Receipt
 Date: ${new Date(currentReceipt.paid_date).toLocaleDateString()}
 Time: ${new Date(currentReceipt.paid_date).toLocaleTimeString()}
 Method: ${methodName}
@@ -2851,12 +4425,12 @@ async function loadAnnouncements() {
 function renderBanner() {
   const inner = document.getElementById('bannerInner');
   if (!annData.length) {
-    inner.innerHTML = '<span class="banner-item banner-service"><span class="banner-dot"></span>&#128218; New Academic Term: July 2026 clerkship rotations now live — 64 medical students placed across Lab and Radiology · Orientation this Monday 08:00</span><span class="banner-item banner-service"><span class="banner-dot"></span>&#128218; New Academic Term: July 2026 clerkship rotations now live — 64 medical students placed across Lab and Radiology · Orientation this Monday 08:00</span>';
+    inner.innerHTML = '<span class="banner-item banner-service"><span class="banner-dot"></span>&#128218; New Academic Term: July 2026 clerkship rotations now live � 64 medical students placed across Lab and Radiology � Orientation this Monday 08:00</span><span class="banner-item banner-service"><span class="banner-dot"></span>&#128218; New Academic Term: July 2026 clerkship rotations now live � 64 medical students placed across Lab and Radiology � Orientation this Monday 08:00</span>';
     return;
   }
   const items = annData.map(a => {
     const catClass = 'banner-' + (a.category || 'admin');
-    return `<span class="banner-item ${catClass}" onclick="openAnnouncement(${a.id})" title="${a.title.replace(/"/g,'&quot;')} â€” ${a.content.replace(/"/g,'&quot;')}">
+    return `<span class="banner-item ${catClass}" onclick="openAnnouncement(${a.id})" title="${a.title.replace(/"/g,'&quot;')} — ${a.content.replace(/"/g,'&quot;')}">
       <span class="banner-dot"></span>${a.title}
     </span>`;
   }).join('');
@@ -2937,7 +4511,7 @@ async function loadSystemStatus() {
       el.textContent = `MUST Health Tech (MHT) v1.0.0 | Mode: ${d.mode || 'offline'} | DB: ${d.database || 'sqlite'}` +
         (d.sync_configured ? ' | Sync configured' : ' | No sync server');
     } catch (_) {
-      el.textContent = `MUST Health Tech (MHT) v1.0.0 | Offline — cached data only`;
+      el.textContent = `MUST Health Tech (MHT) v1.0.0 | Offline � cached data only`;
     }
   }
 }
@@ -2965,8 +4539,19 @@ function showCustomModal(title, bodyHtml) {
 document.addEventListener('DOMContentLoaded', () => {
   const token = getToken();
   const user = getUser();
-  if (token && user) {
+  const ptoken = getPatientToken();
+  const puser = getPatientUser();
+  if (ptoken && puser) {
+    hideLogin();
+    showPatientPortal();
+    loadPatientDashboard();
+  } else if (token && user) {
     document.getElementById('navUserName').textContent = user.name;
+    document.getElementById('ppSidebar').style.display = 'none';
+    document.getElementById('adminHeader').style.display = '';
+    document.getElementById('sidebar').style.display = '';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-dashboard').classList.add('active');
     hideLogin();
     loadDashboard();
     loadAppointments();
@@ -2979,29 +4564,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showLogin();
   }
 });
-
-// ===== MOBILE BOTTOM NAV =====
-(function createMobileNav() {
-  const nav = document.createElement('div');
-  nav.id = 'mobileNav';
-  nav.style.cssText = 'display:none;position:fixed;bottom:0;left:0;width:100%;background:#1e293b;border-top:1px solid #334155;z-index:200;padding:4px 0;justify-content:space-around';
-  nav.innerHTML = `
-    <div onclick="showPage('dashboard')" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:10px"><div style="font-size:16px;margin-bottom:2px">&#9679;</div>Home</div>
-    <div onclick="showPage('patients')" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:10px"><div style="font-size:16px;margin-bottom:2px">&#9787;</div>Patients</div>
-    <div onclick="showPage('appointments')" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:10px"><div style="font-size:16px;margin-bottom:2px">&#128197;</div>Appts</div>
-    <div onclick="showPage('labs')" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:10px"><div style="font-size:16px;margin-bottom:2px">&#128300;</div>Labs</div>
-    <div onclick="showPage('billing')" style="text-align:center;padding:6px;cursor:pointer;color:#94a3b8;font-size:10px"><div style="font-size:16px;margin-bottom:2px">&#128176;</div>Billing</div>`;
-  document.body.appendChild(nav);
-  if (window.innerWidth <= 768) {
-    nav.style.display = 'flex';
-    document.querySelector('.content').style.paddingBottom = '60px';
-  }
-  window.addEventListener('resize', () => {
-    const mq = window.innerWidth <= 768;
-    nav.style.display = mq ? 'flex' : 'none';
-    document.querySelector('.content').style.paddingBottom = mq ? '60px' : '24px';
-  });
-})();
 
 // ===== OFFLINE / ONLINE DETECTION =====
 function updateConnectionStatus() {
@@ -3017,7 +4579,7 @@ window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
 updateConnectionStatus();
 
-// ===== INDEXED DB — LOCAL CACHE =====
+// ===== INDEXED DB � LOCAL CACHE =====
 const DB_NAME = 'ehealth_mw_cache';
 const DB_VERSION = 2;
 let _db = null;

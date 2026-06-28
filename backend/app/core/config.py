@@ -21,7 +21,6 @@ class Settings(BaseSettings):
     # When OFFLINE_MODE=True, use SQLite.
     # When False and POSTGRES_URL is set, use PostgreSQL.
     OFFLINE_MODE: bool = True
-    POSTGRES_URL: Optional[str] = None
 
     OPENAI_API_KEY: Optional[str] = None
     ENABLE_AI_FEATURES: bool = False

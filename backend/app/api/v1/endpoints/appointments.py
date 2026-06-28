@@ -21,6 +21,12 @@ async def create_appointment(data: AppointmentCreate, db: AsyncSession = Depends
     return appointment
 
 
+@router.get("/", response_model=List[AppointmentResponse])
+async def list_appointments(db: AsyncSession = Depends(get_async_session), current_user: User = Depends(get_current_user)):
+    result = await db.execute(select(Appointment).order_by(desc(Appointment.appointment_date)))
+    return result.scalars().all()
+
+
 @router.get("/{appointment_id}", response_model=AppointmentResponse)
 async def get_appointment(appointment_id: int, db: AsyncSession = Depends(get_async_session), current_user: User = Depends(get_current_user)):
     result = await db.execute(select(Appointment).where(Appointment.id == appointment_id))
@@ -66,6 +72,66 @@ async def update_appointment(appointment_id: int, data: AppointmentUpdate, db: A
             except Exception:
                 pass
 
+    return appointment
+
+
+@router.put("/{appointment_id}/confirm", response_model=AppointmentResponse)
+async def confirm_appointment(appointment_id: int, db: AsyncSession = Depends(get_async_session), current_user: User = Depends(get_current_user)):
+    result = await db.execute(select(Appointment).where(Appointment.id == appointment_id))
+    appointment = result.scalar_one_or_none()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    if appointment.status != AppointmentStatus.SCHEDULED:
+        raise HTTPException(status_code=400, detail="Only scheduled appointments can be confirmed")
+    appointment.status = AppointmentStatus.CONFIRMED
+    await db.commit()
+    await db.refresh(appointment)
+    patient_result = await db.execute(select(Patient).where(Patient.id == appointment.patient_id))
+    patient = patient_result.scalar_one_or_none()
+    if patient and patient.phone:
+        date_str = appointment.appointment_date.strftime("%A, %d %B %Y at %I:%M %p") if appointment.appointment_date else "the scheduled date"
+        msg = (
+            f"Dear {patient.first_name}, your appointment at MUST Teaching Hospital "
+            f"has been confirmed for {date_str}. "
+            f"Type: {appointment.appointment_type}. "
+            f"Please carry your passport ID. Reply STOP to opt out."
+        )
+        try:
+            await NotificationService.notify(
+                db=db, phone=patient.phone, message=msg,
+                channel=NotificationChannel.WHATSAPP, patient_id=patient.id,
+                user_id=current_user.id, template="booking_confirmed",
+            )
+        except Exception:
+            pass
+    return appointment
+
+
+@router.put("/{appointment_id}/cancel", response_model=AppointmentResponse)
+async def cancel_appointment(appointment_id: int, db: AsyncSession = Depends(get_async_session), current_user: User = Depends(get_current_user)):
+    result = await db.execute(select(Appointment).where(Appointment.id == appointment_id))
+    appointment = result.scalar_one_or_none()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    if appointment.status == AppointmentStatus.CANCELLED:
+        raise HTTPException(status_code=400, detail="Appointment is already cancelled")
+    appointment.status = AppointmentStatus.CANCELLED
+    await db.commit()
+    await db.refresh(appointment)
+    return appointment
+
+
+@router.put("/{appointment_id}/reinstate", response_model=AppointmentResponse)
+async def reinstate_appointment(appointment_id: int, db: AsyncSession = Depends(get_async_session), current_user: User = Depends(get_current_user)):
+    result = await db.execute(select(Appointment).where(Appointment.id == appointment_id))
+    appointment = result.scalar_one_or_none()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    if appointment.status != AppointmentStatus.CANCELLED:
+        raise HTTPException(status_code=400, detail="Only cancelled appointments can be reinstated")
+    appointment.status = AppointmentStatus.SCHEDULED
+    await db.commit()
+    await db.refresh(appointment)
     return appointment
 
 
