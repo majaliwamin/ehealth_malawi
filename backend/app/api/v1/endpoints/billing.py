@@ -74,7 +74,7 @@ async def pay_bill(bill_id: int, data: PaymentRequest, db: AsyncSession = Depend
     method_label = method_labels.get(data.payment_method.value, data.payment_method.value)
 
     share_text = (
-        f"eHealth Malawi Payment Receipt\n"
+        f"MUST Health Tech (MHT) — Payment Receipt\n"
         f"Reference: {bill.receipt_ref}\n"
         f"Patient: {bill.patient_name}\n"
         f"Service: {bill.title}\n"

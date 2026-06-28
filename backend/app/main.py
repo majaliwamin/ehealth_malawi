@@ -31,7 +31,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.APP_NAME,
     version="1.0.0",
-    description="eHealth Malawi - Modular AI-Powered Digital Health Platform",
+    description="MUST Health Tech (MHT) — Smart Health, Smarter Malawi",
     lifespan=lifespan,
 )
 

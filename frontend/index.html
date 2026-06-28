@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EMR @MUST â€” Digital Health Platform</title>
+<title>MUST Health Tech (MHT) — Smart Health, Smarter Malawi</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>&#9670;</text></svg>">
 <style>
@@ -419,6 +419,7 @@ textarea{resize:vertical;min-height:80px}
 .toggle-track.on .toggle-thumb{transform:translateX(14px)}
 
 /* responsive */
+@media(min-width:769px){#mottoDisplay{display:inline-block!important}}
 @media(max-width:768px){
   .sidebar{display:none}
   .nhisc-search{flex-wrap:wrap;gap:8px;padding:8px 12px}
@@ -591,7 +592,7 @@ textarea{resize:vertical;min-height:80px}
 <!-- login overlay -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <h2><span class="diamond">&#9670;</span> EMR @MUST</h2>
+    <h2><span class="diamond">&#9670;</span> MUST Health Tech (MHT)</h2>
     <p class="subtitle">Digital Health Platform â€” Secure Login</p>
     <div class="form-group"><label>Username</label><input type="text" id="loginUser" value="ehealth_mw" autocomplete="username" onkeydown="if(event.key==='Enter') login()"></div>
     <div class="form-group"><label>Password</label><input type="password" id="loginPass" value="must@ghs" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()"></div>
@@ -608,7 +609,8 @@ textarea{resize:vertical;min-height:80px}
   <div class="nhisc-search">
     <div style="display:flex;align-items:center;gap:4px;flex:1">
       <button class="hamburger-btn" id="hamburgerBtn">&#9776;</button>
-      <span style="font-size:16px;font-weight:700;color:#38bdf8;margin-left:4px">EMR @MUST</span>
+      <span style="font-size:16px;font-weight:700;color:#38bdf8;margin-left:4px">MUST Health Tech (MHT)</span>
+      <span style="font-size:9px;color:#64748b;margin-left:6px;margin-top:2px;font-style:italic;display:none" id="mottoDisplay">Smart Health, Smarter Malawi</span>
       <div class="hamburger-dropdown" id="hamburgerDropdown">
         <div class="hd-section">Account</div>
         <a data-hamburger="account">&#9881; Account Settings</a>
@@ -1194,7 +1196,7 @@ textarea{resize:vertical;min-height:80px}
       <p style="font-size:13px;color:#94a3b8;margin-bottom:16px">User management, access control, and system configuration</p>
       <div class="card">
         <div class="card-title">&#9881; System Configuration</div>
-        <div class="alert alert-info" id="sysInfoAlert">EMR @MUST v1.0.0 | Loading system status...</div>
+        <div class="alert alert-info" id="sysInfoAlert">MUST Health Tech (MHT) v1.0.0 | Loading system status...</div>
         <div class="form-row">
           <div class="form-group"><label>Facility Name</label><input type="text" value="Kamuzu Central Hospital" id="adminFacility"></div>
           <div class="form-group"><label>District</label><input type="text" value="Lilongwe" id="adminDistrict"></div>
@@ -2676,7 +2678,7 @@ function showReceipt(receipt) {
   const html = `
     <div style="text-align:center;margin-bottom:12px;border-bottom:2px solid #2563eb;padding-bottom:12px">
       <div style="font-size:32px;margin-bottom:4px;color:#38bdf8">&#9670;</div>
-      <h3 style="color:#38bdf8;font-size:15px;margin:0;letter-spacing:1px">EMR @MUST</h3>
+      <h3 style="color:#38bdf8;font-size:15px;margin:0;letter-spacing:1px">MUST Health Tech (MHT)</h3>
       <p style="color:#94a3b8;font-size:10px;margin:2px 0 0 0">Payment Receipt</p>
     </div>
     <div style="margin-bottom:12px">
@@ -2689,7 +2691,7 @@ function showReceipt(receipt) {
     </div>
     <div style="border-top:1px dashed #334155;padding-top:10px;text-align:center">
       <span style="color:#34d399;font-size:13px;font-weight:600">&#10004; Payment Successful</span>
-      <p style="color:#64748b;font-size:10px;margin:4px 0 0 0">Thank you for using EMR @MUST</p>
+      <p style="color:#64748b;font-size:10px;margin:4px 0 0 0">Smart Health, Smarter Malawi</p>
     </div>
   `;
   document.getElementById('receiptInner').innerHTML = html;
@@ -2712,7 +2714,7 @@ async function viewReceipt(billId) {
 function buildShareText() {
   if (!currentReceipt) return '';
   const methodName = currentReceipt.payment_method === 'mpamba' ? 'Mpamba' : currentReceipt.payment_method === 'airtel_money' ? 'Airtel Money' : 'Bank Transfer';
-  return `EMR @MUST Payment Receipt
+  return `MUST Health Tech (MHT) — Payment Receipt
 Date: ${new Date(currentReceipt.paid_date).toLocaleDateString()}
 Time: ${new Date(currentReceipt.paid_date).toLocaleTimeString()}
 Method: ${methodName}
@@ -2720,7 +2722,7 @@ Amount: MWK ${Number(currentReceipt.amount).toLocaleString()}
 Account: ${currentReceipt.account_number}
 Reference: ${currentReceipt.receipt_ref}
 
-Thank you for using EMR @MUST`;
+Smart Health, Smarter Malawi`;
 }
 
 function downloadReceipt(format) {
@@ -2766,7 +2768,7 @@ function sendShare() {
     const url = 'https://wa.me/' + clean + '?text=' + encodeURIComponent(text);
     window.open(url, '_blank');
   } else {
-    const subject = encodeURIComponent('EMR @MUST Payment Receipt - ' + currentReceipt.receipt_ref);
+    const subject = encodeURIComponent('MUST Health Tech (MHT) Payment Receipt - ' + currentReceipt.receipt_ref);
     const body = encodeURIComponent(text);
     window.open('mailto:' + recipient + '?subject=' + subject + '&body=' + body, '_blank');
   }
@@ -2916,16 +2918,16 @@ async function loadSystemStatus() {
     const r = await authFetch(API_BASE + '/sync/status');
     if (!r.ok) throw new Error('Failed');
     const s = await r.json();
-    el.textContent = `EMR @MUST v1.0.0 | Mode: ${s.mode} | DB: ${s.database}` +
+    el.textContent = `MUST Health Tech (MHT) v1.0.0 | Mode: ${s.mode} | DB: ${s.database}` +
       (s.sync_server_url !== '(not configured)' ? ` | Sync: ${s.site_id}` : ' | No sync server');
   } catch (e) {
     try {
       const r = await fetch('/');
       const d = await r.json();
-      el.textContent = `EMR @MUST v1.0.0 | Mode: ${d.mode || 'offline'} | DB: ${d.database || 'sqlite'}` +
+      el.textContent = `MUST Health Tech (MHT) v1.0.0 | Mode: ${d.mode || 'offline'} | DB: ${d.database || 'sqlite'}` +
         (d.sync_configured ? ' | Sync configured' : ' | No sync server');
     } catch (_) {
-      el.textContent = `EMR @MUST v1.0.0 | Offline — cached data only`;
+      el.textContent = `MUST Health Tech (MHT) v1.0.0 | Offline — cached data only`;
     }
   }
 }

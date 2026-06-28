@@ -3,7 +3,7 @@ from typing import Optional
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "eHealth Malawi"
+    APP_NAME: str = "MUST Health Tech (MHT)"
     API_V1_PREFIX: str = "/api/v1"
     DEBUG: bool = True
 
