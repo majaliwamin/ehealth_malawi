@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1e293b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MHT">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <title>MUST Health Tech (MHT) — Smart Health, Smarter Malawi</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>&#9670;</text></svg>">
@@ -627,6 +633,7 @@ textarea{resize:vertical;min-height:80px}
     </div>
     <div style="display:flex;align-items:center;gap:12px;justify-content:flex-end;flex:1">
       <span id="connectionBadge" style="font-size:11px;color:#64748b"><span class="status-dot" style="background:#34d399;width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:3px"></span><span id="connectionStatus">Online</span></span>
+      <span id="installBtn" onclick="installPwa()" title="Install App" style="display:none;align-items:center;gap:4px;font-size:10px;color:#38bdf8;cursor:pointer;padding:3px 8px;border:1px solid #38bdf8;border-radius:12px;background:rgba(56,189,248,.1)">&#9661; Install</span>
       <span id="navUserName" style="font-size:12px;color:#94a3b8">User</span>
       <a onclick="logout()" style="font-size:11px;color:#f87171;cursor:pointer">Logout</a>
     </div>
@@ -3218,6 +3225,25 @@ if (_origAuthFetch) {
       throw e;
     }
   };
+}
+</script>
+<script>
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'flex';
+});
+window.addEventListener('appinstalled', function() {
+  deferredPrompt = null;
+  var btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+});
+function installPwa() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(function() { deferredPrompt = null; });
 }
 </script>
 <script>
