@@ -22,7 +22,7 @@ a{color:#38bdf8;text-decoration:none}
 .nav-right .status-dot{width:8px;height:8px;border-radius:50%;background:#34d399;display:inline-block;margin-right:4px}
 
 /* main layout */
-.layout{display:flex;height:calc(100vh - 122px)}
+.layout{display:flex;height:calc(100vh - 390px)}
 .sidebar{width:220px;background:#1e293b;border-right:1px solid #334155;padding:8px 0;overflow-y:auto;flex-shrink:0}
 .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;color:#94a3b8;cursor:pointer;transition:all .15s;border-left:3px solid transparent}
 .sidebar-item:hover{background:#0f172a;color:#e2e8f0}
@@ -418,13 +418,26 @@ textarea{resize:vertical;min-height:80px}
 .toggle-track .toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#e2e8f0;transition:transform .2s}
 .toggle-track.on .toggle-thumb{transform:translateX(14px)}
 
+/* hero */
+.hero{width:100%;height:280px;position:relative;overflow:hidden;background:#0f172a}
+.hero-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:none}
+.hero-img.active{opacity:1;z-index:1}
+.hero-img.fade{opacity:1;z-index:2;animation:heroFade 5s ease-in-out infinite}
+@keyframes heroFade{0%,45%{opacity:1}55%,100%{opacity:0}}
+.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(15,23,42,.85) 0%,rgba(15,23,42,.4) 50%,rgba(15,23,42,.85) 100%);z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.hero-overlay h1{font-size:28px;font-weight:800;color:#f8fafc;margin:0;letter-spacing:-.5px}
+.hero-overlay h1 span{color:#38bdf8}
+.hero-overlay p{font-size:14px;color:#94a3b8;margin:8px 0 0;max-width:600px}
+.hero-overlay .hero-badge{display:inline-block;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;margin-top:12px;letter-spacing:.5px}
+@media(max-width:768px){.hero{height:200px}.hero-overlay h1{font-size:20px}.hero-overlay p{font-size:12px}}
+
 /* responsive */
 @media(min-width:769px){#mottoDisplay{display:inline-block!important}}
 @media(max-width:768px){
   .sidebar{display:none}
   .nhisc-search{flex-wrap:wrap;gap:8px;padding:8px 12px}
   .nhisc-search input{min-width:0}
-  .layout{height:calc(100vh - 86px)}
+  .layout{height:calc(100vh - 290px)}
   .form-row{grid-template-columns:1fr}
   .kpi-row{flex-wrap:wrap}
   .kpi-card{min-width:100px}
@@ -631,6 +644,17 @@ textarea{resize:vertical;min-height:80px}
   <!-- Row 2: Scrolling announcement banner -->
   <div class="nhisc-banner" id="nhiscBanner">
     <div class="nhisc-banner-inner" id="bannerInner"></div>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <img class="hero-img active" src="https://times.mw/wp-content/uploads/2023/06/must.jpg" alt="MUST Campus">
+  <img class="hero-img fade" src="https://www.must.ac.mw/storage/207/must_uploads_20240328141408.png" alt="MUST Health Tech">
+  <div class="hero-overlay">
+    <h1>MUST <span>Health Tech</span></h1>
+    <p>Smart Health, Smarter Malawi — Integrated Digital Health Platform for MUST Teaching Hospital and Beyond</p>
+    <span class="hero-badge">&#9670; Malawi University of Science &amp; Technology</span>
   </div>
 </div>
 
