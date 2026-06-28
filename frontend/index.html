@@ -29,7 +29,7 @@ a{color:#38bdf8;text-decoration:none}
 .sidebar-item.active{background:#0f172a;color:#38bdf8;border-left-color:#38bdf8;font-weight:600}
 .sidebar-item .icon{width:18px;text-align:center;font-size:14px}
 
-.content{flex:1;overflow-y:auto;padding:24px}
+.content{flex:1;overflow-y:auto;padding:0}.content .page{padding:24px}
 
 /* page sections */
 .page{display:none}
@@ -444,7 +444,7 @@ textarea{resize:vertical;min-height:80px}
   .dash-main-row{flex-direction:column}
   .dash-charts-row{flex-direction:column}
   .dash-chart-card.flex-1,.dash-chart-card.flex-2{flex:none}
-  .content{padding:16px}
+  .content{padding:0}.content .page{padding:16px}
 }
 
 /* color coding */
@@ -647,17 +647,6 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- Hero -->
-<div class="hero">
-  <img class="hero-img active" src="https://times.mw/wp-content/uploads/2023/06/must.jpg" alt="MUST Campus">
-  <img class="hero-img fade" src="https://www.must.ac.mw/storage/207/must_uploads_20240328141408.png" alt="MUST Health Tech">
-  <div class="hero-overlay">
-    <h1>MUST <span>Health Tech</span></h1>
-    <p>Smart Health, Smarter Malawi — Integrated Digital Health Platform for MUST Teaching Hospital and Beyond</p>
-    <span class="hero-badge">&#9670; Malawi University of Science &amp; Technology</span>
-  </div>
-</div>
-
 <div class="layout">
   <!-- sidebar -->
   <div class="sidebar" id="sidebar">
@@ -685,6 +674,17 @@ textarea{resize:vertical;min-height:80px}
 
   <!-- main content -->
   <div class="content" id="mainContent">
+
+    <!-- Hero -->
+    <div class="hero">
+      <img class="hero-img active" src="https://times.mw/wp-content/uploads/2023/06/must.jpg" alt="MUST Campus">
+      <img class="hero-img fade" src="https://www.must.ac.mw/storage/207/must_uploads_20240328141408.png" alt="MUST Health Tech">
+      <div class="hero-overlay">
+        <h1>MUST <span>Health Tech</span></h1>
+        <p>Smart Health, Smarter Malawi — Integrated Digital Health Platform for MUST Teaching Hospital and Beyond</p>
+        <span class="hero-badge">&#9670; Malawi University of Science &amp; Technology</span>
+      </div>
+    </div>
 
     <!-- ===== DASHBOARD ===== -->
     <div class="page active" id="page-dashboard">
