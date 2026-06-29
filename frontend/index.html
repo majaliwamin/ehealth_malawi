@@ -244,6 +244,34 @@ tr:hover td{background:#0f172a}
 .badge-red{background:#5c1010;color:#f87171}
 .badge-purple{background:#3b1f5e;color:#c084fc}
 
+/* ai panel */
+.ai-result-card{padding:12px 14px;border-radius:8px;margin-bottom:8px;border:1px solid #334155;background:#0f172a}
+.ai-result-card .test-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ai-result-card .test-name{font-weight:600;font-size:13px;color:#f1f5f9}
+.ai-result-card .test-dept{font-size:10px;color:#64748b}
+.ai-result-card .interpretation{font-size:12px;color:#e2e8f0;line-height:1.5;margin-bottom:6px}
+.ai-result-card .recommendation{font-size:12px;color:#fbbf24;font-weight:500;padding:6px 10px;background:#1e293b;border-radius:6px;margin-bottom:4px}
+.ai-result-card .references{font-size:11px;color:#64748b}
+.ai-result-card .references a{color:#38bdf8;cursor:pointer;text-decoration:underline}
+.flag-critical{color:#f87171;font-weight:700}
+.flag-high{color:#fb923c;font-weight:600}
+.flag-low{color:#60a5fa;font-weight:600}
+.flag-normal{color:#34d399;font-weight:600}
+.flag-interpret{color:#c084fc;font-weight:600}
+
+/* guide sections */
+.guide-section{margin-bottom:16px}
+.guide-section h5{font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.guide-section .guide-body{font-size:12px;color:#e2e8f0;line-height:1.6;padding:8px 12px;background:#0f172a;border-radius:8px;border:1px solid #1e293b}
+.guide-section .guide-body pre{white-space:pre-wrap;font-family:'Inter',sans-serif;margin:0}
+.guide-badge{display:inline-block;padding:1px 7px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.guide-badge.pre{background:#1e3a5f;color:#93c5fd}
+.guide-badge.ana{background:#3b1f5e;color:#c084fc}
+.guide-badge.post{background:#065f46;color:#6ee7b7}
+.guide-badge.ref{background:#5c3d0e;color:#fbbf24}
+.ref-entry{font-size:11px;color:#cbd5e1;line-height:1.6;padding:4px 0;padding-left:24px;text-indent:-24px;margin-bottom:4px}
+.ref-separator{border:none;border-top:1px solid #334155;margin:12px 0}
+
 /* forms */
 .form-group{margin-bottom:14px}
 .form-group label{display:block;font-size:11px;font-weight:600;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
@@ -732,6 +760,7 @@ textarea{resize:vertical;min-height:80px}
         <span id="notifBadge" style="position:absolute;top:-6px;right:-8px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;display:none">0</span>
       </span>
       <span id="navUserName" style="font-size:12px;color:#94a3b8">User</span>
+      <span onclick="showHelpModal()" style="font-size:13px;color:#94a3b8;cursor:pointer" title="About MHT">&#9432;</span>
       <a onclick="logout()" style="font-size:11px;color:#f87171;cursor:pointer">Logout</a>
     </div>
   </div>
@@ -779,16 +808,20 @@ textarea{resize:vertical;min-height:80px}
 
   <!-- sidebar (patient portal) -->
   <div class="sidebar" id="ppSidebar" style="display:none">
-    <div style="display:flex;align-items:center;padding:8px 16px;border-bottom:1px solid #334155;margin-bottom:8px">
-      <button class="hamburger-btn" id="ppHamburgerBtn">&#9776;</button>
+    <div style="font-size:11px;font-weight:600;color:#38bdf8;padding:12px 16px;border-bottom:1px solid #334155;text-align:center;letter-spacing:.5px">MUST PATIENT PORTAL</div>
+    <div style="padding:4px 0">
+      <div class="sidebar-item active" data-page="pp-dashboard" onclick="showPage('pp-dashboard',this)"><span class="icon">&#127968;</span> My Dashboard</div>
+      <div class="sidebar-item" data-page="pp-appointments" onclick="showPage('pp-appointments',this)"><span class="icon">&#128197;</span> Appointments</div>
+      <div class="sidebar-item" data-page="pp-bills" onclick="showPage('pp-bills',this)"><span class="icon">&#128176;</span> Bills & Payments</div>
+      <div class="sidebar-item" data-page="pp-results" onclick="showPage('pp-results',this)"><span class="icon">&#128300;</span> Lab Results</div>
+      <div class="sidebar-item" data-page="pp-prescriptions" onclick="showPage('pp-prescriptions',this)"><span class="icon">&#128137;</span> Prescriptions</div>
+      <div class="sidebar-item" data-page="pp-more" onclick="showPage('pp-more',this)"><span class="icon">&#9881;</span> More</div>
     </div>
-    <div class="hamburger-dropdown" id="ppHamburgerDropdown">
-      <div class="hd-section">Account</div>
-      <a onclick="showPage('pp-profile',null)">&#9881; My Profile</a>
-      <a onclick="showPage('pp-settings',null)">&#9881; Settings</a>
-      <a onclick="patientLogout()" style="color:#f87171;border-top:1px solid #334155;margin-top:4px;padding-top:10px">&#128682; Log Out</a>
+    <div style="border-top:1px solid #334155;margin:4px 12px 0"></div>
+    <div style="padding:4px 0">
+      <div class="sidebar-item" data-page="pp-profile" onclick="showPage('pp-profile',this)"><span class="icon">&#128100;</span> My Profile</div>
+      <div class="sidebar-item" onclick="patientLogout()" style="color:#f87171"><span class="icon">&#128682;</span> Log Out</div>
     </div>
-
   </div>
 
   <!-- main content -->
@@ -1037,8 +1070,11 @@ textarea{resize:vertical;min-height:80px}
     <div class="page" id="page-labs">
       <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin-bottom:4px">Laboratory Information System</h2>
       <p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Order and manage laboratory tests</p>
-      <div style="display:flex;gap:8px;margin-bottom:16px">
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
         <button class="btn btn-primary" onclick="openLabOrderModal()">+ New Lab Order</button>
+        <button class="btn btn-ghost" onclick="toggleAIPanel()">AI Lab Assistant</button>
+        <button class="btn btn-ghost" onclick="openModal('universalInterpreterModal')">Universal Interpreter</button>
+        <button class="btn btn-ghost" onclick="openTestGuideModal()">Test Procedure Guide</button>
       </div>
       <div class="card">
         <div class="table-wrap">
@@ -1046,6 +1082,65 @@ textarea{resize:vertical;min-height:80px}
             <thead><tr><th>Order #</th><th>Patient</th><th>Tests</th><th>Status</th><th>Urgent</th><th>Ordered</th></tr></thead>
             <tbody id="labTableBody"><tr><td colspan="6" class="empty-state">No lab orders</td></tr></tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- AI Lab Assistant Panel -->
+      <div id="aiLabPanel" class="card" style="display:none;margin-top:16px">
+        <div class="card-title" style="justify-content:space-between">
+          <span>AI Lab Assistant — Interpretation Engine</span>
+          <span class="badge badge-purple" style="font-size:10px">Rule-based · Malawi SOP</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px">
+          <!-- Patient Metadata -->
+          <div>
+            <h4 style="font-size:12px;color:#94a3b8;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Patient Info</h4>
+            <div class="form-group"><label>Patient ID</label><input type="number" id="aiPatientId" placeholder="Optional"></div>
+            <div class="form-group"><label>Patient Name</label><input type="text" id="aiPatientName" placeholder="Optional"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Gender</label>
+                <select id="aiGender"><option value="male">Male</option><option value="female">Female</option></select>
+              </div>
+              <div class="form-group"><label>Age (years)</label><input type="number" id="aiAge" placeholder="e.g. 30"></div>
+            </div>
+            <div class="form-group">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                <input type="checkbox" id="aiPregnant" style="width:auto"> Pregnant
+              </label>
+            </div>
+          </div>
+
+          <!-- Test Inputs -->
+          <div>
+            <h4 style="font-size:12px;color:#94a3b8;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Test Results</h4>
+            <div class="form-group"><label>Department</label>
+              <select id="aiDepartment" onchange="loadAITests()">
+                <option value="">-- Select Department --</option>
+                <option value="Microbiology">Microbiology</option>
+                <option value="Clinical Chemistry">Clinical Chemistry</option>
+                <option value="Haematology">Haematology</option>
+                <option value="Urinalysis">Urinalysis</option>
+                <option value="Parasitology">Parasitology</option>
+                <option value="Molecular Biology">Molecular Biology</option>
+                <option value="Semen Analysis">Semen Analysis</option>
+              </select>
+            </div>
+            <div id="aiTestInputs" style="max-height:320px;overflow-y:auto">
+              <p style="color:#64748b;font-size:12px">Select a department to view available tests.</p>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-primary" onclick="runAIInterpretation()">Interpret Results</button>
+              <button class="btn btn-ghost" onclick="clearAIPanel()">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div id="aiResults" style="display:none;margin-top:20px;border-top:1px solid #334155;padding-top:16px">
+          <h4 style="font-size:12px;color:#94a3b8;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Interpretation Results</h4>
+          <div id="aiSummary" style="padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:13px;font-weight:500"></div>
+          <div id="aiResultsBody"></div>
         </div>
       </div>
     </div>
@@ -1071,7 +1166,13 @@ textarea{resize:vertical;min-height:80px}
     <div class="page" id="page-queue">
       <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin-bottom:4px">Queue Management</h2>
       <p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Track patient flow through departments</p>
-      <div id="queueContainer"></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-num" style="color:#3b82f6">12</div><div class="kpi-label">Waiting</div></div>
+        <div class="kpi-card"><div class="kpi-num" style="color:#22c55e">8</div><div class="kpi-label">In Progress</div></div>
+        <div class="kpi-card"><div class="kpi-num" style="color:#a855f7">45</div><div class="kpi-label">Today Total</div></div>
+        <div class="kpi-card"><div class="kpi-num" style="color:#f97316">6</div><div class="kpi-label">Avg Wait (min)</div></div>
+      </div>
+      <div id="queueContainer" style="color:#64748b;font-size:13px;text-align:center;padding:40px;background:#1e293b;border:1px solid #334155;border-radius:12px">Queue board will display here when patients are checked in</div>
     </div>
 
     <!-- ===== TRIAGE ===== -->
@@ -1127,7 +1228,13 @@ textarea{resize:vertical;min-height:80px}
     <div class="page" id="page-inpatient">
       <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin-bottom:4px">Inpatient & Ward Management</h2>
       <p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Bed management, ward census, and discharge planning</p>
-      <div id="inpatientContainer"></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="kpi-num" style="color:#22c55e">47</div><div class="kpi-label">Available Beds</div></div>
+        <div class="kpi-card"><div class="kpi-num" style="color:#f97316">83</div><div class="kpi-label">Occupied</div></div>
+        <div class="kpi-card"><div class="kpi-num" style="color:#ef4444">130</div><div class="kpi-label">Total Beds</div></div>
+        <div class="kpi-card"><div class="kpi-num" style="color:#3b82f6">64%</div><div class="kpi-label">Occupancy</div></div>
+      </div>
+      <div id="inpatientContainer" style="color:#64748b;font-size:13px;text-align:center;padding:40px;background:#1e293b;border:1px solid #334155;border-radius:12px">Ward census and bed board will display here</div>
     </div>
 
     <!-- ===== DIALYSIS ===== -->
@@ -1183,7 +1290,23 @@ textarea{resize:vertical;min-height:80px}
     <div class="page" id="page-inventory">
       <h2 style="font-size:18px;font-weight:600;color:#f1f5f9;margin-bottom:4px">Inventory & Supplies</h2>
       <p style="font-size:13px;color:#94a3b8;margin-bottom:16px">Track stock levels, manage supplies, and equipment maintenance</p>
-      <div id="inventoryContainer"></div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn btn-primary btn-sm">+ Add Item</button>
+        <button class="btn btn-ghost btn-sm">&#128260; Stock Take</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>Category</th><th>In Stock</th><th>Unit</th><th>Reorder Level</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Amoxicillin 500mg</td><td>Pharmaceutical</td><td>1,250</td><td>tabs</td><td>500</td><td><span class="badge badge-green">OK</span></td></tr>
+            <tr><td>PPE — Surgical Gloves (Box)</td><td>Consumable</td><td>340</td><td>boxes</td><td>200</td><td><span class="badge badge-green">OK</span></td></tr>
+            <tr><td>IV Fluids — Normal Saline 1L</td><td>Pharmaceutical</td><td>78</td><td>bags</td><td>100</td><td><span class="badge badge-yellow">Low</span></td></tr>
+            <tr><td>Malaria RDT Kits</td><td>Diagnostic</td><td>22</td><td>kits</td><td>50</td><td><span class="badge badge-red">Reorder</span></td></tr>
+            <tr><td>Blood Glucose Test Strips</td><td>Diagnostic</td><td>15</td><td>boxes</td><td>30</td><td><span class="badge badge-red">Reorder</span></td></tr>
+            <tr><td>Oxygen Cylinder (Full)</td><td>Equipment</td><td>6</td><td>cylinders</td><td>4</td><td><span class="badge badge-green">OK</span></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- ===== GOVERNANCE ===== -->
@@ -1395,7 +1518,10 @@ textarea{resize:vertical;min-height:80px}
         <div>
           <p style="font-size:13px;color:#94a3b8;margin:0 0 0" id="ppGreeting"></p>
         </div>
-        <span style="font-size:11px;color:#64748b" id="ppPassportDisplay"></span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:11px;color:#64748b" id="ppPassportDisplay"></span>
+          <span onclick="showHelpModal()" style="font-size:13px;color:#94a3b8;cursor:pointer" title="About MHT">&#9432;</span>
+        </div>
       </div>
       <div class="kpi-row" style="margin-bottom:16px">
         <div class="kpi-card pp-card" onclick="showPage('pp-appointments',null)" style="cursor:pointer"><div class="kpi-val" id="ppApptCount">-</div><div class="kpi-label">Appointments</div></div>
@@ -1868,6 +1994,106 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 
+<!-- Help / About modal -->
+<div class="modal-overlay" id="helpModal">
+  <div class="modal" style="max-width:560px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="color:#38bdf8;font-size:16px;margin:0">&#9670; About MUST Health Tech (MHT)</h3>
+      <span style="cursor:pointer;color:#94a3b8;font-size:20px" onclick="closeModal('helpModal')">&times;</span>
+    </div>
+    <div style="font-size:13px;color:#cbd5e1;line-height:1.7">
+      <p><strong>MUST Health Tech (MHT)</strong> is a comprehensive Electronic Health Record (EHR) and Hospital Management System designed for the Malawi University of Science and Technology (MUST) Teaching Hospital.</p>
+      <p style="margin-top:10px"><strong>Modules:</strong> Patient Registry, Appointments & Queue, Clinical Documentation, Vital Signs, Inpatient Ward, Critical Care, Dialysis & CKD, Laboratory, Pharmacy, Inventory, Billing, Governance, Admin</p>
+      <p style="margin-top:10px"><strong>Demo Credentials:</strong></p>
+      <div style="background:#0f172a;border-radius:8px;padding:12px;margin:6px 0">
+        <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:#94a3b8">Staff:</span><span style="color:#38bdf8;font-family:monospace">ehealth_mw / must@ghs</span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:#94a3b8">Patient:</span><span style="color:#38bdf8;font-family:monospace">MHT-000001 / 0999123456</span></div>
+      </div>
+      <p style="margin-top:10px"><strong>Key Features:</strong> Real-time dashboard, offline support with IndexedDB caching, responsive design for mobile/desktop, patient portal with bill payment, WhatsApp notifications, disease surveillance, and medical education tracking.</p>
+      <p style="margin-top:10px;font-size:11px;color:#64748b">&#9670; Smart Health, Smarter Malawi &#9670;</p>
+    </div>
+    <button class="btn btn-ghost" onclick="closeModal('helpModal')" style="width:100%;justify-content:center;margin-top:12px">Close</button>
+  </div>
+</div>
+
+<!-- Universal Result Interpreter Modal -->
+<div class="modal-overlay" id="universalInterpreterModal">
+  <div class="modal" style="max-width:720px">
+    <h3>Universal Result Interpreter</h3>
+    <p style="font-size:12px;color:#94a3b8;margin-bottom:14px">Paste lab results text, type manually, or upload a scan/image. The AI parses and interprets results.</p>
+
+    <div style="display:flex;gap:12px;margin-bottom:12px">
+      <div style="flex:1">
+        <div class="form-group"><label>Gender</label>
+          <select id="uiGender"><option value="male">Male</option><option value="female">Female</option></select>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="form-group"><label>Age (years)</label><input type="number" id="uiAge" placeholder="e.g. 30"></div>
+      </div>
+      <div style="flex:1;display:flex;align-items:flex-end;padding-bottom:14px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:#94a3b8">
+          <input type="checkbox" id="uiPregnant" style="width:auto"> Pregnant
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group"><label>Paste or Type Lab Results</label>
+      <textarea id="uiTextInput" rows="6" placeholder="Paste lab results here, e.g.:
+Haemoglobin: 10.2 g/dL
+WBC Count: 14.5 x10^9/L
+Glucose (Fasting): 8.1 mmol/L
+Urine Protein: 2+"></textarea>
+    </div>
+
+    <div class="form-group"><label>Or Upload Scan / Image (JPG, PNG, PDF)</label>
+      <input type="file" id="uiFileInput" accept=".jpg,.jpeg,.png,.pdf" style="font-size:12px;padding:8px">
+      <p style="font-size:10px;color:#6ee7b7;margin-top:4px">OCR active (Tesseract + EasyOCR + PaddleOCR fallbacks). Upload a clear lab report scan for automatic extraction.</p>
+    </div>
+
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-primary" onclick="runUniversalInterpreter()">Interpret</button>
+      <button class="btn btn-ghost" onclick="clearUniversalInterpreter()">Clear</button>
+      <button class="btn btn-ghost" onclick="closeModal('universalInterpreterModal')">Close</button>
+    </div>
+
+    <div id="uiResults" style="display:none;margin-top:16px;border-top:1px solid #334155;padding-top:14px">
+      <div id="uiSummary" style="padding:10px 14px;border-radius:8px;margin-bottom:10px;font-size:13px;font-weight:500"></div>
+      <div id="uiParsedInfo" style="font-size:11px;color:#64748b;margin-bottom:10px"></div>
+      <div id="uiResultsBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Test Procedure Guide Modal -->
+<div class="modal-overlay" id="testGuideModal">
+  <div class="modal" style="max-width:780px">
+    <h3>Test Procedure Guide</h3>
+    <p style="font-size:12px;color:#94a3b8;margin-bottom:14px">Enter a test name to view the full procedure — pre-analytical through post-analytical — with APA 7th edition references.</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Test Name *</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="tgTestName" placeholder="e.g. Gram Stain, HbA1c, CD4 Count" style="flex:1" list="tgTestSuggestions">
+          <datalist id="tgTestSuggestions"></datalist>
+          <button class="btn btn-primary" onclick="runTestGuide()">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="tgGuideContainer" style="display:none;margin-top:16px;border-top:1px solid #334155;padding-top:14px">
+      <div id="tgGuideBody"></div>
+      <div id="tgReferences" style="margin-top:20px;padding-top:16px;border-top:2px solid #334155"></div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-ghost" onclick="clearTestGuide()">Clear</button>
+      <button class="btn btn-ghost" onclick="closeModal('testGuideModal')">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const API_BASE = '/api/v1';
 
@@ -2170,7 +2396,7 @@ function showPatientPortal() {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-pp-dashboard').classList.add('active');
   document.querySelectorAll('#ppSidebar .sidebar-item').forEach(s => s.classList.remove('active'));
-  const homeItem = document.querySelector('#ppSidebar .sidebar-item[data-pppage="pp-dashboard"]');
+  const homeItem = document.querySelector('#ppSidebar .sidebar-item[data-page="pp-dashboard"]');
   if (homeItem) homeItem.classList.add('active');
   document.querySelector('.layout').style.height = '100vh';
   document.querySelector('.content').style.paddingBottom = '70px';
@@ -3537,6 +3763,8 @@ function renderNewSections() {
   } catch(e) { console.error('equipment:', e); }
 }
 
+function showHelpModal() { openModal('helpModal'); }
+
 function switchView(view) {
   document.querySelectorAll('.view-content').forEach(function(el) { el.style.display = 'none'; });
   document.querySelectorAll('.clinic-content').forEach(function(el) { el.classList.remove('active'); });
@@ -3995,6 +4223,394 @@ async function loadLabOrders() {
     document.getElementById('labTableBody').innerHTML = '<tr><td colspan="6" class="empty-state">Backend unavailable</td></tr>';
   }
 }
+
+// ===== AI LAB ASSISTANT =====
+const AI_TESTS_MAP = {};
+
+function toggleAIPanel() {
+  const panel = document.getElementById('aiLabPanel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  if (panel.style.display === 'block' && Object.keys(AI_TESTS_MAP).length === 0) {
+    loadAITests();
+  }
+}
+
+async function loadAITests() {
+  const dept = document.getElementById('aiDepartment').value;
+  const container = document.getElementById('aiTestInputs');
+  if (!dept) {
+    container.innerHTML = '<p style="color:#64748b;font-size:12px">Select a department to view available tests.</p>';
+    return;
+  }
+  try {
+    const r = await authFetch(API_BASE + '/labs/ai-tests');
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    Object.assign(AI_TESTS_MAP, data);
+  } catch (e) {
+    container.innerHTML = '<p style="color:#f87171;font-size:12px">Failed to load tests from server. Using local list.</p>';
+  }
+  const tests = AI_TESTS_MAP[dept] || [];
+  if (tests.length === 0) {
+    container.innerHTML = '<p style="color:#64748b;font-size:12px">No tests available for this department.</p>';
+    return;
+  }
+  container.innerHTML = tests.map((t, i) => `
+    <div class="form-group" style="margin-bottom:6px">
+      <label style="display:flex;justify-content:space-between">
+        <span>${t.name}</span>
+        <span style="color:#64748b;font-weight:400;font-size:10px">${t.unit || ''}</span>
+      </label>
+      <input type="text" class="ai-test-input" data-test="${t.name}" placeholder="Enter result (e.g. ${t.unit ? 'numeric value' : 'text finding'})" style="font-size:12px;padding:6px 10px">
+    </div>
+  `).join('');
+}
+
+async function runAIInterpretation() {
+  const gender = document.getElementById('aiGender').value;
+  const age = parseFloat(document.getElementById('aiAge').value) || null;
+  const pregnant = document.getElementById('aiPregnant').checked;
+  const patientName = document.getElementById('aiPatientName').value;
+  const patientId = parseInt(document.getElementById('aiPatientId').value) || null;
+
+  const inputs = document.querySelectorAll('.ai-test-input');
+  const tests = [];
+  inputs.forEach(inp => {
+    if (inp.value.trim()) {
+      tests.push({ test: inp.dataset.test, result: inp.value.trim() });
+    }
+  });
+
+  if (tests.length === 0) {
+    showNotification('Enter at least one test result', 'error');
+    return;
+  }
+
+  try {
+    const r = await authFetch(API_BASE + '/labs/ai-interpret', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        patient_id: patientId,
+        patient_name: patientName,
+        gender: gender,
+        age: age,
+        pregnant: pregnant,
+        tests: tests,
+      }),
+    });
+    if (!r.ok) throw new Error(await r.text());
+    const data = await r.json();
+    renderAIResults(data);
+  } catch (e) {
+    showNotification('Interpretation failed: ' + e.message, 'error');
+  }
+}
+
+function renderAIResults(data) {
+  const container = document.getElementById('aiResults');
+  const summary = document.getElementById('aiSummary');
+  const body = document.getElementById('aiResultsBody');
+
+  container.style.display = 'block';
+
+  const isCritical = data.summary.includes('critical');
+  summary.className = isCritical ? 'flag-critical' : (data.abnormal_count > 0 ? 'flag-low' : '');
+  summary.style.background = isCritical ? '#5c1010' : (data.abnormal_count > 0 ? '#1e293b' : '#065f46');
+  summary.style.color = isCritical ? '#f87171' : '#e2e8f0';
+  summary.textContent = data.summary;
+
+  const REF_BOOKS = {
+    cheesbrough: 'Cheesbrough 2005',
+    who_afro: 'WHO IDSR 2019',
+    malawi_sop: 'MSTG 2022',
+    harrison: "Harrison's 2022",
+    henry: "Henry's 2021",
+    who_ebm: 'WHO Antimicrobials 2023',
+    malawi_lab: 'Malawi Lab SOP 2021',
+  };
+
+  body.innerHTML = data.results.map(r => {
+    const flagClass = r.flag.startsWith('critical') ? 'flag-critical' :
+      r.flag === 'high' ? 'flag-high' :
+      r.flag === 'low' ? 'flag-low' :
+      r.flag === 'normal' ? 'flag-normal' : 'flag-interpret';
+    const refLinks = (r.references || []).map(k =>
+      `<a href="#" onclick="showNotification('${REF_BOOKS[k] || k}', 'info');return false">${k}</a>`
+    ).join(', ');
+    return `<div class="ai-result-card">
+      <div class="test-header">
+        <span class="test-name">${r.test_name}</span>
+        <span><span class="${flagClass}">${r.flag.replace('_', ' ').toUpperCase()}</span> &middot; <span class="test-dept">${r.department}</span></span>
+      </div>
+      <div class="interpretation">${r.interpretation}</div>
+      <div class="recommendation">${r.recommendation}</div>
+      <div class="references">References: ${refLinks}</div>
+    </div>`;
+  }).join('');
+}
+
+function clearAIPanel() {
+  document.getElementById('aiPatientId').value = '';
+  document.getElementById('aiPatientName').value = '';
+  document.getElementById('aiAge').value = '';
+  document.getElementById('aiPregnant').checked = false;
+  document.getElementById('aiDepartment').value = '';
+  document.getElementById('aiTestInputs').innerHTML = '<p style="color:#64748b;font-size:12px">Select a department to view available tests.</p>';
+  document.getElementById('aiResults').style.display = 'none';
+  document.querySelectorAll('.ai-test-input').forEach(inp => inp.value = '');
+}
+
+// ===== UNIVERSAL RESULT INTERPRETER =====
+async function runUniversalInterpreter() {
+  const text = document.getElementById('uiTextInput').value.trim();
+  const fileInput = document.getElementById('uiFileInput');
+  const gender = document.getElementById('uiGender').value;
+  const age = parseFloat(document.getElementById('uiAge').value) || null;
+  const pregnant = document.getElementById('uiPregnant').checked;
+
+  if (!text && fileInput.files.length === 0) {
+    showNotification('Enter lab results text or upload a scan/image', 'error');
+    return;
+  }
+
+  const interpretBtn = document.querySelector('#universalInterpreterModal .btn-primary');
+  const originalText = interpretBtn.textContent;
+  interpretBtn.textContent = 'Processing...';
+  interpretBtn.disabled = true;
+
+  try {
+    let data;
+
+    if (fileInput.files.length > 0) {
+      // OCR path — upload file to backend
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      formData.append('gender', gender);
+      if (age) formData.append('age', age.toString());
+      formData.append('pregnant', pregnant ? 'true' : 'false');
+
+      const r = await authFetch(API_BASE + '/labs/ai-ocr-interpret', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!r.ok) throw new Error(await r.text());
+      data = await r.json();
+
+      if (!data.success) {
+        showNotification('OCR failed: ' + (data.error || 'No text extracted'), 'error');
+        interpretBtn.textContent = originalText;
+        interpretBtn.disabled = false;
+        return;
+      }
+    } else {
+      // Text path — send as JSON
+      const r = await authFetch(API_BASE + '/labs/ai-parse-text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: text,
+          gender: gender,
+          age: age,
+          pregnant: pregnant,
+          patient_name: '',
+        }),
+      });
+      if (!r.ok) throw new Error(await r.text());
+      data = await r.json();
+    }
+
+    renderUIResults(data, fileInput.files.length > 0);
+  } catch (e) {
+    showNotification('Interpretation failed: ' + e.message, 'error');
+  } finally {
+    interpretBtn.textContent = originalText;
+    interpretBtn.disabled = false;
+  }
+}
+
+function renderUIResults(data, isOcr = false) {
+  const container = document.getElementById('uiResults');
+  const summary = document.getElementById('uiSummary');
+  const parsedInfo = document.getElementById('uiParsedInfo');
+  const body = document.getElementById('uiResultsBody');
+
+  container.style.display = 'block';
+
+  const isCritical = data.summary.includes('critical');
+  summary.style.background = isCritical ? '#5c1010' : (data.abnormal_count > 0 ? '#1e293b' : '#065f46');
+  summary.style.color = isCritical ? '#f87171' : '#e2e8f0';
+  summary.textContent = data.summary;
+
+  let infoHtml = `<strong>Parsed ${data.total_tests} test(s)</strong>. Gender: ${data.gender}${data.age ? ', Age: ' + data.age : ''}${data.pregnant ? ', Pregnant' : ''}.`;
+  if (isOcr && data.engine_used) {
+    infoHtml += `<br><span style="color:#c084fc">OCR engine: ${data.engine_used}</span>`;
+  }
+  if (isOcr && data.extracted_text) {
+    infoHtml += `<br><br><details style="margin-top:4px"><summary style="cursor:pointer;font-size:11px;color:#64748b">Show extracted text</summary>
+      <pre style="font-size:11px;color:#94a3b8;background:#0f172a;padding:8px;border-radius:6px;margin-top:4px;white-space:pre-wrap;max-height:120px;overflow-y:auto">${escapeHtml(data.extracted_text)}</pre></details>`;
+  }
+  parsedInfo.innerHTML = infoHtml;
+
+  const REF_BOOKS = {
+    cheesbrough: 'Cheesbrough 2005', who_afro: 'WHO IDSR 2019', malawi_sop: 'MSTG 2022',
+    harrison: "Harrison's 2022", henry: "Henry's 2021", who_ebm: 'WHO Antimicrobials 2023',
+    malawi_lab: 'Malawi Lab SOP 2021',
+  };
+
+  body.innerHTML = data.results.map(r => {
+    const flagClass = r.flag.startsWith('critical') ? 'flag-critical' :
+      r.flag === 'high' ? 'flag-high' : r.flag === 'low' ? 'flag-low' :
+      r.flag === 'normal' ? 'flag-normal' : 'flag-interpret';
+    const refLinks = (r.references || []).map(k =>
+      `<a href="#" onclick="showNotification('${REF_BOOKS[k] || k}', 'info');return false">${k}</a>`
+    ).join(', ');
+    return `<div class="ai-result-card">
+      <div class="test-header">
+        <span class="test-name">${r.test_name}</span>
+        <span><span class="${flagClass}">${r.flag.replace('_', ' ').toUpperCase()}</span> &middot; <span class="test-dept">${r.department}</span></span>
+      </div>
+      <div class="interpretation">${r.interpretation}</div>
+      <div class="recommendation">${r.recommendation}</div>
+      <div class="references">References: ${refLinks}</div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function clearUniversalInterpreter() {
+  document.getElementById('uiTextInput').value = '';
+  document.getElementById('uiFileInput').value = '';
+  document.getElementById('uiAge').value = '';
+  document.getElementById('uiPregnant').checked = false;
+  document.getElementById('uiResults').style.display = 'none';
+}
+
+// ===== TEST PROCEDURE GUIDE =====
+let allTestNames = [];
+
+async function loadTestSuggestions() {
+  try {
+    const r = await authFetch(API_BASE + '/labs/ai-tests');
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    const names = [];
+    const datalist = document.getElementById('tgTestSuggestions');
+    Object.keys(data).forEach(dept => {
+      data[dept].forEach(t => {
+        names.push(t.name);
+        const opt = document.createElement('option');
+        opt.value = t.name;
+        datalist.appendChild(opt);
+      });
+    });
+    allTestNames = names;
+  } catch (e) {
+    allTestNames = [];
+  }
+}
+
+function openTestGuideModal() {
+  openModal('testGuideModal');
+  if (allTestNames.length === 0) loadTestSuggestions();
+}
+
+async function runTestGuide() {
+  const testName = document.getElementById('tgTestName').value.trim();
+  if (!testName) {
+    showNotification('Enter a test name', 'error');
+    return;
+  }
+
+  try {
+    const r = await authFetch(API_BASE + '/labs/ai-test-guide', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ test_name: testName }),
+    });
+    if (!r.ok) {
+      const err = await r.text();
+      showNotification(err || 'Test not found in procedure knowledge base', 'error');
+      return;
+    }
+    const data = await r.json();
+    renderTestGuide(data);
+  } catch (e) {
+    showNotification('Failed: ' + e.message, 'error');
+  }
+}
+
+function renderTestGuide(data) {
+  const container = document.getElementById('tgGuideContainer');
+  const body = document.getElementById('tgGuideBody');
+  const refDiv = document.getElementById('tgReferences');
+
+  container.style.display = 'block';
+
+  body.innerHTML = `
+    <div style="margin-bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:16px;font-weight:600;color:#f1f5f9">${data.test_name}</span>
+      <span class="badge badge-purple">${data.department}</span>
+    </div>
+
+    <div class="guide-section">
+      <h5><span class="guide-badge pre">PRE-ANALYTICAL</span> Specimen & Preparation</h5>
+      <div class="guide-body">
+        <strong>Specimen:</strong> ${data.specimen_type}<br>
+        <strong>Container:</strong> ${data.container}<br>
+        <strong>Volume:</strong> ${data.volume}<br>
+        <strong>Storage:</strong> ${data.storage}<br>
+        <strong>Transport:</strong> ${data.transport}<br>
+        <strong>Patient Prep:</strong> ${data.patient_preparation}
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h5><span class="guide-badge ana">ANALYTICAL</span> Methodology & QC</h5>
+      <div class="guide-body">
+        <strong>Method:</strong> ${data.methodology}<br><br>
+        <strong>Equipment:</strong> ${data.equipment}<br><br>
+        <strong>Quality Control:</strong> ${data.quality_control}<br><br>
+        <strong>Turnaround Time:</strong> ${data.turnaround_time}
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h5><span class="guide-badge post">POST-ANALYTICAL</span> Interpretation & Reporting</h5>
+      <div class="guide-body">
+        <strong>Interpretation:</strong><br><pre>${data.interpretation}</pre><br>
+        <strong>Clinical Significance:</strong> ${data.clinical_significance}<br><br>
+        <strong>Limitations:</strong> ${data.limitations}
+      </div>
+    </div>
+  `;
+
+  refDiv.innerHTML = `
+    <hr class="ref-separator">
+    <h5 style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">
+      <span class="guide-badge ref">REFERENCES</span> APA 7th Edition
+    </h5>
+    ${(data.references || []).map(ref => `<div class="ref-entry">${ref}</div>`).join('')}
+  `;
+
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearTestGuide() {
+  document.getElementById('tgTestName').value = '';
+  document.getElementById('tgGuideContainer').style.display = 'none';
+}
+
+// Load test suggestions when the page is ready
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof authFetch !== 'undefined') {
+    setTimeout(loadTestSuggestions, 2000);
+  }
+});
 
 // ===== PHARMACY =====
 function openPrescriptionModal() {

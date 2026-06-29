@@ -44,3 +44,69 @@ class LabOrderResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class AIInterpretRequest(BaseModel):
+    patient_id: Optional[int] = None
+    patient_name: Optional[str] = None
+    gender: str = "male"
+    age: Optional[float] = None
+    pregnant: bool = False
+    tests: List[dict]
+
+
+class AIInterpretResponse(BaseModel):
+    patient: str
+    gender: str
+    age: Optional[float]
+    pregnant: bool
+    results: list
+    summary: str
+    total_tests: int
+    abnormal_count: int
+
+
+class AIParseTextRequest(BaseModel):
+    text: str
+    patient_id: Optional[int] = None
+    patient_name: Optional[str] = None
+    gender: str = "male"
+    age: Optional[float] = None
+    pregnant: bool = False
+
+
+class AIParseTextResponse(BaseModel):
+    patient: str
+    gender: str
+    age: Optional[float]
+    pregnant: bool
+    raw_text: str
+    parsed_tests: list
+    results: list
+    summary: str
+    total_tests: int
+    abnormal_count: int
+
+
+class AITestGuideRequest(BaseModel):
+    test_name: str
+
+
+class AITestGuideResponse(BaseModel):
+    test_name: str
+    department: str
+    specimen_type: str
+    container: str
+    volume: str
+    storage: str
+    transport: str
+    patient_preparation: str
+    methodology: str
+    equipment: str
+    quality_control: str
+    turnaround_time: str
+    interpretation: str
+    clinical_significance: str
+    limitations: str
+    references: list
+    reference_keys: list
